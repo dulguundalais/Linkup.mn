@@ -10,9 +10,8 @@ test('hover transitions name their properties instead of transition:all',()=>{
  assert.doesNotMatch(css,/transition:all/);
  assert.match(css,/button,a\{transition:color var\(--motion-fast\)/);
 });
-test('pages fade in with opacity only and motion stops for reduced-motion visitors',()=>{
- assert.match(css,/@keyframes v57-page-in\{from\{opacity:0\}to\{opacity:1\}\}/);
- assert.doesNotMatch(css.match(/@keyframes v57-page-in[^\n]*/)[0],/transform/);
+test('page content is never hidden behind an animation and motion stops for reduced-motion visitors',()=>{
+ assert.doesNotMatch(css,/main\{animation/,'pages never start invisible');
  assert.match(css,/prefers-reduced-motion:reduce\)\{\s*html\{scroll-behavior:auto\}/);
  assert.match(css,/transition-duration:\.01ms!important/);
 });

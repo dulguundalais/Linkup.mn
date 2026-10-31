@@ -1,7 +1,6 @@
 /* ==========================================================================
    LINKUP V57 — calmer, consistent motion (owner request 2026-10-31)
-   One timing and easing for every hover, press and theme change, a short fade
-   when a page opens, and no motion at all for visitors who ask for less.
+   One timing and easing for every hover, press and theme change, and no motion at all for visitors who ask for less.
    Loaded once from the root layout after globals.css.
    ========================================================================== */
 :root{--motion-ease:cubic-bezier(.2,.7,.2,1);--motion-fast:.2s;--motion-slow:.32s}
@@ -21,10 +20,8 @@ html body .hustle-v5:not(.workspace) .v39-talent-card{transition:transform var(-
 /* Switching light/dark fades instead of snapping */
 .hustle-v5{transition:background-color var(--motion-slow) var(--motion-ease),color var(--motion-slow) var(--motion-ease)}
 
-/* Each page fades in when it opens (opacity only, so fixed and sticky
-   elements are unaffected) */
-@keyframes v57-page-in{from{opacity:0}to{opacity:1}}
-body main{animation:v57-page-in .3s var(--motion-ease) both}
+/* No page-open fade: content that starts at opacity 0 stays blank wherever
+   animations do not run (some previews, crawlers, screenshot tools). */
 
 @media (prefers-reduced-motion:reduce){
  html{scroll-behavior:auto}
