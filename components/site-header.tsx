@@ -99,6 +99,8 @@ export default function SiteHeader({en,onToggleLanguage,dark,onToggleTheme,activ
  // V52: the mobile menu closes on Escape and returns focus to its button.
  const burger=useRef<HTMLButtonElement>(null);
  useEffect(()=>{if(!menu)return;const esc=(e:KeyboardEvent)=>{if(e.key==='Escape'){setMenu(false);burger.current?.focus()}};document.addEventListener('keydown',esc);return()=>document.removeEventListener('keydown',esc)},[menu]);
+ // V58: a tap anywhere outside the header also closes the phone menu.
+ useEffect(()=>{if(!menu)return;const outside=(e:PointerEvent)=>{const header=burger.current?.closest('header');if(header&&!header.contains(e.target as Node))setMenu(false)};document.addEventListener('pointerdown',outside);return()=>document.removeEventListener('pointerdown',outside)},[menu]);
  const {sessionState,account,signingOut,signOut}=session;
  const links:[Exclude<SiteSection,null>,string,string,string][]=[
   ['services','/explore/','Үйлчилгээ','Services'],

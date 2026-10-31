@@ -1,0 +1,39 @@
+/* ==========================================================================
+   LINKUP V58 — phone menu and touch targets (owner request 2026-10-31)
+   Checked at 375px: every control a thumb needs is at least 44px tall (Apple
+   and Android guidance). Where a control must stay small to look right (the
+   save heart), an invisible margin around it takes the tap instead. Visual
+   sizes and spacing between items are otherwise kept.
+   ========================================================================== */
+
+/* Header: logo link, language, theme and menu buttons */
+html body .hustle-v5.hx-header .hx-brand{display:inline-flex;align-items:center;min-height:44px}
+html body .hustle-v5.hx-header .hx-icon{min-height:44px;min-width:44px}
+/* Signed-in phones (320–400px) carry five buttons; keep their width, raise height only */
+@media(max-width:400px){html body .hustle-v5.hx-header .hx-icon{min-width:38px}html body .hustle-v5.hx-header .hx-icon.locale{min-width:34px}}
+
+/* Phone menu: opens with a short slide, items are full-width 48px rows */
+@keyframes v58-menu-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media(max-width:900px){
+ html body .hustle-v5.hx-header .hx-nav.open{animation:v58-menu-in .2s var(--motion-ease,ease) both}
+ html body .hustle-v5.hx-header .hx-nav>a{min-height:48px;display:flex;align-items:center;border-radius:11px}
+ html body .hustle-v5.hx-header .hx-nav-auth a{min-height:48px}
+}
+
+/* Save heart on service cards: 36px circle, 44px tap area */
+html body .hustle-v5 .v39-heart::before{content:'';position:absolute;inset:-4px;border-radius:50%}
+
+@media(max-width:760px){
+ /* How it works: buyer / freelancer switch */
+ html body .hustle-v5 .signature-process-switch button{min-height:44px}
+ /* Text links that act as buttons */
+ html body .hustle-v5 :is(.signature-partner-link,.signature-text-link,.v39-head-link){min-height:44px;display:inline-flex;align-items:center}
+ /* Footer: rows become 44px tall; the gap shrinks so the column keeps its length */
+ html body .hustle-v5 .footer-columns nav{gap:3px}
+ html body .hustle-v5 .footer-columns nav h3{margin-bottom:6px}
+ html body .hustle-v5 .footer-columns nav a{display:inline-flex;align-items:center;min-height:44px}
+ html body .hustle-v5 .footer-bottom nav{flex-wrap:wrap;column-gap:16px;row-gap:0}
+ html body .hustle-v5 .footer-bottom a{display:inline-flex;align-items:center;min-height:44px;min-width:44px}
+ html body .hustle-v5 .footer-logo{min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){html body .hustle-v5.hx-header .hx-nav.open{animation:none}}
