@@ -1,0 +1,26 @@
+/* ==========================================================================
+   LINKUP V59 — hero cleanup (owner request 2026-10-31)
+   The hero now holds only: title → search → Хувь хүн / Байгууллага, all on one
+   centre line. With the eyebrow, intro and helper lines gone, the frame is
+   shorter so the group does not float in empty space. Colours, background and
+   typography are unchanged.
+   ========================================================================== */
+.signature-hero.hx-hero .hx-hero-frame{min-height:clamp(480px,68svh,640px)}
+.signature-hero.hx-hero .signature-hero-inner.hx-hero-inner{padding:88px 24px 92px}
+.signature-hero.hx-hero h1.hx-hero-title{margin-top:0}
+.signature-hero.hx-hero .hx-hero-search{margin-top:40px}
+.signature-hero.hx-hero .hx-hero-meta{margin-top:24px;gap:0}
+
+/* Хувь хүн / Байгууллага: one centred pair, equal widths */
+.signature-hero.hx-hero .hx-hero-guided{display:flex;justify-content:center}
+.signature-hero.hx-hero .guided-entry-intro{justify-content:center}
+.signature-hero.hx-hero .guided-entry-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
+.signature-hero.hx-hero .guided-entry-choice,.signature-hero.hx-hero .guided-entry-choice.guided-entry-business{justify-content:center;min-width:150px}
+
+@media (max-width:760px){
+ .signature-hero.hx-hero .hx-hero-frame{min-height:0}
+ .signature-hero.hx-hero .signature-hero-inner.hx-hero-inner{padding:64px 18px 56px}
+ .signature-hero.hx-hero .hx-hero-search{margin-top:32px}
+ .signature-hero.hx-hero .hx-hero-meta{margin-top:20px}
+ .signature-hero.hx-hero .guided-entry-choice,.signature-hero.hx-hero .guided-entry-choice.guided-entry-business{min-width:0}
+}

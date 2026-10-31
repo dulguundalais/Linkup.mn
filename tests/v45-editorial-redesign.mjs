@@ -17,7 +17,7 @@ test('V45 replaces redundant copy with concise bilingual value proposition',()=>
  assert.match(hero,/Every problem/);
  assert.doesNotMatch(hero,/Бизнесээ хөгжүүлэх, ажлаа автоматжуулах, санаагаа хэрэгжүүлэхэд/);
  assert.doesNotMatch(hero,/signature-problem-prompts/);
- assert.match(hero,/Кирилл, латин галиг, англиар хайх/);
+ assert.doesNotMatch(hero,/Кирилл, латин галиг, англиар хайх/,'V59: helper line removed by the owner');
  assert.match(discover,/Ур чадвараар хай/);
  assert.doesNotMatch(home,/<V19FeaturedIntro en=\{en\}\/>/);
  assert.doesNotMatch(home,/Доорх бодит үйлчилгээнүүд, багц болон үнийг шүүнэ/);

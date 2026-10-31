@@ -79,14 +79,14 @@ export default function GuidedEntry({en}:{en:boolean}){
   return()=>cancelAnimationFrame(id);
  },[screen,open]);
  return <>
-  <div className="guided-entry-intro" aria-labelledby="guided-entry-title">
-   <h2 id="guided-entry-title">{t('Эсвэл хэрэгцээнээсээ эхлээрэй','Or start with a goal')}</h2>
+  {/* V59: the visible heading was removed with the hero cleanup; the group keeps an accessible name. */}
+  <div className="guided-entry-intro" role="group" aria-label={t('Хэрэгцээнээсээ эхлэх','Start with a goal')}>
    <div className="guided-entry-choices">
     <button type="button" className={'guided-entry-choice'+(remembered==='personal'?' is-current':'')} onClick={()=>start('personal')} aria-haspopup="dialog">
      <span className="guided-entry-symbol"><UserRound size={24} strokeWidth={1.8}/></span><span className="guided-entry-choice-copy"><strong>{t('Хувь хүн','Personal')}</strong><small>{t('Хувийн ажил','Personal work')}</small></span><ArrowUpRight size={19}/>
     </button>
     <button type="button" className={'guided-entry-choice guided-entry-business'+(remembered==='business'?' is-current':'')} onClick={()=>start('business')} aria-haspopup="dialog">
-     <span className="guided-entry-symbol"><Building2 size={24} strokeWidth={1.8}/></span><span className="guided-entry-choice-copy"><strong>{t('Бизнес / байгууллага','Business')}</strong><small>{t('Бизнесийн хэрэгцээ','Business needs')}</small></span><ArrowUpRight size={19}/>
+     <span className="guided-entry-symbol"><Building2 size={24} strokeWidth={1.8}/></span><span className="guided-entry-choice-copy"><strong>{t('Байгууллага','Organization')}</strong><small>{t('Бизнесийн хэрэгцээ','Business needs')}</small></span><ArrowUpRight size={19}/>
     </button>
    </div>
   </div>
