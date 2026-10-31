@@ -9,6 +9,7 @@ import GuidedEntry from './guided-entry';
 import '../app/signature-home.css';
 import '../app/v50-hero.css';
 import '../app/v56-search-hints.css';
+import '../app/v59-hero-cleanup.css';
 
 type T=(mn:string,en:string)=>string;
 const topics=[
@@ -38,9 +39,8 @@ export function SignatureHero({en}:{en:boolean}){
     <span className="hx-hero-light" aria-hidden="true"/>
     <span className="hx-hero-grain" aria-hidden="true"/>
     <div className="shell signature-hero-inner hx-hero-inner">
-       <p className="hx-hero-eyebrow"><span className="hx-eyebrow-name">{t('Шийдэл хайх','Smart Finder')}</span><span className="hx-eyebrow-rule" aria-hidden="true"/><span>{t('Хэрэгцээгээ бичээд шийдлээ олоорой','Describe a problem, get a solution')}</span></p>
+       {/* V59: owner cleanup — title, search, then Хувь хүн / Байгууллага; no eyebrow, intro or helper lines. */}
        <h1 id="signature-hero-title" className="hx-hero-title"><span>{t('Асуудал бүрт','Every problem')}</span> <span>{t('шийдэл бий.','has a solution.')}</span></h1>
-       <p className="hx-hero-sub">{t('Хийлгэх ажил байгаа ч хэнд хандахаа мэдэхгүй байна уу? Асуудлаа өөрийн үгээр бичээрэй — Linkup тохирох шийдэл, мэргэжилтнийг санал болгоно.','Have work to get done but not sure who to ask? Describe it in your own words — Linkup suggests the right solution and the professionals for it.')}</p>
        <div className="signature-search-shell hx-hero-search" onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node|null))setShowSuggestions(false)}}>
         <form action="/solutions/" method="get" className="signature-search hx-searchbar" role="search">
          <Search size={22} aria-hidden="true" className="hx-searchbar-icon"/>
@@ -69,7 +69,6 @@ export function SignatureHero({en}:{en:boolean}){
         </div>}
        </div>
        <div className="hx-hero-meta">
-        <div className="signature-search-subline hx-hero-subline"><Sparkles size={14} aria-hidden="true"/>{t('Кирилл, латин галиг, англиар хайх','Search in Mongolian, Latin or English')}</div>
         <div className="hx-hero-guided"><GuidedEntry en={en}/></div>
        </div>
     </div>
