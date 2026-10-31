@@ -10,6 +10,7 @@ import '../app/signature-home.css';
 import '../app/v50-hero.css';
 import '../app/v56-search-hints.css';
 import '../app/v59-hero-cleanup.css';
+import '../app/v60-home-sections.css';
 
 type T=(mn:string,en:string)=>string;
 const topics=[
@@ -86,24 +87,31 @@ const sellerSteps=[
  {index:'02',mn:'Гурван багцаа бэлдэх',en:'Define your packages',descMn:'Суурь, Стандарт, Дээд багцын үнэ, хугацаа, багтах ажлыг тодорхойлоорой.',descEn:'Price Basic, Standard and Premium with clear deliverables.',Icon:Layers3},
  {index:'03',mn:'Ажлаа хүлээлгэн өгөх',en:'Connect and deliver',descMn:'Захиалгаа авч, чатаар харилцан, бэлэн болсон ажлаа илгээгээрэй.',descEn:'Respond to requests, collaborate and deliver your work.',Icon:CheckCircle2}
 ];
-export function SignatureStory({en}:{en:boolean}){
+/* V60 homepage order (owner spec): Hero → How it works → Categories → Featured
+   services → Business solutions → For freelancers → Partners → Footer. The three
+   parts below are separate so premium-marketplace can place each one. */
+export function SignatureProcess({en}:{en:boolean}){
  const [mode,setMode]=useState<'buyer'|'seller'>('buyer');
  const t:T=(mn,english)=>en?english:mn;
  const steps=mode==='buyer'?buyerSteps:sellerSteps;
- return <>
-   <section id="how" className="signature-process">
+ return <section id="how" className="signature-process v60-process" aria-labelledby="how-title">
     <div className="shell">
-     <div className="signature-section-heading"><div><span className="signature-section-eyebrow">{t('Хэрхэн ажилладаг','How it works')}</span><h2>{t('Санаанаас бодит ажил хүртэл.','A simpler way to create together.')}</h2><p>{t('Гурван энгийн алхам.', 'Three steps. One clear path.')}</p></div><div className="signature-process-switch" role="group" aria-label={t('Хэрэглэгчийн төрөл','How it works for')}><button aria-pressed={mode==='buyer'} className={mode==='buyer'?'active':''} onClick={()=>setMode('buyer')}>{t('Захиалагчдад','For buyers')}</button><button aria-pressed={mode==='seller'} className={mode==='seller'?'active':''} onClick={()=>setMode('seller')}>{t('Мэргэжилтнүүдэд','For freelancers')}</button></div></div>
-     <div className="signature-step-grid">{steps.map(({index,mn,en:eng,descMn,descEn,Icon})=><article key={index} className="signature-step"><div className="signature-step-top"><span className="signature-step-icon"><Icon size={24}/></span><strong>{index}</strong></div><h3>{en?eng:mn}</h3><p>{en?descEn:descMn}</p><div className="signature-step-line"/></article>)}</div>
+     <div className="signature-section-heading"><div><span className="signature-section-eyebrow">{t('Хэрхэн ажилладаг','How it works')}</span><h2 id="how-title">{t('Санаанаас бодит ажил хүртэл.','From idea to finished work.')}</h2></div><div className="signature-process-switch" role="group" aria-label={t('Хэрэглэгчийн төрөл','How it works for')}><button aria-pressed={mode==='buyer'} className={mode==='buyer'?'active':''} onClick={()=>setMode('buyer')}>{t('Захиалагчдад','For buyers')}</button><button aria-pressed={mode==='seller'} className={mode==='seller'?'active':''} onClick={()=>setMode('seller')}>{t('Мэргэжилтнүүдэд','For freelancers')}</button></div></div>
+     <ol className="v60-steps">{steps.map(({index,mn,en:eng,descMn,descEn,Icon})=><li key={mode+index} className="v60-step"><div className="v60-step-head"><span className="v60-step-icon" aria-hidden="true"><Icon size={26} strokeWidth={1.8}/></span><span className="v60-step-num">{index}</span></div><h3>{en?eng:mn}</h3><p>{en?descEn:descMn}</p></li>)}</ol>
      <p className="signature-process-note"><ShieldCheck size={15}/>{t('Туршилтын хугацаанд Linkup төлбөр хүлээн авахгүй, эскроу үйлчилгээ үзүүлэхгүй.','No real payments or escrow during open beta.')}</p>
     </div>
-   </section>
-   <section id="for-freelancers" className="signature-seller-band shell">
+   </section>;
+}
+export function SignatureSellerBand({en}:{en:boolean}){
+ const t:T=(mn,english)=>en?english:mn;
+ return <section id="for-freelancers" className="signature-seller-band shell">
     <div className="signature-seller-text"><span className="signature-section-eyebrow">{t('Мэргэжилтнүүдэд','For freelancers')}</span><h2>{t('Ур чадвараараа','Your skills deserve')}<br/><em>{t('шинэ боломж нээгээрэй.','a bigger stage.')}</em></h2><p>{t('Профайлаа үүсгэж, үйлчилгээгээ багцлан, шинэ захиалагчтай хамтран ажиллаарай.','Build a storefront for your talent, create packages and connect with new clients.')}</p><Link href="/join/seller/" className="signature-cta-button">{t('Үйлчилгээгээ санал болгох','Become a freelancer')}<ArrowUpRight size={19}/></Link></div>
     <div className="signature-seller-art" aria-hidden="true"><div className="signature-art-window"><span className="signature-window-dots">● ● ●</span><div className="signature-art-line strong"/><div className="signature-art-line medium"/><div className="signature-art-row"><i/><i/><i/></div><div className="signature-art-badge"><Sparkles size={17}/> MADE TO CREATE</div></div><div className="signature-art-cube cube-one"/><div className="signature-art-cube cube-two"/></div>
-   </section>
-   <section className="signature-partner shell">
+   </section>;
+}
+export function SignaturePartner({en}:{en:boolean}){
+ const t:T=(mn,english)=>en?english:mn;
+ return <section className="signature-partner shell">
     <div className="signature-partner-inner"><div className="signature-partner-copy"><span className="signature-section-eyebrow">{t('Түншлэл','Partners')}</span><h2>{t('Холбоогоо боломж болго.','Good connections make great things happen.')}</h2><p>{t('Мэргэжилтнүүдийг Linkup-д урьж, түншийн хөтөлбөрт оролцоорой. Туршилтын хугацаанд урамшууллыг зөвхөн тооцоолох бөгөөд мөнгө олгохгүй.', 'Introduce skilled freelancers to the marketplace. Referral rewards are simulated during beta, not paid out.')}</p><Link className="signature-partner-link" href="/referrals/">{t('Түншийн мэдээлэл үзэх','Explore referrals')}<ArrowUpRight size={16}/></Link></div><div className="signature-partner-stats"><div><strong>1%</strong><span>{t('Үндсэн түнш','Standard partner')}</span></div><div><strong>2%</strong><span>{t('Идэвхтэй түнш','Active partner')}</span></div><div><strong>10%</strong><span>{t('Платформын шимтгэл','Platform commission')}</span></div></div></div>
-   </section>
- </>;
+   </section>;
 }
