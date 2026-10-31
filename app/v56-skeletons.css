@@ -24,8 +24,8 @@ html body .hustle-v5:not(.workspace) .v39-card-skeleton.v56-sk-card{display:flex
 .v56-sk-card>.v56-sk-person{margin:-24px 20px 0;position:relative}
 .v56-sk-card>.v56-sk-person .v56-sk-avatar{border:2px solid var(--surface,#fff);box-sizing:content-box}
 .v56-sk-card>.v56-sk-person .v56-sk-line{margin-top:22px}
-.v56-sk-body{display:flex;flex-direction:column;gap:12px;padding:18px 20px 20px}
-.v56-sk-card .v56-sk-title{height:18px;margin-top:4px}
+.v56-sk-body{display:flex;flex-direction:column;gap:10px;padding:16px 20px 20px}
+.v56-sk-card .v56-sk-title{height:18px;margin-top:2px}
 .v56-sk-foot{display:flex;justify-content:space-between;align-items:center;padding-top:16px;margin-top:4px;border-top:1px solid var(--border)}
 .v56-sk-foot .v56-sk-line{height:18px}
 
