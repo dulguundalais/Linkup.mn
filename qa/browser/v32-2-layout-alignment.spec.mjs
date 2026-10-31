@@ -11,7 +11,6 @@ async function positions(page){
    hero:'.signature-hero-inner.shell',
    business:'.business-solutions-inner.shell',
    process:'.signature-process > .shell',
-   spotlight:'.signature-spotlight.shell',
    partner:'.signature-partner.shell',
    footer:'.hustle-premium-footer .footer-columns.shell'
   };

@@ -1,0 +1,69 @@
+/* ==========================================================================
+   LINKUP V55 — compact service cards (owner reference, 2026-10-31)
+   Three cards per row on desktop; a short cover with the freelancer's photo,
+   name and headline sitting on its lower edge; category + rating, title,
+   two-line description, price + delivery, and a full-width white button with
+   a chat button. Applies to the homepage and Explore. `html body` keeps these
+   rules above the V39–V51 layers regardless of import order.
+   ========================================================================== */
+
+/* Section header: title, count, "View all" on one line */
+html body .hustle-v5:not(.workspace) .v39-catalog-home .v39-section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+html body .hustle-v5:not(.workspace) .v55-section-title{display:flex;align-items:center;flex-wrap:wrap;gap:12px;min-width:0}
+html body .hustle-v5:not(.workspace) .v39-catalog-home .v55-section-title h2{margin:0;font-size:clamp(22px,1.2rem + .8vw,30px);line-height:1.2;letter-spacing:-.025em}
+html body .hustle-v5:not(.workspace) .v55-count{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border-radius:8px;background:var(--soft);color:var(--sub);font-size:13px;font-weight:600;white-space:nowrap}
+html body .hustle-v5:not(.workspace) .v39-catalog-home .v39-head-link{white-space:nowrap;font-weight:650}
+html body .hustle-v5:not(.workspace) .v39-catalog-home .v39-results-bar{display:none}
+
+/* Grid: as many 300px+ columns as fit, three on desktop */
+html body .hustle-v5:not(.workspace) .v39-card-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:20px;align-items:stretch}
+@media(min-width:1100px){html body .hustle-v5:not(.workspace) .v39-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Card */
+html body .hustle-v5:not(.workspace) .v39-talent-card{border-radius:16px;border:1px solid var(--border);background:var(--surface);box-shadow:none}
+html body .hustle-v5:not(.workspace) .v39-talent-card:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgb(10 20 48/.10)}
+
+/* Cover: short, with a scrim so the name on its lower edge stays readable */
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-card-cover{height:150px;flex:0 0 150px}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-card-cover::after{left:0;right:0;bottom:0;top:auto;width:auto;height:70%;border-radius:0;transform:none;background:linear-gradient(180deg,transparent,rgb(4 11 31/.72))}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-cover-text{display:none}
+
+/* Freelancer identity on the cover */
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-card-body{padding:0 20px 20px}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-person-line{margin-top:-66px;min-height:52px;position:relative;z-index:2}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-person-avatar{width:48px;height:48px;flex:0 0 48px;border-radius:12px;border:2px solid #fff;font-size:18px}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-person-name{padding-top:0}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-person-name strong{font-size:16px;line-height:1.3;color:#fff}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-person-name>span{font-size:13px;color:rgb(255 255 255/.82)}
+
+/* Category + rating */
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-meta-line{margin-top:20px}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-discipline{padding:5px 10px;border-radius:8px;border:1px solid color-mix(in srgb,var(--purple) 35%,transparent);background:color-mix(in srgb,var(--purple) 8%,transparent);font-size:12px;font-weight:650}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-rating{font-size:14px;font-weight:700;color:#e0a100}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-rating small{font-size:13px;color:var(--sub);font-weight:500}
+
+/* Title + description */
+html body .hustle-v5:not(.workspace) .v39-talent-card h3{font-size:19px;line-height:1.35;font-weight:700;letter-spacing:-.02em;margin:14px 0 6px;min-height:0}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-description{font-size:14px;line-height:1.5;min-height:0;max-height:none;-webkit-line-clamp:2}
+
+/* Price + delivery */
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-card-bottom{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);align-items:flex-end}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-price small,
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-delivery small{font-size:12px;font-weight:600;color:var(--sub);text-transform:uppercase;letter-spacing:.04em}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-price strong{font-size:22px;font-weight:750}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-delivery{display:grid;justify-items:end;gap:3px;padding-bottom:3px}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-delivery small{text-transform:none;letter-spacing:0}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-delivery>span{display:inline-flex;align-items:center;gap:5px;color:var(--text);font-size:14px;font-weight:650}
+
+/* Actions: full-width white button + chat button */
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-card-actions{margin-top:16px;gap:10px}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-primary{min-height:44px;border-radius:12px;background:#fff;color:#0a1430!important;border:1px solid var(--border);font-size:14px;font-weight:700}
+html body .hustle-v5:not(.workspace) .v39-talent-card .v39-primary:hover{background:#f1f4fa;border-color:#cdd6e8}
+html body .hustle-v5.night:not(.workspace) .v39-talent-card .v39-primary{border-color:#fff}
+html body .hustle-v5.night:not(.workspace) .v39-talent-card .v39-primary:hover{background:#e3eaff}
+html body .hustle-v5:not(.workspace) .v39-talent-card :is(.v39-contact,.v39-compare-toggle){flex:0 0 44px;min-height:44px;border-radius:12px}
+
+@media(max-width:640px){
+  html body .hustle-v5:not(.workspace) .v39-catalog-home .v39-section-head{align-items:flex-start}
+  html body .hustle-v5:not(.workspace) .v39-talent-card .v39-card-cover{height:140px;flex-basis:140px}
+}
