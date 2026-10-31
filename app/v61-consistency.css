@@ -15,3 +15,7 @@
 @media(max-width:700px){.finder-result-side{align-items:flex-start}}
 
 .cdir-pair-title{grid-column:1/-1;margin:8px 0 -4px;font-size:clamp(20px,1rem + .6vw,26px);line-height:1.25;letter-spacing:-.02em;color:var(--text,#0a1430)}
+
+/* Homepage category cards now use the full category names; a long one may take a
+   third line (its artwork gets slightly shorter) instead of being cut off. */
+html body .hustle-v5 .cat-showcase .cat-card-title{height:auto;min-height:2.5em;max-height:3.75em}
