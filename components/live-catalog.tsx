@@ -12,6 +12,7 @@ import '../app/v39-creative-cards.css';
 import '../app/v41-home-card-readability.css';
 import '../app/v50-categories.css';
 import '../app/v55-service-cards.css';
+import '../app/v56-skeletons.css';
 import {categoryLabel,legacyCategory,serviceTypeById,subcategoryLabel} from '../lib/marketplace/taxonomy';
 
 // The marketplace_catalog RPC is the sole source: published services from real sellers only.
@@ -58,7 +59,7 @@ export default function LiveCatalog({en,signedIn=false,query='',category='all',s
    <div className="v55-section-title"><h2 id="real-listings-title">{t('Шилдэг мэргэжилтнүүд ба тэдний үйлчилгээ','Top experts and their services')}</h2>{state==='ready'&&filtered.length>0&&<span className="v55-count">{filtered.length} {t('үйлчилгээ','services')}</span>}</div>
    <Link className="v39-head-link" href="/explore/">{t('Бүгдийг үзэх','View all')} <ArrowUpRight size={16}/></Link>
   </div>}
-  {state==='loading'&&<div className="v39-skeleton-grid" role="status" aria-label={t('Үйлчилгээ ачаалж байна','Loading services')}>{[0,1,2].map(i=><div className="v39-card-skeleton" key={i} aria-hidden="true"/>)}</div>}
+  {state==='loading'&&<div className="v39-skeleton-grid" role="status" aria-label={t('Үйлчилгээ ачаалж байна','Loading services')}>{[0,1,2].map(i=><div className="v39-card-skeleton v56-sk-card" key={i} aria-hidden="true"><span className="v56-sk v56-sk-cover"/><span className="v56-sk-person"><span className="v56-sk v56-sk-avatar"/><span className="v56-sk v56-sk-line v56-w45"/></span><span className="v56-sk-body"><span className="v56-sk v56-sk-chip"/><span className="v56-sk v56-sk-line v56-sk-title v56-w85"/><span className="v56-sk v56-sk-line v56-w100"/><span className="v56-sk v56-sk-line v56-w70"/><span className="v56-sk-foot"><span className="v56-sk v56-sk-line v56-w35"/><span className="v56-sk v56-sk-line v56-w25"/></span><span className="v56-sk v56-sk-button"/></span></div>)}</div>}
   {state==='error'&&<div className="v39-empty" role="alert"><Search size={23}/><h3>{t('Үйлчилгээг ачаалж чадсангүй','Services could not be loaded')}</h3><p>{t('Холболтоо шалгаад хуудсаа шинэчлээрэй.','Check your connection and refresh this page.')}</p></div>}
   {state==='ready'&&filtered.length===0&&<div className="v39-empty"><Layers3 size={24}/>
    <h3>{services.length===0?t('Одоогоор нийтлэгдсэн үйлчилгээ алга','No published services yet'):onlySaved?t('Хадгалсан үйлчилгээ олдсонгүй','No saved services found'):t('Тохирох үйлчилгээ олдсонгүй','No services match your search')}</h3>
