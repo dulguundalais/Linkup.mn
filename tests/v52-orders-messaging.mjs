@@ -38,7 +38,7 @@ test('notifications deep-link to the exact order, request and chat',()=>{
 });
 
 test('delivery history and files: private bucket, server-side guard, rollback documented',()=>{
- const m=read('supabase/migrations/20261026090000_v52_order_deliveries.sql');
+ const m=read('supabase/migrations/20261026034838_v52_order_deliveries.sql');
  assert.match(m,/-- Rollback/);
  assert.match(m,/values\('order-files','order-files',false/,'bucket is private');
  assert.match(m,/revoke all on public\.order_events from anon,authenticated;\s*grant select on public\.order_events to authenticated;/,'clients cannot write history');

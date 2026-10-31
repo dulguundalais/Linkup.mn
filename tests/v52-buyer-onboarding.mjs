@@ -14,8 +14,8 @@ const memory=()=>{const m=new Map();return {getItem:k=>m.has(k)?m.get(k):null,se
 test('buyer display name comes from the e-mail, never empty or too short',()=>{
  assert.equal(buyer.defaultDisplayName('dulguun.s@gmail.com'),'Dulguun S');
  assert.equal(buyer.defaultDisplayName('anu_bat-2024@x.mn'),'Anu Bat');
- assert.equal(buyer.defaultDisplayName('a@x.mn'),'Hustle хэрэглэгч');
- assert.equal(buyer.defaultDisplayName(''),'Hustle хэрэглэгч');
+ assert.equal(buyer.defaultDisplayName('a@x.mn'),'Linkup хэрэглэгч');
+ assert.equal(buyer.defaultDisplayName(''),'Linkup хэрэглэгч');
  assert.ok(buyer.defaultDisplayName('x'.repeat(200)+'@x.mn').length<=80);
 });
 

@@ -8,7 +8,7 @@ for(const width of [390,768,1440]){
   await page.locator('#hustle-auth-password').fill('TestPasswordOnly123!');
   await page.locator('.hustle-auth-submit').click();
   await expect(page.locator('.workspace-main')).toBeVisible();
-  await page.getByRole('button',{name:/Мессеж|Messages/}).first().click();
+  await page.locator('.v49-nav button').filter({hasText:/Мессеж|Messages/}).click();
   await expect(page.locator('.v25-messenger')).toBeVisible();
   await page.getByRole('button',{name:/QA Seller/}).first().click();
   await expect(page.locator('.chat-thread-head')).toContainText('QA Seller');

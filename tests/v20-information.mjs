@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const routes=['about','faq','terms','privacy','cookies','contact','buyers','freelancers','referrals'];
 test('nine complete information routes exist',()=>{
- for(const path of routes){const page=read('app/'+path+'/page.tsx');assert.ok(page.includes('page="'+path+'"'));assert.ok(page.includes('InformationPage'))}
+ for(const path of routes){const page=read('app/'+path+'/page.tsx');if(path==='referrals'){assert.match(page,/PartnerProgram/);continue;}assert.ok(page.includes('page="'+path+'"'));assert.ok(page.includes('InformationPage'))}
 });
 test('terms and privacy are labeled legal drafts and accurately describe beta',()=>{
  const s=read('lib/site-information.ts');

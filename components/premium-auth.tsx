@@ -2,9 +2,11 @@
 import {useEffect,useRef,useState,type FormEvent} from 'react';
 import {friendlyError} from '../lib/marketplace/friendly-errors';
 import Link from 'next/link';
+import LinkupWordmark from './linkup-wordmark';
 import {ArrowLeft,ArrowRight,BadgeCheck,Building2,Check,CheckCircle2,Eye,EyeOff,Inbox,Info,LockKeyhole,Mail,MessageCircle,Package,ShieldCheck,UserRound} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
 import '../app/premium-auth.css';
+import '../app/v54-page-unification.css';
 
 type Entry='buyer'|'seller'|'admin';
 type Props={
@@ -53,7 +55,7 @@ export default function PremiumAuth({
  const forSeller=entryMode==='seller';
  const title=isAdmin?t('Админ нэвтрэлт','Admin sign in'):
   resetMode?t('Нууц үг сэргээх','Reset your password'):
-  register?forSeller?t('Мэргэжилтнээр бүртгүүлэх','Join as a freelancer'):t('Hustle-д нэгдэх','Create your account'):
+  register?forSeller?t('Мэргэжилтнээр бүртгүүлэх','Join as a freelancer'):t('Linkup-д нэгдэх','Create your account'):
   t('Эргэн тавтай морил','Welcome back');
  const lead=resetMode?t('Имэйлээ оруулаад нууц үг сэргээх холбоос хүсээрэй.','Enter your email to request a password reset link.'):
   isAdmin?t('Зөвхөн эрх бүхий админ нэвтэрнэ.','For authorized administrators only.'):
@@ -73,15 +75,15 @@ export default function PremiumAuth({
  return <main className="hustle-auth-scene">
   <div className={'hustle-auth-card'+(isAdmin?' is-solo':'')}>
    {!isAdmin&&<aside className="hustle-auth-aside">
-     <Link href="/" className="hustle-auth-wordmark">Hustle<span>.mn</span></Link>
+     <Link href="/" className="hustle-auth-wordmark" aria-label="Linkup"><LinkupWordmark decorative/></Link>
      <div className="hustle-auth-aside-body">
        <h2>{forSeller?t('Ур чадвараа орлого болго','Turn your skills into income'):t('Төслөө зөв хүнд даатга','Find the right person for the job')}</h2>
        <ul>{benefits.map(([Icon,head,body])=><li key={head}><span className="hustle-auth-aside-icon"><Icon size={18} aria-hidden="true"/></span><div><b>{head}</b><p>{body}</p></div></li>)}</ul>
      </div>
-     <p className="hustle-auth-aside-note"><ShieldCheck size={16} aria-hidden="true"/>{t('Туршилтын хугацаанд төлбөр Hustle-ээр дамжихгүй.','During the beta, no payments go through Hustle.')}</p>
+     <p className="hustle-auth-aside-note"><ShieldCheck size={16} aria-hidden="true"/>{t('Туршилтын хугацаанд төлбөр Linkup-аар дамжихгүй.','During the beta, no payments go through Linkup.')}</p>
    </aside>}
    <section className="hustle-auth-panel" aria-labelledby="hustle-auth-title">
-   {isAdmin&&<Link href="/" className="hustle-auth-wordmark">Hustle<span>.mn</span></Link>}
+   {isAdmin&&<Link href="/" className="hustle-auth-wordmark" aria-label="Linkup"><LinkupWordmark decorative/></Link>}
    <div className="hustle-auth-intro"><h1 id="hustle-auth-title">{title}</h1><p>{lead}</p></div>
    {!resetMode&&!isAdmin&&<div className="hustle-auth-tabs" role="group" aria-label={t('Бүртгэлийн горим','Authentication mode')}>
      <button type="button" className={!register?'active':''} aria-pressed={!register} onClick={()=>changeMode(false)}>{t('Нэвтрэх','Sign in')}</button>
@@ -92,7 +94,7 @@ export default function PremiumAuth({
      <div className="hustle-auth-input"><Mail size={18} aria-hidden="true"/><input id="hustle-recovery-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required value={email} onChange={e=>onEmailChange(e.target.value)}/></div>
      <button className="hustle-auth-submit" disabled={resetBusy||busy} type="submit">{resetBusy?t('Илгээж байна…','Requesting…'):t('Сэргээх холбоос хүсэх','Request reset link')}</button>
    </form>:<form className="hustle-auth-form" onSubmit={onSubmit}>
-     {register&&!forSeller&&!isAdmin&&<fieldset className="hustle-buyer-context"><legend>{t('Hustle-ийг юунд ашиглах вэ?','What will you use Hustle for?')}</legend>
+     {register&&!forSeller&&!isAdmin&&<fieldset className="hustle-buyer-context"><legend>{t('Linkup-ыг юунд ашиглах вэ?','What will you use Linkup for?')}</legend>
       <div role="group" aria-label={t('Хэрэглээний чиглэл','Buyer experience')}>
        <button type="button" aria-pressed={buyerAudience==='personal'} onClick={()=>chooseBuyerAudience('personal')}><span className="hustle-choice-icon"><UserRound size={18} aria-hidden="true"/></span><span className="hustle-choice-text"><b>{t('Хувийн төсөл','Personal project')}</b><small>{t('Өөртөө зориулсан ажил','Work for yourself')}</small></span></button>
        <button type="button" aria-pressed={buyerAudience==='business'} onClick={()=>chooseBuyerAudience('business')}><span className="hustle-choice-icon"><Building2 size={18} aria-hidden="true"/></span><span className="hustle-choice-text"><b>{t('Бизнес','Business')}</b><small>{t('Компани, байгууллагын ажил','For a company or team')}</small></span></button>

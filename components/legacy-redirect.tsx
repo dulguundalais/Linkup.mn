@@ -7,6 +7,6 @@ export default function LegacyRedirect({to}:{to:string}){
  useEffect(()=>{try{setEn(localStorage.getItem('hustle-language')==='en')}catch{}},[]);
  useEffect(()=>{window.location.replace(to+window.location.search+window.location.hash)},[to]);
  return <main style={{minHeight:'60vh',display:'grid',placeItems:'center',fontFamily:'Manrope,Arial,sans-serif'}}>
-  <p>{en?'Redirecting…':'Шилжиж байна…'} <a href={to}>Hustle.mn</a></p>
+  <p>{en?'Redirecting…':'Шилжиж байна…'} <a href={to}>Linkup</a></p>
  </main>;
 }

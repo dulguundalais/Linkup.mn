@@ -9,7 +9,7 @@ export function defaultDisplayName(email:string|null|undefined):string{
  const local=String(email||'').split('@')[0]||'';
  const words=local.replace(/[0-9]+$/,'').split(/[._+\-]+/).map(w=>w.trim()).filter(Boolean);
  const name=words.map(w=>w.charAt(0).toLocaleUpperCase()+w.slice(1)).join(' ').trim().slice(0,80);
- return name.length>=2?name:'Hustle хэрэглэгч';
+ return name.length>=2?name:'Linkup хэрэглэгч';
 }
 
 type Db={from:(table:string)=>any};

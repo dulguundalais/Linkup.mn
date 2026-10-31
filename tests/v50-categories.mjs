@@ -5,7 +5,7 @@ import ts from 'typescript';
 const read=p=>readFileSync(p,'utf8');
 const load=async(src,extra='')=>import('data:text/javascript;base64,'+Buffer.from(ts.transpileModule(src+extra,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64'));
 const tax=await load(read('lib/marketplace/taxonomy.ts'));
-const sql=read('supabase/migrations/20261025090000_v50_professional_categories.sql');
+const sql=read('supabase/migrations/20261026040835_v50_professional_categories.sql');
 
 test('11 main categories with unique ids and subcategories; legal and wellbeing are regulated',()=>{
   assert.equal(tax.CATEGORIES.length,11);
@@ -43,6 +43,6 @@ test('service search terms stay specific to the service subcategory',()=>{
   assert.match(video,/эвлүүлэг/);
   assert.doesNotMatch(video,/лого/);
 });
-test('five service models; inquiry-style models never mention payment through Hustle',()=>{
+test('five service models; inquiry-style models never mention payment through Linkup',()=>{
   assert.deepEqual(tax.SERVICE_TYPES.map(s=>s.id),['fixed','hourly','custom','monthly','mentoring']);
 });

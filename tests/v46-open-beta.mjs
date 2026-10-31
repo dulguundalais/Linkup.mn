@@ -31,7 +31,7 @@ test('open beta does not bypass RLS or remove listing moderation',()=>{
 test('public UX explains email verification, no manual approval and no real payments',()=>{
   const footer=read('components/premium-footer.tsx');
   const info=read('lib/site-information.ts');
-  assert.match(w,/Туршилтын хугацаанд төлбөр Hustle-ээр дамжихгүй/);
+  assert.match(w,/Туршилтын хугацаанд төлбөр Linkup-аар дамжихгүй/);
   assert.match(w,/no admin approval needed/i);
   assert.match(footer,/Open beta · No real payments/);
   assert.match(info,/Verified new accounts receive standard member access automatically/);

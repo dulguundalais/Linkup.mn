@@ -5,15 +5,15 @@ export const informationPages:Record<string,InfoPage>={
   "about": {
     "label": {
       "mn": "БИДНИЙ ТУХАЙ",
-      "en": "ABOUT HUSTLE"
+      "en": "ABOUT LINKUP"
     },
     "title": {
       "mn": "Ур чадвар, боломжийг холбох газар.",
       "en": "A home for ambitious talent."
     },
     "subtitle": {
-      "mn": "Hustle.mn бол Монголын бүтээлч, дижитал үйлчилгээ үзүүлэгчид болон төсөл хэрэгжүүлэх хүмүүст зориулсан үйлчилгээний платформ.",
-      "en": "Hustle.mn is a services marketplace connecting independent creatives and digital professionals with people building meaningful projects."
+      "mn": "Linkup бол Монголын бүтээлч, дижитал үйлчилгээ үзүүлэгчид болон төсөл хэрэгжүүлэх хүмүүст зориулсан үйлчилгээний платформ.",
+      "en": "Linkup is a services marketplace connecting independent creatives and digital professionals with people building meaningful projects."
     },
     "sections": [
       {
@@ -38,7 +38,7 @@ export const informationPages:Record<string,InfoPage>={
         "id": "experience",
         "title": {
           "mn": "Платформ дээр юу хийж болох вэ?",
-          "en": "What can you do on Hustle?"
+          "en": "What can you do on Linkup?"
         },
         "paragraphs": [
           {
@@ -60,8 +60,8 @@ export const informationPages:Record<string,InfoPage>={
         },
         "paragraphs": [
           {
-            "mn": "Hustle.mn нээлттэй бета туршилтын шатанд байна. Шинэ хэрэглэгч имэйлээ баталгаажуулаад шууд ашиглаж болно.",
-            "en": "Hustle.mn is in open beta. New users can access their workspace after email verification without manual approval."
+            "mn": "Linkup нээлттэй бета туршилтын шатанд байна. Шинэ хэрэглэгч имэйлээ баталгаажуулаад шууд ашиглаж болно.",
+            "en": "Linkup is in open beta. New users can access their workspace after email verification without manual approval."
           },
           {
             "mn": "Одоогоор бодит мөнгөн төлбөр, эскроу санхүүгийн хамгаалалт, банк болон QPay холболт ажиллахгүй. Дэлгэцэд харагдах үнэ, урилгын урамшуулал нь туршилтын мэдээлэл бөгөөд төлбөр нэхэмжилсэн гэсэн үг биш.",
@@ -100,8 +100,8 @@ export const informationPages:Record<string,InfoPage>={
       "en": "Transparent terms for working together."
     },
     "subtitle": {
-      "mn": "Энэхүү баримт бичиг нь Hustle.mn-ийн нээлттэй бета туршилтын үеийн үйлчилгээний нөхцөлийн санал болгож буй төсөл юм.",
-      "en": "This document describes proposed platform terms for the Hustle.mn open beta. It is a draft for operator and legal review."
+      "mn": "Энэхүү баримт бичиг нь Linkup-ын нээлттэй бета туршилтын үеийн үйлчилгээний нөхцөлийн санал болгож буй төсөл юм.",
+      "en": "This document describes proposed platform terms for the Linkup open beta. It is a draft for operator and legal review."
     },
     "review": true,
     "sections": [
@@ -113,8 +113,8 @@ export const informationPages:Record<string,InfoPage>={
         },
         "paragraphs": [
           {
-            "mn": "Hustle.mn нь бие даасан мэргэжилтэн (Мэргэжилтэн) болон үйлчилгээ захиалагч (Захиалагч)-ийг холбох технологийн орчин юм. Платформ өөрөө мэргэжилтний гүйцэтгэх ажлын чанар, үр дүнг автоматаар баталгаажуулахгүй.",
-            "en": "Hustle.mn provides a digital environment to connect independent service providers (Sellers) with Buyers. The platform does not automatically warrant a freelancer's work or results."
+            "mn": "Linkup нь бие даасан мэргэжилтэн (Мэргэжилтэн) болон үйлчилгээ захиалагч (Захиалагч)-ийг холбох технологийн орчин юм. Платформ өөрөө мэргэжилтний гүйцэтгэх ажлын чанар, үр дүнг автоматаар баталгаажуулахгүй.",
+            "en": "Linkup provides a digital environment to connect independent service providers (Sellers) with Buyers. The platform does not automatically warrant a freelancer's work or results."
           },
           {
             "mn": "Энэхүү нөхцөл нь одоогийн нээлттэй бета туршилтын функцийг тайлбарлана. Төлбөртэй үйлчилгээ нэвтрэхэд нэмэлт нөхцөл, тусгай зөвшөөрөл болон үнэ, татварын мэдээлэл шаардлагатай.",
@@ -203,8 +203,8 @@ export const informationPages:Record<string,InfoPage>={
         },
         "paragraphs": [
           {
-            "mn": "Хэрэглэгч өөрийн хууль ёсоор эзэмшдэг эсвэл ашиглах эрхтэй материалыг байршуулна. Платформд байршуулснаар тухайн контентын өмчлөх эрх автоматаар Hustle.mn-д шилжихгүй.",
-            "en": "Users may upload material they own or are licensed to use. Uploading content does not automatically transfer ownership of that content to Hustle.mn."
+            "mn": "Хэрэглэгч өөрийн хууль ёсоор эзэмшдэг эсвэл ашиглах эрхтэй материалыг байршуулна. Платформд байршуулснаар тухайн контентын өмчлөх эрх автоматаар Linkup-д шилжихгүй.",
+            "en": "Users may upload material they own or are licensed to use. Uploading content does not automatically transfer ownership of that content to Linkup."
           },
           {
             "mn": "Захиалагч болон Мэргэжилтэн хооронд ажлын эцсийн файлын ашиглах эрх, шилжүүлэх нөхцөл, лиценз зэрэг асуудлыг ажлын эхэнд бичгээр тохиролцох нь зүйтэй. Бета хувилбар зохиогчийн эрхийг автоматаар шилжүүлэх механизм агуулаагүй.",
@@ -322,7 +322,7 @@ export const informationPages:Record<string,InfoPage>={
     },
     "subtitle": {
       "mn": "Бета хувилбарт ямар мэдээлэл боловсруулах, юунд ашиглах, хэн харах боломжтой талаар тайлбарлана.",
-      "en": "An explanation of information processed by Hustle.mn during beta, its intended uses and relevant access controls."
+      "en": "An explanation of information processed by Linkup during beta, its intended uses and relevant access controls."
     },
     "review": true,
     "sections": [
@@ -334,7 +334,7 @@ export const informationPages:Record<string,InfoPage>={
         },
         "paragraphs": [
           {
-            "mn": "Энэ баримт бичиг Hustle.mn-ийн хэрэглэгчийн бүртгэл, профайл, үйлчилгээ, чат, захиалга болон бета туршилтын өгөгдөлд хамаарна.",
+            "mn": "Энэ баримт бичиг Linkup-ын хэрэглэгчийн бүртгэл, профайл, үйлчилгээ, чат, захиалга болон бета туршилтын өгөгдөлд хамаарна.",
             "en": "This notice covers account registration, profiles, listings, messages, orders and related beta data."
           },
           {
@@ -673,7 +673,7 @@ export const informationPages:Record<string,InfoPage>={
             "en": "Track Requested → Accepted → In progress → Delivered → Completed in My Orders. Buyers can request eligible revisions or approve delivery."
           },
           {
-            "mn": "Засвар хүсэх тоо сонгосон багцын хязгаараас хэтрэхгүй. Туршилтын хугацаанд төлбөр Hustle-ээр дамжихгүй.",
+            "mn": "Засвар хүсэх тоо сонгосон багцын хязгаараас хэтрэхгүй. Туршилтын хугацаанд төлбөр Linkup-аар дамжихгүй.",
             "en": "Revisions are limited by the selected package. No real money moves in the beta."
           }
         ],
@@ -815,7 +815,7 @@ export const informationPages:Record<string,InfoPage>={
         },
         "paragraphs": [
           {
-            "mn": "Мэргэжилтнүүдийг Hustle-д урьж, үйлчилгээг нь шинэ захиалагчдад таниулах зорилготой. Түншийн бүртгэл, баталгаажуулалтыг админ хянана.",
+            "mn": "Мэргэжилтнүүдийг Linkup-д урьж, үйлчилгээг нь шинэ захиалагчдад таниулах зорилготой. Түншийн бүртгэл, баталгаажуулалтыг админ хянана.",
             "en": "The program introduces qualified freelancers and helps more buyers discover services. Partner enrollment and verification are administered manually."
           }
         ],
@@ -865,12 +865,12 @@ export const helpTopics:{group:Localized;items:{q:Localized;a:Localized}[]}[]=[
     "items": [
       {
         "q": {
-          "mn": "Hustle.mn-д хэн бүртгүүлж болох вэ?",
+          "mn": "Linkup-д хэн бүртгүүлж болох вэ?",
           "en": "Who can sign up?"
         },
         "a": {
-          "mn": "Hustle.mn нээлттэй туршилтын хувилбартай. Хэн ч бүртгүүлж, имэйлээ баталгаажуулаад ашиглаж болно. Админы зөвшөөрөл шаардахгүй.",
-          "en": "Hustle.mn is in open beta. Anyone may sign up; email verification unlocks standard access without manual approval."
+          "mn": "Linkup нээлттэй туршилтын хувилбартай. Хэн ч бүртгүүлж, имэйлээ баталгаажуулаад ашиглаж болно. Админы зөвшөөрөл шаардахгүй.",
+          "en": "Linkup is in open beta. Anyone may sign up; email verification unlocks standard access without manual approval."
         }
       },
       {

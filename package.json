@@ -8,27 +8,36 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "build:preview": "node scripts/build-preview.mjs",
+    "build:worker-preview": "node scripts/build-worker-preview.mjs",
+    "typecheck:worker": "tsc -p worker/tsconfig.json",
+    "test:worker": "node --test qa/worker/*.mjs",
     "test": "node --test tests/*.mjs",
-    "lint": "eslint components/interactive-stage.tsx components/premium-marketplace.tsx components/account-menu.tsx components/workspace.tsx lib/marketplace functions app/login app/workspace app/api/config"
+    "lint": "eslint components/interactive-stage.tsx components/premium-marketplace.tsx components/account-menu.tsx components/workspace.tsx components/premium-auth.tsx components/reset-password.tsx lib/marketplace functions worker app/login app/workspace app/api/config"
   },
   "dependencies": {
-    "next": "15.5.27",
+    "@supabase/ssr": "0.6.1",
+    "@supabase/supabase-js": "2.117.3",
+    "lucide-react": "0.468.0",
+    "next": "15.5.28",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "lucide-react": "0.468.0",
-    "@supabase/supabase-js": "2.117.3",
-    "@supabase/ssr": "0.6.1",
     "server-only": "0.0.1"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "5.20261031.1",
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "typescript": "5.9.3",
-    "tailwindcss": "3.4.19",
-    "postcss": "8.5.30",
+    "@typescript-eslint/parser": "8.46.1",
     "autoprefixer": "10.6.1",
     "eslint": "9.39.1",
-    "@typescript-eslint/parser": "8.46.1"
+    "miniflare": "5.20261023.3-beta",
+    "postcss": "8.5.30",
+    "tailwindcss": "3.4.19",
+    "typescript": "5.9.3",
+    "wrangler": "4.156.0"
+  },
+  "overrides": {
+    "postcss": "$postcss"
   }
 }

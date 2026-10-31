@@ -95,7 +95,7 @@ test('seller profile link does not navigate to nonexistent/invalid slugs',()=>{
  assert.match(read('lib/marketplace/public-profile.ts'),/if\(!\/\^\[a-z0-9\]/);
 });
 
-test('V52 share preview shows the freelancer, not the generic Hustle card',()=>{
+test('V52 share preview shows the freelancer, not the generic Linkup card',()=>{
  const cover='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb.jpg';
  const avatar='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/cccccccc-cccc-4ccc-8ccc-cccccccccccc.png';
  const withCover=make({...profile,cover_path:cover,avatar_path:avatar});
@@ -106,7 +106,7 @@ test('V52 share preview shows the freelancer, not the generic Hustle card',()=>{
  assert.match(avatarOnly,new RegExp('og:image" content="https://example.com/api/portfolio-image\\?path='+encodeURIComponent(avatar)));
  assert.match(avatarOnly,/twitter:card" content="summary"/);
  const none=make(profile);
- assert.match(none,/og:image" content="https:\/\/example.com\/og\/hustle.png"/,'falls back to the brand card');
+ assert.match(none,/og:image" content="https:\/\/example.com\/og\/linkup.png"/,'falls back to the brand card');
  const hostile=make({...profile,cover_path:'../../secret.jpg',avatar_path:'https://evil.example/x.png'});
  assert.doesNotMatch(hostile,/evil\.example|secret\.jpg/,'only validated storage paths are used');
 });

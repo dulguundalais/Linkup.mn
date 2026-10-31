@@ -9,7 +9,7 @@ export async function publicProfile(request:Request,slug:string,env:PublicEnv){
  if(!result.ok)return new Response('Profile unavailable',{status:503});
  const p=await result.json() as PublicSeller|null;
  if(!p)return new Response('Profile not found or not shared publicly',{status:404,headers:{'Cache-Control':'no-store'}});
- const origin=new URL(request.url).origin,url=origin+'/p/'+encodeURIComponent(p.slug),title=p.display_name+' — Hustle.mn',description=(String(p.bio||'').trim().slice(0,180)||p.headline||(en?'Freelancer on Hustle.mn — view services and work samples.':'Hustle.mn дээрх мэргэжилтэн — үйлчилгээ, бүтээлүүдийг үзэх.'));
+ const origin=new URL(request.url).origin,url=origin+'/p/'+encodeURIComponent(p.slug),title=p.display_name+' — Linkup',description=(String(p.bio||'').trim().slice(0,180)||p.headline||(en?'Freelancer on Linkup — view services and work samples.':'Linkup дээрх мэргэжилтэн — үйлчилгээ, бүтээлүүдийг үзэх.'));
  const html=renderPublicSellerPage(p,{en,origin,url,title,description});
  return new Response(html,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin'}});
 }

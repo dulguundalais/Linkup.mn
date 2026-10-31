@@ -160,7 +160,7 @@ export default function LiveListingDetail(){
   {status==='ready'&&listing&&<>
    <div className="v28-detail-shell v50-crumbs-row"><Breadcrumbs en={en} items={crumbs}/></div>
    <div className="v28-detail-shell v28-detail-grid">
-    <article><div className={'v39-detail-cover v39-detail-cover-'+catId}><span>hustle✳</span></div><div className="v28-detail-kicker">{categoryLabel(catId,en)}{subLabel?' · '+subLabel:''}</div>
+    <article><div className={'v39-detail-cover v39-detail-cover-'+catId}><span aria-hidden="true">linkup.</span></div><div className="v28-detail-kicker">{categoryLabel(catId,en)}{subLabel?' · '+subLabel:''}</div>
       <h1>{title}</h1>
       <div className="v28-detail-seller"><span className="v39-detail-avatar" aria-hidden="true">{avatarSrc?<img src={avatarSrc} alt="" width={52} height={52}/>: (listing.display_name.trim().charAt(0)||'H').toLocaleUpperCase()}</span><strong>{listing.display_name}</strong>{listing.headline&&<span>{listing.headline}</span>}</div>
       {Number(listing.review_count)>0&&Number.isFinite(Number(listing.average_rating))&&Number(listing.average_rating)>0&&<p className="v39-detail-reviews">★ {Number(listing.average_rating).toFixed(1)} · {listing.review_count} {t('баталгаажсан үнэлгээ','verified reviews')}</p>}
@@ -178,7 +178,7 @@ export default function LiveListingDetail(){
        ?<button ref={opener} type="button" className="v28-detail-primary" onClick={()=>{setOrderError(null);setDrawer('form')}}><Send size={16} aria-hidden="true"/>{isQuote?t('Үнийн санал хүсэх','Request a quote'):t('Захиалга илгээх','Send an order')}</button>
        :<Link className="v28-detail-primary" href={guestOrderHref}><Send size={16} aria-hidden="true"/>{isQuote?t('Үнийн санал хүсэх','Request a quote'):t('Захиалга илгээх','Send an order')}</Link>)}
       {listing.slug&&<Link className="v28-detail-secondary" href={contactHref}><MessageCircle size={16} aria-hidden="true"/>{t('Мессеж бичих','Message')}</Link>}
-      <p className="v50-offer-note"><ShieldCheck size={15} aria-hidden="true"/>{t('Туршилтын хувилбар: мэргэжилтэн таны хүсэлтийг хянана. Төлбөр Hustle-ээр дамжихгүй.','Beta: an order is a request. No payment goes through Hustle.')}</p>
+      <p className="v50-offer-note"><ShieldCheck size={15} aria-hidden="true"/>{t('Туршилтын хувилбар: мэргэжилтэн таны хүсэлтийг хянана. Төлбөр Linkup-аар дамжихгүй.','Beta: an order is a request. No payment goes through Linkup.')}</p>
     </aside>
    </div>
   </>}
@@ -193,7 +193,7 @@ export default function LiveListingDetail(){
    {drawer==='sent'&&sentKind==='quote'?<div className="v50-drawer-body v50-sent" role="status">
      <span className="v50-sent-icon" aria-hidden="true"><CheckCircle2 size={34}/></span>
      <p className="v50-sent-lead">{t('Үнийн санал хүссэн мессежийг илгээлээ. Хүлээн авагч: '+listing.display_name+'.','Your quote request reached '+listing.display_name+'.')}</p>
-     <ol className="v50-next"><li><MessageCircle size={15} aria-hidden="true"/>{t('Мэргэжилтэн чатаар асууж, үнийн санал илгээнэ.','The freelancer will reply in chat with questions and a price.')}</li><li><Clock size={15} aria-hidden="true"/>{t('Үнээ тохиролцсоны дараа ажил эхэлнэ. Төлбөр Hustle-ээр дамжихгүй.','Work starts once you agree on the price. No payment goes through Hustle.')}</li></ol>
+     <ol className="v50-next"><li><MessageCircle size={15} aria-hidden="true"/>{t('Мэргэжилтэн чатаар асууж, үнийн санал илгээнэ.','The freelancer will reply in chat with questions and a price.')}</li><li><Clock size={15} aria-hidden="true"/>{t('Үнээ тохиролцсоны дараа ажил эхэлнэ. Төлбөр Linkup-аар дамжихгүй.','Work starts once you agree on the price. No payment goes through Linkup.')}</li></ol>
      <div className="v50-drawer-actions"><Link className="v50-btn primary" href={contactHref}>{t('Чат руу очих','Open the chat')}</Link><button type="button" className="v50-btn" onClick={closeDrawer}>{t('Үйлчилгээ рүү буцах','Back to the service')}</button></div>
     </div>
    :drawer==='sent'?<div className="v50-drawer-body v50-sent" role="status">

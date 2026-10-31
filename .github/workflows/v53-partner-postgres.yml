@@ -1,0 +1,53 @@
+name: V53 isolated PostgreSQL security audit
+
+on:
+  pull_request:
+    paths:
+      - "supabase/migrations/20261028090000_v53_partner_self_service.sql"
+      - "tests/sql/v53-*"
+      - ".github/workflows/v53-partner-postgres.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  postgres-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: partner_audit
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: audit_only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d partner_audit"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: audit_only
+      PGDATABASE: partner_audit
+    steps:
+      - uses: actions/checkout@v4
+      - name: PostgreSQL client
+        run: |
+          if ! command -v psql >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client
+          fi
+          psql --version
+      - name: Load legacy beta fixture (disposable PostgreSQL)
+        run: psql -v ON_ERROR_STOP=1 -f tests/sql/v53-bootstrap.sql
+      - name: Apply V53 migration to disposable PostgreSQL only
+        run: psql -v ON_ERROR_STOP=1 -f supabase/migrations/20261028090000_v53_partner_self_service.sql
+      - name: Test RLS, privileges, enrollment, referrals and commissions
+        run: psql -v ON_ERROR_STOP=1 -f tests/sql/v53-partner-integration.sql

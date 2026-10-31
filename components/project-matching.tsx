@@ -206,7 +206,7 @@ export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
  return <><SiteHeader en={en} onToggleLanguage={()=>{const next=!en;setEn(next);try{localStorage.setItem('hustle-language',next?'en':'mn')}catch{}}} active="solutions" session={siteSession}/><main className="project-marketplace">
   <div className="project-layout">
    <header className="project-header"><div><Link href={mode==='seller'?'/seller-studio/':'/buyer/'} className="project-back"><ArrowLeft size={16}/>{t('Самбар руу буцах','Back to dashboard')}</Link>
-     <span className="project-eyebrow"><Sparkles size={14}/> {t('HUSTLE · Төслийн хүсэлт','HUSTLE / PROJECT MATCHING · BETA')}</span>
+     <span className="project-eyebrow"><Sparkles size={14}/> {t('LINKUP · Төслийн хүсэлт','LINKUP / PROJECT MATCHING · BETA')}</span>
      <h1>{mode==='seller'?t('Шинэ төслийн саналууд','Project opportunities'):t('Хэрэгцээгээ бичээд мэргэжилтнээ олоорой.','Describe it. Find the right freelancer.')}</h1>
      <p>{mode==='seller'?t('Таны мэргэжил, нийтлэгдсэн үйлчилгээтэй тохирох төслүүдийг эндээс хүлээн авна.','Receive projects that match your published services and availability.'):t('Мэргэжилтнийг өөрөө сонгох эсвэл асуудлаа илгээж тохирох мэргэжилтнүүдээс санал авах хоёр боломжтой.','Browse and hire directly, or send your challenge to matching specialists for proposals.')}</p>
     </div><Link href="/explore/" className="project-outline"><BriefcaseBusiness size={17}/>{t('Үйлчилгээ үзэх','Browse services')}</Link>
@@ -240,7 +240,7 @@ export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
        <button className="project-primary" disabled={busy} type="submit"><Send size={17}/>{busy?t('Илгээж байна…','Sending…'):t('Төслийн хүсэлт илгээх','Send project request')}</button>
       </form>
      </section>
-     <aside className="project-how"><div className="project-panel"><span className="project-step">{t('Тохирох мэргэжилтэн олох','HUSTLE / SMART MATCHING')}</span><h3>{t('Хэрхэн ажиллах вэ?','How it works')}</h3><p>01 — {t('Та асуудлаа тайлбарлана.','Describe your challenge.')}</p><p>02 — {t('Хүсэлт тохирох мэргэжилтнүүдэд очно.','Eligible sellers receive the request.')}</p><p>03 — {t('Мэргэжилтнүүд үнэ, хугацаагаа санал болгоно.','Compare packages and proposals.')}</p><p>04 — {t('Та зөвшөөрвөл захиалга үүснэ.','Choose one to create an order.')}</p></div>
+     <aside className="project-how"><div className="project-panel"><span className="project-step">{t('Тохирох мэргэжилтэн олох','LINKUP / SMART MATCHING')}</span><h3>{t('Хэрхэн ажиллах вэ?','How it works')}</h3><p>01 — {t('Та асуудлаа тайлбарлана.','Describe your challenge.')}</p><p>02 — {t('Хүсэлт тохирох мэргэжилтнүүдэд очно.','Eligible sellers receive the request.')}</p><p>03 — {t('Мэргэжилтнүүд үнэ, хугацаагаа санал болгоно.','Compare packages and proposals.')}</p><p>04 — {t('Та зөвшөөрвөл захиалга үүснэ.','Choose one to create an order.')}</p></div>
       <div className="project-panel"><h3>{t('Өөрөө сонгохыг хүсвэл','Prefer to choose yourself?')}</h3><p>{t('Мэргэжилтний бүтээлүүд, үнэ, үйлчилгээний багцуудыг шууд харьцуулж болно.','Compare portfolios, packages and prices directly.')}</p><Link href="/explore/" className="project-outline">{t('Мэргэжилтэн хайх','Explore freelancers')}<ArrowRight size={16}/></Link></div>
      </aside>
     </div>

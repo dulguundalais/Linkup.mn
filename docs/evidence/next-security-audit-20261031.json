@@ -1,0 +1,72 @@
+{
+  "observedDate": "2026-10-31",
+  "productionBefore": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 1,
+    "critical": 1,
+    "total": 2
+  },
+  "productionAfter": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "fullAfter": {
+    "info": 0,
+    "low": 0,
+    "moderate": 7,
+    "high": 0,
+    "critical": 0,
+    "total": 7
+  },
+  "effectiveVersions": {
+    "next": "15.5.28",
+    "postcss": "8.5.30",
+    "selectorParser": "6.1.5",
+    "sharp": "0.35.5",
+    "nestedPostcss": null
+  },
+  "remainingDevelopmentFindings": [
+    {
+      "name": "@eslint-community/eslint-utils",
+      "severity": "moderate",
+      "fixAvailable": false
+    },
+    {
+      "name": "@eslint/config-array",
+      "severity": "moderate",
+      "fixAvailable": false
+    },
+    {
+      "name": "@eslint/eslintrc",
+      "severity": "moderate",
+      "fixAvailable": false
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "severity": "moderate",
+      "fixAvailable": false
+    },
+    {
+      "name": "@typescript-eslint/typescript-estree",
+      "severity": "moderate",
+      "fixAvailable": false
+    },
+    {
+      "name": "eslint",
+      "severity": "moderate",
+      "fixAvailable": false
+    },
+    {
+      "name": "minimatch",
+      "severity": "moderate",
+      "fixAvailable": false
+    }
+  ],
+  "scope": "Known dependency advisory snapshot; not a live exploit test or a complete release security assessment."
+}

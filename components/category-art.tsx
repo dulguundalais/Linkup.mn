@@ -2,7 +2,7 @@
 import {useId,type ReactNode} from 'react';
 
 /* V50 category artwork — 3D editorial compositions. Every card shares one stage:
-   a faded navy field lit by soft blue/cyan light (the HUSTLE-COLLAB hero), a soft
+   a faded navy field lit by soft blue/cyan light (the V50 home hero), a soft
    floor glow, blurred depth orbs and fine grain. Objects are lit slabs with
    thickness, rim highlights and contact shadows so they read as crafted objects.
    When a raster image exists for a category (public/categories/<art>.webp) the

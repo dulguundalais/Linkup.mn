@@ -1,0 +1,66 @@
+name: V52 isolated database verification
+on:
+  pull_request:
+    branches: [main, codex/stabilize-db-ci-20261030, codex/stabilize-migration-history-20261030, codex/release-stabilization-integration-20261030, codex/fix-worker-preview-20261031, codex/patch-next-security-20261031, codex/stabilize-auth-flows-20261031, codex/linkup-brand-20261031]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  postgres-v52:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: disposable-ci-only
+          POSTGRES_DB: hustle_stabilization
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d hustle_stabilization"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGPASSWORD: disposable-ci-only
+      PGDATABASE: hustle_stabilization
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SQL client
+        run: sudo apt-get update -qq && sudo apt-get install -y postgresql-client
+      - name: Bootstrap disposable Auth and Storage SQL contracts
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/stabilization-bootstrap.sql
+      - name: Replay exact repository migrations in filename order
+        shell: bash
+        run: |
+          set -euo pipefail
+          for migration in supabase/migrations/*.sql; do
+            echo "Applying $migration"
+            psql -X -v ON_ERROR_STOP=1 -f "$migration"
+          done
+      - name: Capture replay schema without reading user rows
+        run: |
+          psql -X -A -t -v ON_ERROR_STOP=1 -f scripts/v33-schema-evidence.sql > /tmp/v33-replay.json
+          echo "V33_REPLAY_SCHEMA $(cat /tmp/v33-replay.json)"
+      - name: Reproduce and harden legacy grants in disposable database
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/stabilization-legacy-grants.sql
+      - name: Effective column privileges
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/stabilization-column-grants.sql
+      - name: Chat safety actors
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/v47-chat-safety.sql
+      - name: Project request actors
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/v33-project-actors.sql
+      - name: Project notification actors
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/v34-notification-actors.sql
+      - name: Collaboration and withdrawal actors
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/v35-collaboration-actors.sql
+      - name: Professional category actors
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/v50-professional-categories.sql
+      - name: Order delivery and private file actors
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/v52-order-deliveries.sql
+      - name: Partner program privacy and referral claim actors (V53, full chain)
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/v53-partner-privacy-actors.sql
+      - name: Compare replay with read-only original V33 schema evidence
+        run: node scripts/compare-schema-evidence.mjs tests/fixtures/v33-live-schema-20261030.json /tmp/v33-replay.json tests/fixtures/v33-live-routines-20261030.json

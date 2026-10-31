@@ -3,7 +3,8 @@
 // authentication/recovery endpoints are eligible for a return redirect.
 const safeRoutes=new Set([
  '/','/explore/','/solutions/','/project-requests/','/seller-requests/',
- '/buyer/','/seller-studio/','/listing/','/categories/','/my-profile/'
+ '/buyer/','/seller-studio/','/listing/','/categories/','/my-profile/',
+ '/referrals/'
 ]);
 export function safePostLoginPath(input:string|null|undefined):string|null{
  if(!input||input.length>2000||!input.startsWith('/')||input.startsWith('//')||/[\\\u0000-\u001f\u007f]/.test(input))return null;

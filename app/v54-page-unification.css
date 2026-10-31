@@ -1,0 +1,78 @@
+/* ==========================================================================
+   LINKUP V54 — one look across public pages (owner request 2026-10-31)
+   The homepage (V51) is the reference: white page, a rounded royal "stage"
+   for the hero, light cards, and a stage-coloured footer. Pages that do not
+   load the homepage stylesheet (information pages, sign-in, Partner) get the
+   same surfaces here. Colours are copied from v51-home-system.css so this file
+   works on its own; layout and markup are unchanged.
+   ========================================================================== */
+
+.hustle-v5{
+  --v54-stage:
+    radial-gradient(48% 70% at 12% 0%,rgb(43 92 222/.55),transparent 72%),
+    radial-gradient(36% 60% at 92% 8%,rgb(79 215 255/.16),transparent 70%),
+    radial-gradient(50% 80% at 70% 110%,rgb(28 62 168/.45),transparent 72%),
+    #040b1f;
+  --v54-kicker:#8be6ff;--v54-on-stage:#eef3ff;--v54-on-stage-muted:#a9b9de;
+}
+
+/* 1. Footer: identical on every page */
+.hustle-v5 .hustle-premium-footer{background:var(--v54-stage);color:#dbe4fa}
+.hustle-v5 .hustle-premium-footer :is(.footer-callout,.footer-bottom){position:relative;border-top:0!important;border-bottom:0!important}
+.hustle-v5 .hustle-premium-footer .footer-callout::after,.hustle-v5 .hustle-premium-footer .footer-bottom::before{content:'';position:absolute;left:var(--hustle-page-gutter,48px);right:var(--hustle-page-gutter,48px);height:1px;background:rgb(169 185 222/.16)}
+.hustle-v5 .hustle-premium-footer .footer-callout::after{bottom:0}
+.hustle-v5 .hustle-premium-footer .footer-bottom::before{top:0}
+.hustle-v5 .hustle-premium-footer .footer-callout h2{color:#fff}
+.hustle-v5 .hustle-premium-footer .footer-callout p{color:var(--v54-on-stage-muted)}
+.hustle-v5 .hustle-premium-footer .footer-main-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border:0;border-radius:12px;background:#eef3ff;color:#0a1430!important;font-size:14.5px;font-weight:750;text-decoration:none}
+.hustle-v5 .hustle-premium-footer .footer-main-cta:hover{background:#fff}
+.hustle-v5 .hustle-premium-footer .footer-outline-cta{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 20px;border:1px solid rgb(169 185 222/.35);border-radius:12px;background:transparent;color:#eef3ff!important;text-decoration:none}
+.hustle-v5 .hustle-premium-footer .footer-outline-cta:hover{background:rgb(255 255 255/.06);border-color:rgb(169 185 222/.6)}
+.hustle-v5 .hustle-premium-footer :is(.footer-brand>p,.footer-columns nav a){color:var(--v54-on-stage-muted)!important}
+.hustle-v5 .hustle-premium-footer :is(.footer-columns nav a,.footer-bottom a):hover{color:var(--v54-kicker)!important}
+.hustle-v5 .hustle-premium-footer .footer-status{border-color:rgb(79 215 255/.3)!important;background:rgb(43 92 222/.14)!important;color:#dbe4fa!important}
+.hustle-v5 .hustle-premium-footer .footer-status svg{color:#4fd7ff}
+.hustle-v5 .hustle-premium-footer .footer-bottom{color:#8d9cc4}
+.hustle-v5 .hustle-premium-footer .footer-bottom a{color:var(--v54-on-stage-muted)!important}
+
+/* 2. Hero bands become the homepage's rounded stage */
+.hustle-v5 :is(.info-hero,.pp-hero){margin:10px;border-radius:24px;background:var(--v54-stage);overflow:hidden}
+.hustle-v5 .info-eyebrow{color:var(--v54-kicker)}
+.hustle-v5 .info-hero p{color:var(--v54-on-stage-muted)}
+.hustle-v5 .info-back{color:var(--v54-on-stage-muted)}
+@media(max-width:760px){.hustle-v5 :is(.info-hero,.partner-program .pp-hero){margin:6px;border-radius:18px}}
+
+/* 3. Sign-in: light page and form like the rest of the site; the benefits
+      panel keeps the royal stage (as the homepage hero does). Dark mode
+      keeps the existing dark tokens. */
+.hustle-v5:not(.night) .hustle-auth-scene{
+  --auth-bg:#f6f8fd;--auth-surface:#ffffff;--auth-field:#f6f8fd;--auth-line:#e1e7f3;--auth-line-strong:#cdd6e8;
+  --auth-text:#0a1430;--auth-muted:#4a5677;--auth-faint:#6b769a;--auth-accent:#2b5cde;--auth-accent-soft:#1c3ea8;
+  --auth-ok:#12795a;--auth-error:#b42318;
+  color-scheme:light;background:var(--auth-bg)
+}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-card{box-shadow:0 1px 2px rgb(10 20 48/.04),0 24px 60px rgb(10 20 48/.10)}
+.hustle-v5:not(.night) .hustle-auth-scene :is(.hustle-auth-intro h1,.hustle-auth-panel h1,.hustle-auth-panel h2){color:var(--auth-text)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-aside{background:var(--v54-stage)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-wordmark{color:#fff}
+.hustle-v5:not(.night) .hustle-auth-card.is-solo .hustle-auth-wordmark{color:var(--auth-text)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-tabs button:hover{color:var(--auth-text)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-tabs button.active{color:#fff;background:#0a1430;box-shadow:none}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-input input{color:var(--auth-text)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-input input:-webkit-autofill,
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-input input:-webkit-autofill:hover,
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-input input:-webkit-autofill:focus{-webkit-text-fill-color:var(--auth-text);caret-color:var(--auth-text)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-visibility:hover{color:var(--auth-text);background:rgb(10 20 48/.05)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-buyer-context button[aria-pressed=true]{background:#f1f4ff}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-buyer-context button[aria-pressed=true]::after{box-shadow:inset 0 0 0 3px #f1f4ff}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-submit{background:#0a1430}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-submit:hover{background:#1d3a78}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-back:hover{color:var(--auth-text)}
+.hustle-v5:not(.night) .hustle-auth-scene :is(.hustle-auth-form>label,.hustle-auth-label-row label){color:var(--auth-text)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-buyer-context legend{color:var(--auth-text)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-feedback{background:#f1f4ff;border-color:#cdd6e8;color:var(--auth-text)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-feedback.is-success{background:#e6f6ef;border-color:#a7dfc6;color:#0b4d3a}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-feedback.is-error{background:#fdecea;border-color:#f3b8b2;color:#7a1f16}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-choice-icon{background:#f1f4ff}
+.hustle-v5:not(.night) .hustle-auth-scene :is(.hustle-auth-back,.hustle-auth-footer a){color:var(--auth-muted)}
+.hustle-v5:not(.night) .hustle-auth-scene .hustle-auth-input input::placeholder{color:#8a94ad}

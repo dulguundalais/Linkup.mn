@@ -17,7 +17,7 @@ export default function ServiceComparison({services,ids,onRemove,onClear,en}:{se
  const selected=ids.map(id=>services.find(s=>s.id===id)).filter((s):s is LiveService=>Boolean(s));
  return <section className="v37-compare" aria-label={t('Үйлчилгээний харьцуулалт','Compare services')}>
   <div className="v37-compare-top">
-   <div><span className="v37-kicker">{t('Үйлчилгээ харьцуулах','HUSTLE / COMPARE')}</span><h2>{t('Үйлчилгээг зэрэгцүүлэн харьцуулах','Compare your shortlist')}</h2><p>{t('Үйлчилгээний багц, үнэ, хугацааг зэрэгцүүлэн харьцуулаарай.','Compare actual published services, packages, prices and timelines.')}</p></div>
+   <div><span className="v37-kicker">{t('Үйлчилгээ харьцуулах','LINKUP / COMPARE')}</span><h2>{t('Үйлчилгээг зэрэгцүүлэн харьцуулах','Compare your shortlist')}</h2><p>{t('Үйлчилгээний багц, үнэ, хугацааг зэрэгцүүлэн харьцуулаарай.','Compare actual published services, packages, prices and timelines.')}</p></div>
    <button type="button" onClick={onClear} className="v37-clear">{t('Бүгдийг арилгах','Clear all')}</button>
   </div>
   <div className="v37-compare-scroll"><div className="v37-compare-grid">

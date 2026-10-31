@@ -4,7 +4,7 @@ insert into auth.users(id,email,email_confirmed_at) values
  ('10000000-0000-4000-8000-000000000451','v35-buyer@example.test',now()),
  ('10000000-0000-4000-8000-000000000452','v35-seller@example.test',now()),
  ('10000000-0000-4000-8000-000000000453','v35-outsider@example.test',now()),
- ('10000000-0000-4000-8000-000000000454','v35-pending@example.test',now());
+ ('10000000-0000-4000-8000-000000000454','v35-pending@example.test',null);
 insert into public.beta_allowlist(email,role,enabled) values
  ('v35-buyer@example.test','member',true),('v35-seller@example.test','member',true),
  ('v35-outsider@example.test','member',true) on conflict(email) do update set role=excluded.role,enabled=excluded.enabled;

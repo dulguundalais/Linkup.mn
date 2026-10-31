@@ -67,7 +67,7 @@ export default function CategoryDirectory({en}:{en:boolean}){
   <aside className="cdir-models" aria-labelledby="cdir-models-title">
    <h2 id="cdir-models-title">{t('Ажиллах хэлбэрүүд','Ways to work together')}</h2>
    <ul>{SERVICE_TYPES.map(s=><li key={s.id}><b>{en?s.en:s.mn}</b><span>{en?s.hintEn:s.hintMn}</span></li>)}</ul>
-   <p>{t('Бета хугацаанд төлбөр Hustle-ээр дамжихгүй. Захиалга, үнийн саналыг мэргэжилтэнтэй шууд тохиролцоно.','During the beta no payments go through Hustle. Agree orders and quotes directly with the professional.')}</p>
+   <p>{t('Бета хугацаанд төлбөр Linkup-аар дамжихгүй. Захиалга, үнийн саналыг мэргэжилтэнтэй шууд тохиролцоно.','During the beta no payments go through Linkup. Agree orders and quotes directly with the professional.')}</p>
   </aside>
  </section>;
 }

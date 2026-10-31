@@ -69,7 +69,7 @@ export default function ServiceCategoryFields({en,uid,editing,onError,onNotice,o
     <input type="radio" name="service_type" value={s.id} checked={type===s.id} onChange={()=>setType(s.id)}/>
     <b>{en?s.en:s.mn}</b><small>{en?s.hintEn:s.hintMn}</small>
    </label>)}</div>
-   {type!=='fixed'&&<p className="v50-type-note">{t('Суурь багцын үнэ нь ','The Basic package price is shown as ')}<b>{en?'price '+serviceTypeSuffix(type,true):'үнэ '+serviceTypeSuffix(type,false)}</b>{t(' гэж харагдана. Төлбөр Hustle-ээр дамжихгүй.',' . Payments do not go through Hustle.')}</p>}
+   {type!=='fixed'&&<p className="v50-type-note">{t('Суурь багцын үнэ нь ','The Basic package price is shown as ')}<b>{en?'price '+serviceTypeSuffix(type,true):'үнэ '+serviceTypeSuffix(type,false)}</b>{t(' гэж харагдана. Төлбөр Linkup-аар дамжихгүй.',' . Payments do not go through Linkup.')}</p>}
   </fieldset>
   <label>{t('Ур чадвар, түлхүүр үг (таслалаар, 8 хүртэл)','Skills and tags (comma separated, up to 8)')}
    <input name="tags" defaultValue={(editing?.tags||[]).join(', ')} maxLength={240} placeholder={t('Жишээ нь: n8n, Messenger, CRM','e.g. n8n, Messenger, CRM')}/>

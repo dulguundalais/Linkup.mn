@@ -1,10 +1,12 @@
 'use client';
 import {useEffect,useState,type FormEvent} from 'react';
 import Link from 'next/link';
+import LinkupWordmark from './linkup-wordmark';
 import {ArrowLeft,ArrowRight,Eye,EyeOff,LockKeyhole,ShieldCheck} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
 import {friendlyError} from '../lib/marketplace/friendly-errors';
 import '../app/premium-auth.css';
+import '../app/v54-page-unification.css';
 
 export default function ResetPassword(){
  const [password,setPassword]=useState(''),[repeat,setRepeat]=useState('');
@@ -24,12 +26,11 @@ export default function ResetPassword(){
        if(event==='PASSWORD_RECOVERY'&&session){setReady(true);setLoading(false)}
      });
      cleanup=()=>subscription.unsubscribe();
-     // Browser Supabase client detects recovery tokens via URL. Without a
-     // valid recovery session we must never allow an unauthenticated password update.
-     const session=await db.auth.getSession();
+     // Initializing the client verifies URL tokens and emits PASSWORD_RECOVERY.
+     // A saved session plus a caller-controlled ?type=recovery is not evidence
+     // of a recovery link and could change the wrong signed-in account.
+     await db.auth.getSession();
      if(!active)return;
-     const url=new URL(location.href);
-     if(session.data.session&&((url.searchParams.get('type')==='recovery')||url.hash.includes('type=recovery'))){setReady(true)}
      setLoading(false);
    }).catch(()=>{if(active){setError(localStorage.getItem('hustle-language')==='en'?'Unable to verify the recovery link.':'Сэргээх холбоосыг шалгаж чадсангүй.');setLoading(false)}});
    return()=>{active=false;cleanup()};
@@ -48,9 +49,9 @@ export default function ResetPassword(){
    }catch(e){setError(friendlyError(e,en))}
    finally{setBusy(false)}
  }
- return <main className="hustle-auth-scene"><section className="hustle-auth-panel">
-   <div className="hustle-auth-brand"><span className="hustle-auth-mark">H<span>✳</span></span>Hustle<span className="hustle-auth-dot">.mn</span></div>
-   <div className="hustle-auth-intro"><span className="hustle-auth-eyebrow">{t('НУУЦ ҮГ СЭРГЭЭХ','ACCOUNT RECOVERY')}</span><h1>{t('Шинэ нууц үгээ сонгоно уу.','Choose a new password.')}</h1><p>{t('Hustle бүртгэлээ дор хаяж 8 тэмдэгттэй нууц үгээр хамгаална уу.','Secure your Hustle account with a password of at least 8 characters.')}</p></div>
+ return <div className="hustle-v5"><main className="hustle-auth-scene"><section className="hustle-auth-panel">
+   <div className="hustle-auth-brand"><LinkupWordmark/></div>
+   <div className="hustle-auth-intro"><span className="hustle-auth-eyebrow">{t('НУУЦ ҮГ СЭРГЭЭХ','ACCOUNT RECOVERY')}</span><h1>{t('Шинэ нууц үгээ сонгоно уу.','Choose a new password.')}</h1><p>{t('Linkup бүртгэлээ дор хаяж 8 тэмдэгттэй нууц үгээр хамгаална уу.','Secure your Linkup account with a password of at least 8 characters.')}</p></div>
    {loading?<p role="status">{t('Сэргээх холбоосыг шалгаж байна…','Checking recovery link…')}</p>:ready?<form className="hustle-auth-form" onSubmit={save}>
      <label htmlFor="reset-pass">{t('Шинэ нууц үг','New password')}</label><div className="hustle-auth-input"><LockKeyhole size={18}/><input id="reset-pass" type={visible?'text':'password'} autoComplete="new-password" minLength={8} required value={password} onChange={e=>setPassword(e.target.value)}/><button type="button" className="hustle-auth-visibility" onClick={()=>setVisible(v=>!v)} aria-label={visible?t('Нууц үг нуух','Hide password'):t('Нууц үг харах','Show password')}>{visible?<EyeOff size={18}/>:<Eye size={18}/>}</button></div>
      <label htmlFor="reset-repeat">{t('Шинэ нууц үгээ давтах','Confirm new password')}</label><div className="hustle-auth-input"><ShieldCheck size={18}/><input id="reset-repeat" type={visible?'text':'password'} autoComplete="new-password" minLength={8} required value={repeat} onChange={e=>setRepeat(e.target.value)}/></div>
@@ -59,5 +60,5 @@ export default function ResetPassword(){
    {error&&<div className="hustle-auth-feedback is-error" role="alert">{error}</div>}
    {notice&&<div className="hustle-auth-feedback is-success" role="status">{notice}</div>}
    <div className="hustle-auth-footer"><Link href="/login/"><ArrowLeft size={16}/>{t('Нэвтрэх хуудас руу буцах','Back to sign in')}</Link></div>
- </section></main>
+ </section></main></div>
 }

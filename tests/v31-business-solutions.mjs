@@ -43,5 +43,13 @@ test('UX integration includes real Hero route and optional signup context',()=>{
  assert.match(read('components/premium-marketplace.tsx'),/<BusinessSolutions en=\{en\}/);
  assert.match(read('components/premium-auth.tsx'),/hustle-buyer-context/);
  assert.match(read('components/solution-finder.tsx'),/rpc\('marketplace_catalog'\)/);
- assert.match(read('app/solutions/page.tsx'),/SolutionFinder/);
+ assert.match(read('app/solutions/page.tsx'),/<PremiumMarketplace view="solutions"\/>/);assert.match(read('components/premium-marketplace.tsx'),/\{view==='solutions'&&<SolutionFinder en=\{en\} embedded\/>\}/);
+});
+test('Smart Finder reveals results on every search and explains a short query',()=>{
+ const f=readFileSync(new URL('../components/solution-finder.tsx',import.meta.url),'utf8');
+ assert.match(f,/scrollIntoView\(\{behavior:still\?'instant':'smooth',block:'start'\}\)/);
+ assert.match(f,/heading\.focus\(\{preventScroll:true\}\)/);
+ assert.match(f,/history\.replaceState/);
+ assert.doesNotMatch(f,/disabled=\{query\.trim\(\)\.length<5\}/);
+ assert.match(f,/id="hustle-need-hint" role="alert"/);
 });

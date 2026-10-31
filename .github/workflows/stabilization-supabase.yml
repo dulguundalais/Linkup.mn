@@ -1,0 +1,61 @@
+name: V52 full isolated Supabase rehearsal
+on:
+  pull_request:
+    branches: [main, codex/release-stabilization-integration-20261030, codex/fix-worker-preview-20261031, codex/patch-next-security-20261031, codex/stabilize-auth-flows-20261031, codex/linkup-brand-20261031]
+permissions:
+  contents: read
+jobs:
+  isolated-supabase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.122.0
+      - name: Set private runner paths
+        run: |
+          echo "HUSTLE_LOCAL_STATUS=$RUNNER_TEMP/hustle-local-status.json" >> "$GITHUB_ENV"
+          echo "HUSTLE_LOCAL_FIXTURES=$RUNNER_TEMP/hustle-local-fixtures.json" >> "$GITHUB_ENV"
+      - name: Install local test clients
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y postgresql-client
+          npm install --no-save --no-package-lock @playwright/test@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Start real local services at V52 before grant hardening
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          mv supabase/migrations/20261030115938_revoke_legacy_nonrow_privileges.sql "$RUNNER_TEMP/held-hardening.sql"
+          supabase start -x studio,imgproxy,postgres-meta,edge-runtime,logflare,vector,supavisor > "$RUNNER_TEMP/supabase-start.log"
+          supabase status -o json > "$HUSTLE_LOCAL_STATUS"
+          node scripts/local-supabase-fixtures.mjs env
+          node scripts/local-supabase-fixtures.mjs seed
+      - name: Upgrade populated local database and verify preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mv "$RUNNER_TEMP/held-hardening.sql" supabase/migrations/20261030115938_revoke_legacy_nonrow_privileges.sql
+          supabase migration up --local
+          node scripts/local-supabase-fixtures.mjs verify
+      - name: Build runtime against loopback backend
+        run: npm run build
+      - name: Real Auth, API, Storage and marketplace browser flows (no mocks)
+        run: npx playwright test --config playwright.staging.config.mjs
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: isolated-supabase-browser-evidence
+          path: |
+            playwright-staging-report/
+            test-results-staging/
+          if-no-files-found: ignore
+      - name: Stop disposable services
+        if: always()
+        run: supabase stop --no-backup

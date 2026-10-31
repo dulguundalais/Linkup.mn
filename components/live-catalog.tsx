@@ -97,7 +97,7 @@ export default function LiveCatalog({en,signedIn=false,query='',category='all',s
     const sellerIdentity=<><span className={'v39-person-avatar v39-avatar-'+coverClass(s.category)} aria-hidden="true">{avatarSrc?<img className="v41-card-avatar-img" src={avatarSrc} alt="" width={54} height={54} loading="lazy" decoding="async"/>:avatar}</span><div className="v39-person-name"><strong>{s.display_name}</strong><span>{s.headline||categoryName}</span></div></>;
     return <article key={s.id} className="v39-talent-card">
      <div className={'v39-card-cover v39-cover-'+coverClass(s.category)}>
-      <span className="v39-cover-text">hustle<span>✳</span></span>
+      <span className="v39-cover-text" aria-hidden="true">linkup<span>.</span></span>
       <span className="v39-cover-accent" aria-hidden="true"/>
       {onSave&&<button className="v39-heart" type="button" aria-pressed={savedThis} aria-label={savedThis?t('Хадгалснаас хасах','Remove saved service'):t('Үйлчилгээ хадгалах','Save service')} disabled={saveBusy.includes(s.id)||heartState==='checking'||heartState==='loading'} aria-busy={heartState==='checking'||heartState==='loading'||saveBusy.includes(s.id)} onClick={()=>heartState==='ready'?onSave(s.id):heartState==='guest'?onSignInSave?.(s.id):heartState==='error'?onRetrySave?.():undefined}><Heart size={19} fill={savedThis?'currentColor':'none'}/></button>}
      </div>

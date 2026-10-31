@@ -4,6 +4,13 @@ on:
   pull_request:
     branches:
       - main
+      - codex/release-stabilization-integration-20261030
+      - codex/fix-worker-preview-20261031
+      - codex/patch-next-security-20261031
+      - codex/stabilize-auth-flows-20261031
+      - codex/linkup-brand-20261031
+      - codex/stabilize-db-ci-20261030
+      - codex/stabilize-migration-history-20261030
       - feature/interactive-functional-v6
       - fix/auth-portfolio-security-20261020
       - feature/v43-premium-editorial-polish-20261025
@@ -30,6 +37,8 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
+      - name: Production dependency security gate
+        run: npm audit --omit=dev --audit-level=high
       - name: Unit and security tests
         run: npm test
       - name: Type check

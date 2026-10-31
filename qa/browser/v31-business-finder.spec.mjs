@@ -47,3 +47,22 @@ for(const width of [390,768]){
   await page.screenshot({path:'test-results/v31-finder-'+width+'.png',fullPage:true});
  });
 }
+test('submitting a need reveals the results instead of rendering them off-screen',async({page})=>{
+ await page.setViewportSize({width:1280,height:720});
+ await page.goto('/solutions/');
+ await page.locator('.finder-form button[type=submit]').click();
+ await expect(page.locator('#hustle-need-hint')).toBeVisible();
+ await expect(page.locator('#hustle-need')).toBeFocused();
+ await page.locator('#hustle-need').fill('Лого дизайн хийлгэх хэрэгтэй');
+ await expect(page.locator('#hustle-need-hint')).toHaveCount(0);
+ await page.locator('.finder-form button[type=submit]').click();
+ const heading=page.locator('.finder-result-heading h2');
+ await expect(heading).toBeInViewport();
+ await expect(heading).toBeFocused();
+ await expect(page).toHaveURL(/\/solutions\/\?q=/);
+});
+test('arriving with a search from the homepage shows its results',async({page})=>{
+ await page.setViewportSize({width:1280,height:720});
+ await page.goto('/solutions/?q='+encodeURIComponent('Манай рестораны захиалга бага байна'));
+ await expect(page.locator('.finder-result-heading h2')).toBeInViewport();
+});

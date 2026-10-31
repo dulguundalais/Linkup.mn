@@ -92,7 +92,7 @@ export default function SellerCoverEditor({sellerId,coverPath,focusY=50,en,onCha
  };
  return <section className="v42-cover-editor" aria-label={t('Профайлын нүүр зураг','Profile cover photo')}>
   <div className="v42-cover-stage">
-   {url?<img src={url} alt={t('Миний нүүр зураг','My cover photo')} style={{objectPosition:'center '+focus+'%'}}/>:<div className="v42-cover-default"><span>hustle✳</span></div>}
+   {url?<img src={url} alt={t('Миний нүүр зураг','My cover photo')} style={{objectPosition:'center '+focus+'%'}}/>:<div className="v42-cover-default"><span aria-hidden="true">linkup.</span></div>}
    <span className="v42-cover-note">{t('НҮҮР ЗУРАГ / 1600 × 500','COVER / 1600 × 500')}</span>
   </div>
   <div className="v42-cover-control">

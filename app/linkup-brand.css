@@ -1,0 +1,17 @@
+/* Linkup wordmark sizing. The SVG box includes the "p" descender, so heights
+   are set slightly larger than the old text wordmark's cap height. Colour comes
+   from each container's existing text colour (currentColor), so light/dark
+   themes and the dark auth/footer panels need no extra rules. */
+.linkup-wordmark{display:block;height:28px;width:auto;flex-shrink:0;overflow:visible}
+.hustle-v5.hx-header .hx-brand .linkup-wordmark{height:30px}
+.hustle-v5.hx-header .hx-brand:focus-visible{outline:2px solid currentColor;outline-offset:4px;border-radius:6px}
+.footer-logo{display:inline-flex;align-items:center}
+.footer-logo .linkup-wordmark{height:32px}
+.hustle-auth-wordmark{display:inline-flex}
+.hustle-auth-wordmark .linkup-wordmark{height:26px}
+.hustle-auth-brand .linkup-wordmark{height:30px}
+.solution-brand{display:inline-flex;align-items:center}
+.solution-brand .linkup-wordmark{height:26px}
+.guided-modal-wordmark.linkup-wordmark{height:24px;color:#0b0b0c}
+@media(max-width:768px){.hustle-v5.hx-header .hx-brand .linkup-wordmark{height:27px}}
+@media(max-width:400px){.hustle-v5.hx-header .hx-brand .linkup-wordmark{height:24px}}

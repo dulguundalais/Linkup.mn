@@ -4,7 +4,7 @@ insert into auth.users(id,email,email_confirmed_at) values
  ('10000000-0000-4000-8000-000000000351','v34-buyer@example.test',now()),
  ('10000000-0000-4000-8000-000000000352','v34-seller@example.test',now()),
  ('10000000-0000-4000-8000-000000000353','v34-outsider@example.test',now()),
- ('10000000-0000-4000-8000-000000000354','v34-unapproved@example.test',now());
+ ('10000000-0000-4000-8000-000000000354','v34-unapproved@example.test',null);
 insert into public.beta_allowlist(email,role,enabled) values
  ('v34-buyer@example.test','member',true),
  ('v34-seller@example.test','member',true),

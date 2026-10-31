@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
+import LinkupWordmark from './linkup-wordmark';
 import type {User} from '@supabase/supabase-js';
 import {ArrowUpRight,Globe,Menu,Moon,Sun,X} from 'lucide-react';
 import AccountMenu,{type AccountMenuIdentity} from './account-menu';
@@ -106,7 +107,7 @@ export default function SiteHeader({en,onToggleLanguage,dark,onToggleTheme,activ
  ];
  return <header className={'hustle-v5 hx-header'+(dark?' hx-night':'')}>
   <div className="shell hx-header-inner">
-   <Link className="hx-brand" href="/" aria-label="Hustle.mn">hustle<span>✳</span><small>mn</small></Link>
+   <Link className="hx-brand" href="/" aria-label="Linkup"><LinkupWordmark decorative/></Link>
    <nav id="hx-main-nav" className={'hx-nav'+(menu?' open':'')} aria-label={t('Үндсэн цэс','Main navigation')}>
     {links.map(([id,href,mn,english])=><Link key={id} href={href} aria-current={active===id?'page':undefined} onClick={()=>setMenu(false)}>{t(mn,english)}</Link>)}
     {sessionState==='signed-in'&&account&&<Link className="mobile-auth-nav" href={account.isSeller?'/seller-studio/':'/buyer/'} onClick={()=>setMenu(false)}>{t('Миний самбар','My dashboard')}</Link>}

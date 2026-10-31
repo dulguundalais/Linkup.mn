@@ -2,6 +2,7 @@
 import {useEffect,useRef,useState,type KeyboardEvent} from 'react';
 import {createPortal} from 'react-dom';
 import Link from 'next/link';
+import LinkupWordmark from './linkup-wordmark';
 import {ArrowLeft,ArrowRight,ArrowUpRight,Building2,Check,ChevronDown,ClipboardCopy,Compass,LoaderCircle,Search,Sparkles,UserRound,X,Workflow,TrendingUp,Monitor,Clapperboard,Palette,ChartNoAxesCombined,Ellipsis} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
 import {buildProjectBrief,classifyNeed,matchingPublished,type Audience,type PublishedMatch} from '../lib/marketplace/solution-finder';
@@ -92,7 +93,7 @@ export default function GuidedEntry({en}:{en:boolean}){
   {open&&typeof document!=='undefined'&&createPortal(<div className="guided-modal-backdrop" onPointerDown={e=>{if(e.target===e.currentTarget)close()}}>
    <div ref={modalRef} className="guided-modal guided-simplified" role="dialog" aria-modal="true" aria-labelledby="guided-dialog-title" aria-describedby="guided-dialog-description">
     <div className="guided-modal-header">
-     <div className="guided-modal-mark"><span>h<span>✳</span></span><small>{t('HUSTLE · Хэрэгцээгээ тодорхойлох','HUSTLE / GUIDED DISCOVERY')}</small></div>
+     <div className="guided-modal-mark"><LinkupWordmark decorative className="guided-modal-wordmark"/><small>{t('LINKUP · Хэрэгцээгээ тодорхойлох','LINKUP / GUIDED DISCOVERY')}</small></div>
      <button type="button" className="guided-modal-close" aria-label={t('Хаах','Close')} onClick={close}><X size={19}/></button>
     </div>
     <div className="guided-modal-body">

@@ -81,7 +81,7 @@ export default function SellerToolEditor({sellerId,en,onUpdated}:{sellerId:strin
  }
  return <section className="v40-tools-editor" aria-label={t('Ашигладаг програмууд','My software and tools')}>
   <div className="v40-tools-heading">
-   <div><span className="v40-eyebrow">{t('Ашигладаг програмууд','HUSTLE / CREATIVE TOOLKIT')}</span><h2>{t('Ашигладаг програмууд','Tools I work with')}</h2>
+   <div><span className="v40-eyebrow">{t('Ашигладаг програмууд','LINKUP / CREATIVE TOOLKIT')}</span><h2>{t('Ашигладаг програмууд','Tools I work with')}</h2>
    <p>{t('Ашигладаг програмаа сонгоорой. Хүсвэл дүрсийг нь өөрчилж болно. Сонголт таны нийтэд нээлттэй профайлд харагдана.','Choose the software you use and customize its icon. Only your selected tools appear on your public profile.')}</p></div>
    <span className="v40-tools-counter">{saved.length}/{CREATIVE_TOOL_MAX}</span>
   </div>

@@ -1,0 +1,27 @@
+name: Worker preview runtime verification
+on:
+  pull_request:
+    branches: [main, codex/release-stabilization-integration-20261030, codex/fix-worker-preview-20261031, codex/patch-next-security-20261031, codex/stabilize-auth-flows-20261031, codex/linkup-brand-20261031]
+permissions:
+  contents: read
+jobs:
+  worker-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Verify generated bindings and Worker types
+        run: |
+          npx wrangler types worker/env.d.ts --config worker/wrangler.jsonc --include-runtime false --strict-vars false --check
+          npm run typecheck:worker
+      - name: Build V52 static export with exact source marker
+        run: npm run build:worker-preview
+      - name: Bundle only; no account credentials or production upload
+        run: npx wrangler deploy --dry-run --config worker/wrangler.jsonc --outdir "$GITHUB_WORKSPACE/.worker-build"
+      - name: Real local Worker routing, assets and synthetic upstream acceptance
+        run: npm run test:worker
