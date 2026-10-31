@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto';
 // Hashes for signature-home, site-header and premium-footer were updated for the
 // owner-approved Linkup rebrand (wordmark and copy only; PR #82); premium-marketplace
 // for the /solutions/ shared-shell view the owner approved; signature-home again
-// when the owner removed the duplicate talent section (V55), and for the animated example searches the owner asked for (V56); site-header for closing the phone menu on an outside tap (V58); signature-home for the hero cleanup the owner specified (V59); premium-marketplace and signature-home for the homepage order the owner specified (V60).
+// when the owner removed the duplicate talent section (V55), and for the animated example searches the owner asked for (V56); site-header for closing the phone menu on an outside tap (V58); signature-home for the hero cleanup the owner specified (V59); premium-marketplace and signature-home for the homepage order the owner specified (V60); premium-footer for Mongolian labels and one About link (V61).
 const protectedFiles={
  'app/v51-home-system.css':'d614e398889fa3a1912b4ffe57443194ee86f2ea',
  'app/marketplace.css':'bc5e705e9960d5f48c117b1ff5f373fc89710ebc',
@@ -13,7 +13,7 @@ const protectedFiles={
  'components/premium-marketplace.tsx':'7446e470adfcdbf014523a708955a32af33a606c',
  'components/signature-home.tsx':'167880afeeab6eec458decc49c882f867294026c',
  'components/site-header.tsx':'ced42869764f517b6ec1f435e305b11cad1129dd',
- 'components/premium-footer.tsx':'21841d80471f28f425741aee9037fd0a864a45ae',
+ 'components/premium-footer.tsx':'6a99a19e1ced134aa16f0f8e6b966cccc044d5d0',
  'app/v45-art-direction.css':'f65228e41baed92deb82b3038abb58a3566a823a',
  'app/v43-premium-editorial.css':'2d5a883c33460bf6bc732f398b6bc432d7977174',
  'app/v20-footer.css':'9b82c90b965742785aa5455227f6996b28767c6d',

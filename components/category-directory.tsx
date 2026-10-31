@@ -4,9 +4,10 @@ import Link from 'next/link';
 import {ArrowUpRight,Search,ShieldCheck,X} from 'lucide-react';
 import {Breadcrumbs} from './site-header';
 import CategoryArt from './category-art';
-import {CATEGORIES,SERVICE_TYPES,type Category} from '../lib/marketplace/taxonomy';
+import {CATEGORIES,LEGAL_FINANCE_GROUP,SERVICE_TYPES,type Category} from '../lib/marketplace/taxonomy';
 import {normalizeSearch} from '../lib/marketplace/smart-search';
 import '../app/v50-categories.css';
+import '../app/v61-consistency.css';
 
 /* V50 /categories/ — every main category with its subcategories, a filter box,
    problem-first entry points and the five service models. */
@@ -61,7 +62,7 @@ export default function CategoryDirectory({en}:{en:boolean}){
   {visible.length===0?<div className="cdir-empty"><p>{t('Тохирох ангилал олдсонгүй.','No matching category.')}</p><Link className="cdir-all" href={'/solutions/?q='+encodeURIComponent(q)}>{t('Хэрэгцээгээрээ хайх','Search by your problem')}<ArrowUpRight size={15}/></Link></div>:
   <div className="cdir-grid">
    {visible.filter(x=>x.c.id!=='legal'&&x.c.id!=='finance').slice(0,4).map(block)}
-   {legalFinance.length>0&&<div id="legal-finance" className="cdir-pair">{legalFinance.map(block)}</div>}
+   {legalFinance.length>0&&<div id="legal-finance" className="cdir-pair" role="group" aria-labelledby="cdir-pair-title"><h2 id="cdir-pair-title" className="cdir-pair-title">{en?LEGAL_FINANCE_GROUP.en:LEGAL_FINANCE_GROUP.mn}</h2>{legalFinance.map(block)}</div>}
    {visible.filter(x=>x.c.id!=='legal'&&x.c.id!=='finance').slice(4).map(block)}
   </div>}
   <aside className="cdir-models" aria-labelledby="cdir-models-title">

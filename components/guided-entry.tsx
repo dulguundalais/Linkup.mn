@@ -86,7 +86,7 @@ export default function GuidedEntry({en}:{en:boolean}){
      <span className="guided-entry-symbol"><UserRound size={24} strokeWidth={1.8}/></span><span className="guided-entry-choice-copy"><strong>{t('Хувь хүн','Personal')}</strong><small>{t('Хувийн ажил','Personal work')}</small></span><ArrowUpRight size={19}/>
     </button>
     <button type="button" className={'guided-entry-choice guided-entry-business'+(remembered==='business'?' is-current':'')} onClick={()=>start('business')} aria-haspopup="dialog">
-     <span className="guided-entry-symbol"><Building2 size={24} strokeWidth={1.8}/></span><span className="guided-entry-choice-copy"><strong>{t('Байгууллага','Organization')}</strong><small>{t('Бизнесийн хэрэгцээ','Business needs')}</small></span><ArrowUpRight size={19}/>
+     <span className="guided-entry-symbol"><Building2 size={24} strokeWidth={1.8}/></span><span className="guided-entry-choice-copy"><strong>{t('Байгууллага','Organization')}</strong><small>{t('Байгууллагын хэрэгцээ','Organization needs')}</small></span><ArrowUpRight size={19}/>
     </button>
    </div>
   </div>
@@ -97,7 +97,7 @@ export default function GuidedEntry({en}:{en:boolean}){
      <button type="button" className="guided-modal-close" aria-label={t('Хаах','Close')} onClick={close}><X size={19}/></button>
     </div>
     <div className="guided-modal-body">
-     <div className="guided-step-meta"><span>{audience==='business'?<Building2 size={15}/>:<UserRound size={15}/>} {audience==='business'?t('Бизнесийн хэрэгцээ','For business'):t('Хувийн хэрэгцээ','For personal projects')}</span><span>{screen==='choose'?'01 / 02':'02 / 02'}</span></div>
+     <div className="guided-step-meta"><span>{audience==='business'?<Building2 size={15}/>:<UserRound size={15}/>} {audience==='business'?t('Байгууллага','Organization'):t('Хувь хүн','Personal')}</span><span>{screen==='choose'?'01 / 02':'02 / 02'}</span></div>
      {screen==='choose'?<>
       <span className="guided-step-eyebrow">{t('Хэрэгцээгээ тодорхойлоё','START WITH A GOAL')}</span>
       <h2 id="guided-dialog-title">{audience==='business'?t('Юуг сайжруулахыг хүсэж байна?','What would you like to improve?'):t('Ямар ажилд тусламж хэрэгтэй вэ?','What can we help you with?')}</h2>

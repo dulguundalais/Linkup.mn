@@ -3,10 +3,10 @@ import LinkupWordmark from './linkup-wordmark';
 import {ArrowUpRight,Compass,ShieldCheck} from 'lucide-react';
 import '../app/v20-footer.css';
 const columns=[
- {mn:'Marketplace',en:'Marketplace',links:[['/explore/','Үйлчилгээ хайх','Browse services'],['/categories/','Ангиллууд','Categories'],['/#how','Хэрхэн ажилладаг','How it works'],['/about/','Бидний тухай','About Linkup']]},
+ {mn:'Үйлчилгээ',en:'Marketplace',links:[['/explore/','Үйлчилгээ хайх','Browse services'],['/categories/','Ангилал','Categories'],['/#how','Хэрхэн ажилладаг','How it works']]},
  {mn:'Захиалагчдад',en:'For buyers',links:[['/buyers/','Хэрхэн захиалах','How to buy'],['/explore/','Үнийн багцууд','Pricing packages'],['/buyer/','Миний захиалга','My orders'],['/faq/','Түгээмэл асуултууд','FAQ']]},
- {mn:'Мэргэжилтнүүдэд',en:'For freelancers',links:[['/join/seller/','Үйлчилгээ үзүүлэх','Start selling'],['/freelancers/','Мэргэжилтний гарын авлага','Seller guide'],['/seller-studio/','Seller Studio','Seller Studio'],['/referrals/','Түншлэлийн хөтөлбөр','Referral partners']]},
- {mn:'Мэдээлэл, тусламж',en:'Company & help',links:[['/about/','Бидний тухай','About us'],['/contact/','Тусламж авах','Contact & support'],['/terms/','Үйлчилгээний нөхцөл','Terms of use'],['/privacy/','Нууцлалын бодлого','Privacy policy'],['/cookies/','Cookie Policy','Cookie policy']]}
+ {mn:'Мэргэжилтнүүдэд',en:'For freelancers',links:[['/join/seller/','Үйлчилгээ үзүүлэх','Start selling'],['/freelancers/','Мэргэжилтний гарын авлага','Seller guide'],['/seller-studio/','Мэргэжилтний самбар','Seller Studio'],['/referrals/','Түншлэлийн хөтөлбөр','Referral partners']]},
+ {mn:'Мэдээлэл, тусламж',en:'Company & help',links:[['/about/','Бидний тухай','About us'],['/contact/','Тусламж авах','Contact & support'],['/terms/','Үйлчилгээний нөхцөл','Terms of use'],['/privacy/','Нууцлалын бодлого','Privacy policy'],['/cookies/','Күүкийн бодлого','Cookie policy']]}
 ] as const;
 export default function PremiumFooter({en}:{en:boolean}){
  const t=(mn:string,english:string)=>en?english:mn;

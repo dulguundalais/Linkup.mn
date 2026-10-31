@@ -172,17 +172,22 @@ export const subcategoryLabel=(category:string,subId:string|null|undefined,en:bo
 
 /** Homepage carousel: six featured cards first, then the rest. One card groups Legal and Finance. */
 export type ShowcaseCard={key:string;mn:string;en:string;href:string;categories:CategoryId[];art:string};
+/** V61: card names come from CATEGORIES, so the homepage and the categories page
+ *  always say the same thing. Only the Legal + Finance card is a group; the
+ *  categories page shows the same group under the same name. */
+export const LEGAL_FINANCE_GROUP={mn:'Хууль ба санхүү',en:'Legal & Finance'};
+const showcaseCard=(id:CategoryId,art:string=id):ShowcaseCard=>{const c=CATEGORIES.find(x=>x.id===id)!;return {key:id,mn:c.mn,en:c.en,href:'/categories/#'+id,categories:[id],art}};
 export const SHOWCASE:ShowcaseCard[]=[
- {key:'ai',mn:'AI ба автоматжуулалт',en:'AI & Automation',href:'/categories/#ai',categories:['ai'],art:'ai'},
- {key:'business',mn:'Бизнесийн зөвлөгөө',en:'Business Consulting',href:'/categories/#business',categories:['business'],art:'business'},
- {key:'marketing',mn:'Маркетинг ба борлуулалт',en:'Marketing & Sales',href:'/categories/#marketing',categories:['marketing'],art:'marketing'},
- {key:'tech',mn:'Технологи',en:'Technology',href:'/categories/#tech',categories:['tech'],art:'tech'},
- {key:'legal-finance',mn:'Хууль ба санхүү',en:'Legal & Finance',href:'/categories/#legal-finance',categories:['legal','finance'],art:'legal-finance'},
- {key:'creative',mn:'Бүтээлч үйлчилгээ',en:'Creative Services',href:'/categories/#creative',categories:['creative'],art:'creative'},
- {key:'research',mn:'Судалгаа ба өгөгдөл',en:'Research & Data',href:'/categories/#research',categories:['research'],art:'research'},
- {key:'commerce',mn:'Цахим худалдаа',en:'Ecommerce & Operations',href:'/categories/#commerce',categories:['commerce'],art:'commerce'},
- {key:'education',mn:'Боловсрол ба коучинг',en:'Education & Coaching',href:'/categories/#education',categories:['education'],art:'education'},
- {key:'wellbeing',mn:'Сэтгэл зүй, хувь хүний хөгжил',en:'Psychology & Wellbeing',href:'/categories/#wellbeing',categories:['wellbeing'],art:'wellbeing'}
+ showcaseCard('ai'),
+ showcaseCard('business'),
+ showcaseCard('marketing'),
+ showcaseCard('tech'),
+ {key:'legal-finance',...LEGAL_FINANCE_GROUP,href:'/categories/#legal-finance',categories:['legal','finance'],art:'legal-finance'},
+ showcaseCard('creative'),
+ showcaseCard('research'),
+ showcaseCard('commerce'),
+ showcaseCard('education'),
+ showcaseCard('wellbeing')
 ];
 
 /** Category artwork available as raster images in public/categories/<art>.webp.
