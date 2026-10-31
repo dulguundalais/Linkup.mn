@@ -25,7 +25,7 @@ html body .hustle-v5 .v39-heart::before{content:'';position:absolute;inset:-4px;
 
 @media(max-width:760px){
  /* How it works: buyer / freelancer switch */
- html body .hustle-v5 .signature-process-switch button{min-height:44px}
+ html body .hustle-v5:not(.workspace) .signature-process-switch button{min-height:44px}
  /* Text links that act as buttons */
  html body .hustle-v5 :is(.signature-partner-link,.signature-text-link,.v39-head-link){min-height:44px;display:inline-flex;align-items:center}
  /* Footer: rows become 44px tall; the gap shrinks so the column keeps its length */
