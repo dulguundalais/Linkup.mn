@@ -18,12 +18,10 @@ test('how it works: three icon cards joined by a line, buyer/freelancer switch k
  assert.doesNotMatch(sig,/Гурван энгийн алхам/,'extra subtitle removed');
  assert.match(css,/\.v60-step:not\(:last-child\)::after/);
 });
-test('categories: compact grid of the same ten links',()=>{
+test('categories keep the original carousel with artwork (owner decision)',()=>{
+ assert.match(cats,/className="cat-track"/);
  assert.match(cats,/SHOWCASE\.map/);
- assert.match(cats,/className="cat-card v60-cat"/);
- assert.match(cats,/Эрэлттэй ангиллууд/);
- assert.doesNotMatch(cats,/cat-track|className="cat-arrow|scrollBy/,'carousel removed');
- assert.match(css,/\.v60-cat-grid\{[^}]*repeat\(5,minmax\(0,1fr\)\)/);
+ assert.doesNotMatch(css,/v60-cat/);
 });
 test('business solutions: four short titles the owner named',()=>{
  for(const title of ["mn:'Маркетинг'","mn:'Автоматжуулалт'","mn:'Брэнд'","mn:'Онлайн үйлчилгээ'"])assert.ok(biz.includes(title),title);

@@ -4,7 +4,7 @@
    solutions → For freelancers → Partners → Footer.
    How it works now sits right under the dark hero, so it uses the light tint
    (as Business solutions did in that spot) to keep dark and light alternating.
-   Uses the V51 tokens; works in light and night mode.
+   Categories keep their V50 carousel (owner decision). Uses the V51 tokens; works in light and night mode.
    ========================================================================== */
 html body .hustle-v5:not(.workspace) .v60-process{background:var(--hx-tint);color:var(--text)}
 html body .hustle-v5:not(.workspace) .v60-process .signature-section-eyebrow{color:var(--hx-eyebrow)}
@@ -27,32 +27,13 @@ html body .hustle-v5:not(.workspace) .v60-process .signature-process-note{color:
 .v60-step h3{margin:22px 0 8px;font-size:20px;line-height:1.3;font-weight:700;letter-spacing:-.02em;color:var(--text)}
 .v60-step p{margin:0;font-size:15px;line-height:1.55;color:var(--sub)}
 
-/* Categories: compact grid of tiles */
-.v60-categories .cat-showcase-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:28px}
-.v60-cat-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
-.v60-cat-grid>li{min-width:0;display:flex}
-html body .hustle-v5:not(.workspace) .v60-categories .cat-card.v60-cat{position:relative;isolation:auto;flex:1;display:flex;flex-direction:row;align-items:center;height:auto;aspect-ratio:auto;overflow:visible;text-align:left;gap:12px;min-height:76px;padding:14px 16px;border:1px solid var(--hx-card-border);border-radius:16px;background:var(--hx-card);color:var(--text);box-shadow:none;text-decoration:none;transform:none}
-html body .hustle-v5:not(.workspace) .v60-categories .cat-card.v60-cat::before{display:none}
-html body .hustle-v5:not(.workspace) .v60-categories .cat-card.v60-cat:hover{transform:translateY(-2px);border-color:var(--hx-card-hover);box-shadow:var(--hx-card-shadow-hover);color:var(--text)}
-html body .hustle-v5:not(.workspace) .v60-categories .cat-card.v60-cat:focus-visible{outline:0;box-shadow:var(--hx-focus)}
-.v60-cat-icon{flex:0 0 44px;display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--hx-icon-bg);color:var(--hx-icon-fg)}
-.v60-cat-name{flex:1;min-width:0;font-size:15px;line-height:1.3;font-weight:650;overflow-wrap:anywhere}
-.v60-cat-arrow{flex:0 0 auto;color:var(--sub);transition:transform var(--motion-fast,.2s) var(--motion-ease,ease),color var(--motion-fast,.2s)}
-.v60-cat:hover .v60-cat-arrow{transform:translate(2px,-2px);color:var(--hx-icon-fg)}
-
-@media(max-width:1100px){.v60-cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:900px){
  .v60-steps{grid-template-columns:minmax(0,1fr);gap:24px}
  .v60-step:not(:last-child)::after{top:100%;left:55px;width:2px;height:24px;background:linear-gradient(180deg,var(--hx-royal-600),var(--hx-cyan-400))}
  .v60-step:not(:last-child)::before{top:calc(100% + 7px);left:51px}
- .v60-cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:560px){
  .v60-step{padding:22px}
  .v60-step:not(:last-child)::after{left:49px}
  .v60-step:not(:last-child)::before{left:45px}
- .v60-categories .cat-showcase-head{flex-wrap:wrap;align-items:flex-start}
- html body .hustle-v5:not(.workspace) .v60-categories .cat-card.v60-cat{flex-direction:column;align-items:flex-start;gap:10px;min-height:0;padding:14px}
- .v60-cat-arrow{position:absolute;top:14px;right:14px}
- .v60-cat-name{font-size:14px}
 }
