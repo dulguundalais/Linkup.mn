@@ -15,6 +15,7 @@ import SiteHeader,{Breadcrumbs,useSiteAccount} from './site-header';
 import '../app/live-listing.css';
 import '../app/v39-service-detail.css';
 import '../app/v50-order-flow.css';
+import '../app/v56-skeletons.css';
 
 const money=(n:number)=>new Intl.NumberFormat('mn-MN').format(n)+' ₮';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
@@ -154,7 +155,11 @@ export default function LiveListingDetail(){
  return <div className="v50-listing-page">
  <SiteHeader en={en} onToggleLanguage={()=>setEn(v=>!v)} active="services" session={session}/>
  <main className="v28-detail-page v39-detail-page">
-  {status==='loading'&&<section className="v28-detail-shell" role="status">{t('Үйлчилгээ ачаалж байна…','Loading service…')}</section>}
+  {/* V56: a skeleton in the shape of the page instead of a line of text. */}
+  {status==='loading'&&<section className="v28-detail-shell v28-detail-grid v56-sk-detail" role="status" aria-label={t('Үйлчилгээ ачаалж байна','Loading service')}>
+   <div aria-hidden="true"><span className="v56-sk v56-sk-detail-cover"/><span className="v56-sk v56-sk-chip"/><span className="v56-sk v56-sk-line v56-sk-h1 v56-w85"/><span className="v56-sk v56-sk-line v56-sk-h1 v56-w55"/><span className="v56-sk-person"><span className="v56-sk v56-sk-avatar"/><span className="v56-sk v56-sk-line v56-w35"/></span><span className="v56-sk v56-sk-line v56-w100"/><span className="v56-sk v56-sk-line v56-w100"/><span className="v56-sk v56-sk-line v56-w70"/></div>
+   <div className="v56-sk-offer" aria-hidden="true"><span className="v56-sk v56-sk-line v56-w55"/><span className="v56-sk v56-sk-tiers"/><span className="v56-sk v56-sk-line v56-sk-h1 v56-w45"/><span className="v56-sk v56-sk-line v56-w70"/><span className="v56-sk v56-sk-button"/></div>
+  </section>}
   {status==='error'&&<section className="v28-detail-shell" role="alert">{t('Үйлчилгээ ачаалж чадсангүй.','Unable to load service.')} <button type="button" className="v50-retry" onClick={()=>window.location.reload()}><RefreshCw size={14}/>{t('Дахин оролдох','Retry')}</button></section>}
   {status==='missing'&&<section className="v28-detail-shell"><h1>{t('Үйлчилгээ олдсонгүй','Service not found')}</h1><p>{t('Энэ зар нийтлэгдээгүй эсвэл устгагдсан байж болно.','This listing may be unpublished or removed.')}</p><Link href="/explore/">{t('Үйлчилгээ хайх','Browse listings')}</Link></section>}
   {status==='ready'&&listing&&<>

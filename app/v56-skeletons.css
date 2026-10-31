@@ -1,0 +1,41 @@
+/* ==========================================================================
+   LINKUP V56 — skeleton loading states (owner request 2026-10-31)
+   While services load, grey blocks in the shape of the real content are shown
+   instead of a line of text: service cards (homepage, Explore) and the service
+   page. A soft shimmer moves across them; it stops with reduced motion.
+   ========================================================================== */
+:root{--v56-sk-base:#e9eef7;--v56-sk-shine:#f6f8fc}
+.night{--v56-sk-base:#16244a;--v56-sk-shine:#1f3060}
+
+.v56-sk{display:block;border-radius:8px;background:linear-gradient(100deg,var(--v56-sk-base) 30%,var(--v56-sk-shine) 50%,var(--v56-sk-base) 70%);background-size:300% 100%;animation:v56-sk-shimmer 1.6s ease-in-out infinite}
+@keyframes v56-sk-shimmer{from{background-position:100% 0}to{background-position:0 0}}
+.v56-sk-line{height:12px}
+.v56-w25{width:25%}.v56-w35{width:35%}.v56-w45{width:45%}.v56-w55{width:55%}.v56-w70{width:70%}.v56-w85{width:85%}.v56-w100{width:100%}
+.v56-sk-chip{width:96px;height:24px}
+.v56-sk-avatar{flex:0 0 48px;width:48px;height:48px;border-radius:12px}
+.v56-sk-person{display:flex;align-items:center;gap:12px}
+.v56-sk-button{height:44px;border-radius:12px}
+
+/* Service card: same grid, size and parts as the V55 card */
+html body .hustle-v5:not(.workspace) .v39-skeleton-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:20px}
+@media(min-width:1100px){html body .hustle-v5:not(.workspace) .v39-skeleton-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+html body .hustle-v5:not(.workspace) .v39-card-skeleton.v56-sk-card{display:flex;flex-direction:column;height:auto;min-height:0;overflow:hidden;border-radius:16px;border:1px solid var(--border);background:var(--surface);animation:none}
+.v56-sk-card .v56-sk-cover{height:150px;border-radius:0}
+.v56-sk-card>.v56-sk-person{margin:-24px 20px 0;position:relative}
+.v56-sk-card>.v56-sk-person .v56-sk-avatar{border:2px solid var(--surface,#fff);box-sizing:content-box}
+.v56-sk-card>.v56-sk-person .v56-sk-line{margin-top:22px}
+.v56-sk-body{display:flex;flex-direction:column;gap:12px;padding:18px 20px 20px}
+.v56-sk-card .v56-sk-title{height:18px;margin-top:4px}
+.v56-sk-foot{display:flex;justify-content:space-between;align-items:center;padding-top:16px;margin-top:4px;border-top:1px solid var(--border)}
+.v56-sk-foot .v56-sk-line{height:18px}
+
+/* Service page: same two columns as the loaded page */
+.v56-sk-detail>div{display:flex;flex-direction:column;gap:14px;min-width:0}
+.v56-sk-detail .v56-sk-detail-cover{height:190px;border-radius:18px;margin-bottom:12px}
+.v56-sk-detail .v56-sk-h1{height:30px}
+.v56-sk-detail .v56-sk-person{margin:8px 0 14px}
+.v56-sk-detail .v56-sk-offer{padding:28px;border:1px solid var(--v39-line,#e2e8f0);border-radius:23px;background:var(--surface,#fff)}
+.v56-sk-detail .v56-sk-tiers{height:44px;border-radius:12px}
+@media(max-width:760px){.v56-sk-detail .v56-sk-detail-cover{height:155px}}
+
+@media(prefers-reduced-motion:reduce){.v56-sk{animation:none}}
