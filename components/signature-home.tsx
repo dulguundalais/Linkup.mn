@@ -3,7 +3,6 @@ import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {ArrowRight,ArrowUpRight,Check,ChevronRight,Clapperboard,Code2,Globe2,Layers3,MessageCircle,MousePointer2,Search,ShieldCheck,Sparkles,Star,PenTool,BriefcaseBusiness,CheckCircle2} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
-import {orderRecommended} from '../lib/marketplace/recommendations';
 import {services} from '../lib/marketplace/catalog';
 import {suggestLiveServices,type LiveService} from '../lib/marketplace/live-discovery';
 import GuidedEntry from './guided-entry';
@@ -17,8 +16,6 @@ const topics=[
  {key:'video',mn:'Видео, Reels',en:'Video & reels',Icon:Clapperboard},
  {key:'ui',mn:'UI/UX дизайн',en:'UI/UX design',Icon:Layers3}
 ];
-type Spotlight={id:string;title:string;title_en?:string;category:string;price:number;display_name:string;headline:string;slug:string;review_count:number;average_rating:number|null;completed_orders:number};
-const formatPrice=(amount:number)=>new Intl.NumberFormat('mn-MN').format(amount)+' ₮';
 
 export function SignatureHero({en}:{en:boolean}){
  // V50: the HUSTLE-COLLAB hero — centred, on a soft navy light field. Describe a need
@@ -87,23 +84,8 @@ const sellerSteps=[
 ];
 export function SignatureStory({en}:{en:boolean}){
  const [mode,setMode]=useState<'buyer'|'seller'>('buyer');
- const [spotlights,setSpotlights]=useState<Spotlight[]>([]);
- const [state,setState]=useState<'loading'|'ready'|'error'>('loading');
  const t:T=(mn,english)=>en?english:mn;
- useEffect(()=>{
-  let active=true;
-  marketplaceClient().then(db=>db.rpc('marketplace_catalog')).then(res=>{
-   if(!active)return;
-   if(res.error)throw res.error;
-   const records=Array.isArray(res.data)?res.data as Spotlight[]:[];
-   const unique=new Map<string,Spotlight>();
-   for(const record of records){if(typeof record.slug==='string'&&/^[a-z0-9][a-z0-9-]{2,59}$/.test(record.slug)&&!unique.has(record.slug))unique.set(record.slug,record);}
-   setSpotlights(orderRecommended([...unique.values()].map(p=>({...p,review_count:Number(p.review_count)||0,average_rating:p.average_rating===null?null:Number(p.average_rating),completed_orders:Number(p.completed_orders)||0}))).slice(0,3));setState('ready');
-  }).catch(()=>{if(active)setState('error')});
-  return()=>{active=false};
- },[]);
  const steps=mode==='buyer'?buyerSteps:sellerSteps;
- const skills=useMemo(()=>topics.slice(0,4),[]);
  return <>
    <section id="how" className="signature-process">
     <div className="shell">
@@ -111,13 +93,6 @@ export function SignatureStory({en}:{en:boolean}){
      <div className="signature-step-grid">{steps.map(({index,mn,en:eng,descMn,descEn,Icon})=><article key={index} className="signature-step"><div className="signature-step-top"><span className="signature-step-icon"><Icon size={24}/></span><strong>{index}</strong></div><h3>{en?eng:mn}</h3><p>{en?descEn:descMn}</p><div className="signature-step-line"/></article>)}</div>
      <p className="signature-process-note"><ShieldCheck size={15}/>{t('Туршилтын хугацаанд Linkup төлбөр хүлээн авахгүй, эскроу үйлчилгээ үзүүлэхгүй.','No real payments or escrow during open beta.')}</p>
     </div>
-   </section>
-   <section className="signature-spotlight shell" id="talent">
-    <div className="signature-section-heading"><div><span className="signature-section-eyebrow">{t('Мэргэжилтнүүд','The people')}</span><h2>{t('Бүтээлч хүмүүс. Бодит ур чадвар.','Meet the minds behind the work.')}</h2><p>{t('Мэргэжилтнүүдийн бодит профайлаас сонгоорой.','Explore profiles from real creatives on Linkup.')}</p></div><Link href="/explore/" className="signature-text-link">{t('Бүх үйлчилгээг үзэх','Explore services')}<ArrowUpRight size={18}/></Link></div>
-    {state==='loading'&&<div className="signature-spotlight-empty" role="status">{t('Бодит профайлуудыг ачаалж байна…','Loading live freelancer profiles…')}</div>}
-    {state==='error'&&<div className="signature-spotlight-empty" role="status">{t('Одоогоор профайл ачаалж чадсангүй.','Live profiles are temporarily unavailable.')}</div>}
-    {state==='ready'&&!spotlights.length&&<div className="signature-spotlight-empty">{t('Мэргэжилтнүүдийн нийтэд нээлттэй профайл энд харагдана.','Published freelancer profiles will appear here.')} <Link href="/join/seller/">{t('Эхэлж нэгдэх','Join as a freelancer')}<ArrowRight size={15}/></Link></div>}
-    {state==='ready'&&spotlights.length>0&&<div className="signature-people-grid">{spotlights.map((p,i)=><Link className="signature-person" key={p.slug} href={'/p/'+encodeURIComponent(p.slug)+'/'}><div className={'signature-person-avatar avatar-tone-'+(i%4)}><span>{p.display_name?.trim().slice(0,1).toLocaleUpperCase()||'H'}</span><i/></div><div className="signature-person-caption"><span>{p.category}</span><h3>{p.display_name}</h3><p>{p.headline||p.title}</p>{p.review_count>0&&p.average_rating!==null&&<div className="signature-review-score"><Star size={15} fill="currentColor"/><strong>{p.average_rating.toFixed(1)}</strong><small>({p.review_count} {t('баталгаажсан үнэлгээ','verified reviews')})</small></div>}<small>{t('Үйлчилгээний эхлэх үнэ','Services from')} <b>{formatPrice(p.price)}</b></small></div><span className="signature-person-arrow"><ArrowUpRight size={18}/></span></Link>)}</div>}
    </section>
    <section id="for-freelancers" className="signature-seller-band shell">
     <div className="signature-seller-text"><span className="signature-section-eyebrow">{t('Мэргэжилтнүүдэд','For freelancers')}</span><h2>{t('Ур чадвараараа','Your skills deserve')}<br/><em>{t('шинэ боломж нээгээрэй.','a bigger stage.')}</em></h2><p>{t('Профайлаа үүсгэж, үйлчилгээгээ багцлан, шинэ захиалагчтай хамтран ажиллаарай.','Build a storefront for your talent, create packages and connect with new clients.')}</p><Link href="/join/seller/" className="signature-cta-button">{t('Үйлчилгээгээ санал болгох','Become a freelancer')}<ArrowUpRight size={19}/></Link></div>

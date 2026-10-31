@@ -11,6 +11,7 @@ import '../app/live-catalog.css';
 import '../app/v39-creative-cards.css';
 import '../app/v41-home-card-readability.css';
 import '../app/v50-categories.css';
+import '../app/v55-service-cards.css';
 import {categoryLabel,legacyCategory,serviceTypeById,subcategoryLabel} from '../lib/marketplace/taxonomy';
 
 // The marketplace_catalog RPC is the sole source: published services from real sellers only.
@@ -54,10 +55,7 @@ export default function LiveCatalog({en,signedIn=false,query='',category='all',s
  const toggleCompare=(id:string)=>setCompared(current=>compareSelection(current,id));
  return <section className={'shell live-catalog v39-catalog '+(homePreview?'v39-catalog-home':'v39-catalog-explore')} aria-labelledby={homePreview?'real-listings-title':undefined} aria-label={homePreview?undefined:t('Нийтлэгдсэн үйлчилгээ','Published services')}>
   {homePreview&&<div className="v39-section-head">
-   <div><span className="v39-section-eyebrow"><span/>{homePreview?(en?'Services':'Үйлчилгээ'):(en?'Explore':'Бүх үйлчилгээ')}</span>
-    <h2 id="real-listings-title">{homePreview?t('Төслөө хэрэгжүүлэх хүнээ олоорой.','Meet your next collaborator.'):t('Өөрт тохирох мэргэжилтнээ олоорой.','Find your kind of talent.')}</h2>
-    <p>{homePreview?t('Үйлчилгээ, эхлэх үнийг нэг дороос.','Real services. Clear starting prices.'):t('Үйлчилгээ, үнэ, хугацааг харьцуулж, тохирох мэргэжилтэнтэй холбогдоорой.','Discover services, compare starting prices and connect with professionals.')}</p>
-   </div>
+   <div className="v55-section-title"><h2 id="real-listings-title">{t('Шилдэг мэргэжилтнүүд ба тэдний үйлчилгээ','Top experts and their services')}</h2>{state==='ready'&&filtered.length>0&&<span className="v55-count">{filtered.length} {t('үйлчилгээ','services')}</span>}</div>
    <Link className="v39-head-link" href="/explore/">{t('Бүгдийг үзэх','View all')} <ArrowUpRight size={16}/></Link>
   </div>}
   {state==='loading'&&<div className="v39-skeleton-grid" role="status" aria-label={t('Үйлчилгээ ачаалж байна','Loading services')}>{[0,1,2].map(i=><div className="v39-card-skeleton" key={i} aria-hidden="true"/>)}</div>}
@@ -108,7 +106,7 @@ export default function LiveCatalog({en,signedIn=false,query='',category='all',s
       <p className="v39-description">{s.description}</p>
       <div className="v39-card-bottom">
        <div className="v39-price"><small>{t('Эхлэх үнэ','Starting at')}</small><strong>{money(minPrice)}{priceSuffix&&s.service_type!=='custom'&&<em className="v50-price-unit">{priceSuffix}</em>}</strong></div>
-       <div className="v39-delivery"><Clock3 size={15}/>{delivery} {t('хоног','days')}</div>
+       <div className="v39-delivery"><small>{t('Хугацаа','Delivery')}</small><span><Clock3 size={15}/>{delivery} {t('хоног','days')}</span></div>
       </div>
       <div className="v39-card-actions">
        <Link href={detailHref} className="v39-primary">{t('Үйлчилгээ үзэх','View service')}<ArrowUpRight size={17}/></Link>

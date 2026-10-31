@@ -28,7 +28,8 @@ test('existing premium sections retain shared .shell and their own full-bleed ba
  const footer=read('components/premium-footer.tsx');
  assert.match(hero,/className="shell signature-hero-inner( hx-hero-inner)?"/);
  assert.match(hero,/className="signature-process"/);
- assert.match(hero,/className="signature-spotlight shell"/);
+ // Freelancers appear once, in the service cards; the duplicate talent section was removed.
+ assert.doesNotMatch(hero,/signature-spotlight/);
  assert.match(business,/className="shell business-solutions-inner"/);
  assert.match(footer,/className="shell footer-columns"/);
  assert.match(footer,/className="shell footer-bottom"/);
