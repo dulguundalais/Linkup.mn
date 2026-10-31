@@ -1,0 +1,19 @@
+/* ==========================================================================
+   LINKUP V56 — rotating example searches in the homepage finder (owner request)
+   The input keeps its real placeholder for screen readers; while the field is
+   empty the placeholder is made transparent and the same example is drawn over
+   it, so every new example slides up into place instead of swapping abruptly.
+   ========================================================================== */
+.signature-hero.hx-hero .hx-search-field{position:relative;display:flex;flex:1;min-width:0}
+.signature-hero.hx-hero .hx-search-field.has-hint input::placeholder{color:transparent}
+/* Owner asked for the example centred in the field; typed text is centred too so
+   the caret starts where the example was. */
+.signature-hero.hx-hero .signature-search.hx-searchbar .hx-search-field input{text-align:center}
+.signature-hero.hx-hero .hx-search-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;pointer-events:none;color:#6b769a;font-size:18px}
+.signature-hero.hx-hero .hx-search-hint>span{display:block;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;animation:hx-hint-in .55s cubic-bezier(.2,.7,.2,1) both}
+@keyframes hx-hint-in{from{opacity:0;transform:translateY(70%)}to{opacity:1;transform:none}}
+@media (max-width:760px){
+ .signature-hero.hx-hero .hx-search-field{flex-basis:calc(100% - 40px)}
+ .signature-hero.hx-hero .hx-search-hint{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){.signature-hero.hx-hero .hx-search-hint>span{animation:none}}

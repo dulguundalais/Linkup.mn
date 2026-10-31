@@ -8,6 +8,7 @@ import {suggestLiveServices,type LiveService} from '../lib/marketplace/live-disc
 import GuidedEntry from './guided-entry';
 import '../app/signature-home.css';
 import '../app/v50-hero.css';
+import '../app/v56-search-hints.css';
 
 type T=(mn:string,en:string)=>string;
 const topics=[
@@ -43,6 +44,7 @@ export function SignatureHero({en}:{en:boolean}){
        <div className="signature-search-shell hx-hero-search" onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node|null))setShowSuggestions(false)}}>
         <form action="/solutions/" method="get" className="signature-search hx-searchbar" role="search">
          <Search size={22} aria-hidden="true" className="hx-searchbar-icon"/>
+         <span className={'hx-search-field'+(search?'':' has-hint')}>
          <input name="q" role="combobox" aria-label={t('Асуудлаа тайлбарлах','Describe your challenge')}
           aria-autocomplete="list" aria-haspopup="listbox" aria-expanded={showSuggestions&&search.trim().length>1&&publishedState==='ready'}
           aria-controls="hero-search-suggestions" aria-activedescendant={activeSuggestion>=0&&showSuggestions&&suggestions[activeSuggestion]?'hero-search-option-'+activeSuggestion:undefined}
@@ -55,6 +57,9 @@ export function SignatureHero({en}:{en:boolean}){
            else if(e.key==='Enter'&&showSuggestions&&activeSuggestion>=0&&suggestions[activeSuggestion]){e.preventDefault();window.location.assign('/listing/?id='+encodeURIComponent(suggestions[activeSuggestion].id))}
           }}
           placeholder={examples[exampleIndex]+'…'}/>
+         {/* V56: the same example, drawn over the empty field so each new one slides in. */}
+         {!search&&<span className="hx-search-hint" aria-hidden="true"><span key={exampleIndex}>{examples[exampleIndex]}…</span></span>}
+         </span>
          <button type="submit" className="hx-searchbar-go"><span>{t('Шийдэл олох','Find solutions')}</span><ArrowRight size={18} aria-hidden="true"/></button>
         </form>
         {showSuggestions&&search.trim().length>1&&publishedState==='ready'&&<div className="signature-search-suggestions hx-suggest" id="hero-search-suggestions" role="listbox" aria-label={t('Нийтлэгдсэн үйлчилгээний санал','Published service suggestions')}>
