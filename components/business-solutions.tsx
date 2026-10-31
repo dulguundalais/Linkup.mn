@@ -4,11 +4,12 @@ import {ArrowUpRight,Bot,ChartNoAxesCombined,Clapperboard,Clock4,Workflow,Briefc
 import '../app/business-solutions.css';
 export default function BusinessSolutions({en}:{en:boolean}){
  const t=(mn:string,english:string)=>en?english:mn;
+ // V60: short titles the owner named (Маркетинг, Автоматжуулалт, Брэнд, Онлайн үйлчилгээ); the outcome moves to the line below.
  const cards=[
-  {id:'grow',mn:'Илүү олон хэрэглэгчтэй болох',eng:'Win more customers',descMn:'Маркетинг · Контент · Борлуулалт',descEn:'Marketing · Content · Growth',need:'Манай бизнесийн борлуулалт, захиалга бага байна',englishNeed:'We need more sales and bookings',Icon:ChartNoAxesCombined},
-  {id:'automate',mn:'Гар ажиллагааг багасгаж, цаг хэмнэх',eng:'Automate repetitive work',descMn:'AI · CRM · Автоматжуулалт',descEn:'AI · CRM · Automation',need:'Манай бизнесийн давтагддаг ажлыг автоматжуулах хэрэгтэй байна',englishNeed:'I need to automate our repetitive business processes',Icon:Workflow},
-  {id:'content',mn:'Брэнд, контентоо хөгжүүлэх',eng:'Build content and brand',descMn:'Брэнд · Видео · Контент',descEn:'Brand · Video · Content',need:'Манай бизнесийн контент, Reels болон брэндийг сайжруулах хэрэгтэй',englishNeed:'We need better brand identity and social content',Icon:Clapperboard},
-  {id:'launch',mn:'Онлайн үйлчилгээ эхлүүлэх',eng:'Launch online',descMn:'Вэб · UI/UX · Интеграц',descEn:'Web · UI/UX · Integrations',need:'Манай бизнест вэбсайт болон онлайн захиалгын систем хэрэгтэй байна',englishNeed:'Our business needs a website and online booking',Icon:BriefcaseBusiness}
+  {id:'grow',mn:'Маркетинг',eng:'Marketing',descMn:'Илүү олон хэрэглэгчтэй болох',descEn:'Win more customers',need:'Манай бизнесийн борлуулалт, захиалга бага байна',englishNeed:'We need more sales and bookings',Icon:ChartNoAxesCombined},
+  {id:'automate',mn:'Автоматжуулалт',eng:'Automation',descMn:'Гар ажиллагааг багасгаж, цаг хэмнэх',descEn:'Automate repetitive work',need:'Манай бизнесийн давтагддаг ажлыг автоматжуулах хэрэгтэй байна',englishNeed:'I need to automate our repetitive business processes',Icon:Workflow},
+  {id:'content',mn:'Брэнд',eng:'Brand',descMn:'Брэнд, контентоо хөгжүүлэх',descEn:'Build content and brand',need:'Манай бизнесийн контент, Reels болон брэндийг сайжруулах хэрэгтэй',englishNeed:'We need better brand identity and social content',Icon:Clapperboard},
+  {id:'launch',mn:'Онлайн үйлчилгээ',eng:'Online services',descMn:'Вэбсайт, онлайн захиалгаа эхлүүлэх',descEn:'Launch a website and online booking',need:'Манай бизнест вэбсайт болон онлайн захиалгын систем хэрэгтэй байна',englishNeed:'Our business needs a website and online booking',Icon:BriefcaseBusiness}
  ];
  return <section className="business-solutions-section" aria-labelledby="business-solutions-heading">
   <div className="shell business-solutions-inner">

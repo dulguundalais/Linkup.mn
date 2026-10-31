@@ -8,6 +8,6 @@ test('home sections retain discovery, marketplace and trust without redundant in
  assert.ok(offsets[4]<offsets[5]&&offsets[5]<offsets[6]);
  assert.doesNotMatch(story,/id="talent"/,'freelancers appear once, in the service cards');
 });
-test('homepage categories are actual Explore links, never fake services',()=>{assert.match(discovery,/href=\{'\/explore\/\?category='\+key\}/);assert.match(home,/view==='explore'&&<section className="shell discovery"/);assert.match(home,/view==='home'&&<SignatureStory/);});
+test('homepage categories are actual Explore links, never fake services',()=>{assert.match(discovery,/href=\{'\/explore\/\?category='\+key\}/);assert.match(home,/view==='explore'&&<section className="shell discovery"/);assert.match(home,/view==='home'&&<SignatureProcess/);/* V60: SignatureStory split into process, freelancer band and partner sections */});
 test('seller listings retain real catalog and opt-in visibility',()=>{const s=read('components/live-catalog.tsx');assert.match(s,/rpc\('marketplace_catalog'\)/);assert.match(s,/contactSellerHref\(s.slug,signedIn\)/);assert.doesNotMatch(discovery,/4\.9|12K|escrow-protected/i)});
 test('microcopy reduced and UI type has larger base scale',()=>{const css=read('app/v19-home.css');assert.match(css,/font-size:16px/);assert.doesNotMatch(story,/signature-search-subline/,'V59: helper line removed by the owner');assert.doesNotMatch(story,/signature-popular/);assert.doesNotMatch(story,/signature-trust-strip/)});
