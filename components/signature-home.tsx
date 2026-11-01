@@ -96,20 +96,20 @@ export function SignatureProcess({en}:{en:boolean}){
  const [mode,setMode]=useState<'buyer'|'seller'>('buyer');
  const t:T=(mn,english)=>en?english:mn;
  const steps=mode==='buyer'?buyerSteps:sellerSteps;
- // V70: a light streak sweeps under the title and lands on its last letter, once,
- // when the section scrolls into view. Without JS or with reduced motion it simply shows.
+ // V70: a straight light streak sweeps under the title, lights up under its last
+ // letter and fades away — once per page load, when the title first scrolls into
+ // view. It is hidden at rest, so with reduced motion (or no script) it never shows.
  const swooshRef=useRef<HTMLSpanElement>(null);
  useEffect(()=>{
   const el=swooshRef.current;
   if(!el||typeof IntersectionObserver==='undefined'||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  el.classList.add('v70-armed');
-  const io=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){el.classList.remove('v70-armed');el.classList.add('v70-play');io.disconnect()}},{threshold:.6});
+  const io=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){el.classList.add('v70-play');io.disconnect()}},{threshold:.6});
   io.observe(el);
-  return()=>{io.disconnect();el.classList.remove('v70-armed')};
+  return()=>io.disconnect();
  },[]);
  return <section id="how" className="signature-process v60-process" aria-labelledby="how-title">
     <div className="shell">
-     <div className="signature-section-heading"><div><span className="signature-section-eyebrow">{t('Хэрхэн ажилладаг','How it works')}</span><h2 id="how-title"><span className="v70-swoosh-text" ref={swooshRef}>{t('Санаанаас бодит ажил хүртэл.','From idea to finished work.')}<span className="v70-swoosh" aria-hidden="true"><svg viewBox="0 0 100 20" preserveAspectRatio="none" focusable="false"><defs><linearGradient id="v70-swoosh-grad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stopColor="#4a77ee" stopOpacity="0"/><stop offset=".55" stopColor="#4a77ee" stopOpacity=".75"/><stop offset=".9" stopColor="#4fd7ff"/><stop offset="1" stopColor="#d9f7ff"/></linearGradient></defs><path d="M0 17 C 30 19, 66 16, 100 5" vectorEffect="non-scaling-stroke" stroke="url(#v70-swoosh-grad)"/></svg><i className="v70-swoosh-head"/></span></span></h2></div><div className="signature-process-switch" role="group" aria-label={t('Хэрэглэгчийн төрөл','How it works for')}><button aria-pressed={mode==='buyer'} className={mode==='buyer'?'active':''} onClick={()=>setMode('buyer')}>{t('Захиалагчдад','For buyers')}</button><button aria-pressed={mode==='seller'} className={mode==='seller'?'active':''} onClick={()=>setMode('seller')}>{t('Мэргэжилтнүүдэд','For freelancers')}</button></div></div>
+     <div className="signature-section-heading"><div><span className="signature-section-eyebrow">{t('Хэрхэн ажилладаг','How it works')}</span><h2 id="how-title"><span className="v70-swoosh-text" ref={swooshRef}>{t('Санаанаас бодит ажил хүртэл.','From idea to finished work.')}<span className="v70-swoosh" aria-hidden="true"><svg viewBox="0 0 100 20" preserveAspectRatio="none" focusable="false"><defs><linearGradient id="v70-swoosh-grad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stopColor="#4a77ee" stopOpacity="0"/><stop offset=".55" stopColor="#4a77ee" stopOpacity=".75"/><stop offset=".9" stopColor="#4fd7ff"/><stop offset="1" stopColor="#d9f7ff"/></linearGradient></defs><path d="M0 10 L100 10" vectorEffect="non-scaling-stroke" stroke="url(#v70-swoosh-grad)"/></svg><i className="v70-swoosh-head"/></span></span></h2></div><div className="signature-process-switch" role="group" aria-label={t('Хэрэглэгчийн төрөл','How it works for')}><button aria-pressed={mode==='buyer'} className={mode==='buyer'?'active':''} onClick={()=>setMode('buyer')}>{t('Захиалагчдад','For buyers')}</button><button aria-pressed={mode==='seller'} className={mode==='seller'?'active':''} onClick={()=>setMode('seller')}>{t('Мэргэжилтнүүдэд','For freelancers')}</button></div></div>
      <ol className="v60-steps">{steps.map(({index,mn,en:eng,descMn,descEn,Icon})=><li key={mode+index} className="v60-step"><div className="v60-step-head"><span className="v60-step-icon" aria-hidden="true"><Icon size={26} strokeWidth={1.8}/></span><span className="v60-step-num">{index}</span></div><h3>{en?eng:mn}</h3><p>{en?descEn:descMn}</p></li>)}</ol>
      <p className="signature-process-note"><ShieldCheck size={15}/>{t('Туршилтын хугацаанд Linkup төлбөр хүлээн авахгүй, эскроу үйлчилгээ үзүүлэхгүй.','No real payments or escrow during open beta.')}</p>
     </div>
