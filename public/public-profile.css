@@ -187,3 +187,9 @@ body{background:#fff}
 .portfolio-contact-panel a:hover{background:#fff}
 @media(max-width:760px){.portfolio-hero,.portfolio-hero:has(.v42-hero-cover-image){margin:6px;border-radius:18px}}
 .portfolio-footer{background:var(--v54-stage);color:#a9b9de}
+
+/* V63: the bio renders **bold** and "- " lists; the hero shows only its opening paragraph. */
+.portfolio-about-copy p{white-space:normal}
+.portfolio-about-copy strong{color:#0a1430;font-weight:700}
+.portfolio-about-copy ul{margin:0 0 25px;padding-left:20px;display:grid;gap:6px;color:#4e617c;font-size:15px;line-height:1.7}
+.portfolio-about-copy li::marker{color:#2b5cde}

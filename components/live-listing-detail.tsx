@@ -148,6 +148,8 @@ export default function LiveListingDetail(){
  const subId=listing?(listing.subcategory||legacyCategory(listing.category)?.subcategory||''):'';
  const subLabel=listing?subcategoryLabel(catId,subId,en):'';
  const title=listing?(en&&listing.title_en?listing.title_en:listing.title):'';
+ // V63: the browser tab shows the service name, not just "Үйлчилгээ".
+ useEffect(()=>{if(title)document.title=title+' — Linkup'},[title]);
  const crumbs=[{label:t('Нүүр','Home'),href:'/'},
   ...(listing&&normalizeCategory(catId)!=='all'?[{label:categoryLabel(catId,en),href:'/explore/?category='+catId}]:[{label:t('Үйлчилгээ','Services'),href:'/explore/'}]),
   ...(listing&&subLabel?[{label:subLabel,href:'/explore/?category='+catId+'&sub='+encodeURIComponent(subId)}]:[]),
