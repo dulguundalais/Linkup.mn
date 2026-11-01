@@ -26,6 +26,9 @@ html.v65-loading .hustle-v5,html.v65-loading .hustle-v5 *{transition:none!import
 /* 2c. Service page */
 .v50-listing-page.night{background:#050c22;color:#eef3ff;color-scheme:dark}
 .v50-listing-page.night .v28-detail-page{background:transparent;color:#eef3ff}
+.v50-listing-page.night .v39-detail-page{--v39-bg:#050c22;--v39-paper:#0b1636;--v39-line:#1c2b55;--v39-ink:#eef3ff;--v39-muted:#a9b9de;--v39-accent:#9db6ff}
+.v50-listing-page.night .v39-detail-page .v28-detail-grid>article{box-shadow:none}
+.v50-listing-page.night .v39-detail-page .v28-detail-grid>article>a{background:transparent;color:#9db6ff}
 .v50-listing-page.night :is(h1,h2,h3,strong,b,label,.v28-detail-price){color:#eef3ff}
 .v50-listing-page.night :is(p,.v28-detail-description,.v28-detail-seller span,.v28-detail-spec span,.v39-detail-reviews,.v50-price-from,.v50-price-unit,small){color:#a9b9de}
 .v50-listing-page.night :is(.v28-detail-offer,.v50-drawer,.v50-drawer-foot,.v50-order-service,.v50-detail-tags li,.v50-retry,.v50-sent-icon,.v50-order-error){background:#0b1636;border-color:#1c2b55;color:#eef3ff;box-shadow:none}
