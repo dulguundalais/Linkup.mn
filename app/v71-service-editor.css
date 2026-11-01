@@ -1,0 +1,38 @@
+/* ==========================================================================
+   LINKUP V71 — service editor, step 1 (owner request 2026-11-02)
+   Less text; the pricing model is four short cards, and the chosen one is
+   clearly filled and ticked. Colours follow the workspace tokens (light/dark).
+   ========================================================================== */
+.v71-fields{display:grid;gap:18px}
+.v71-suggest-link{justify-self:start;margin-top:-8px;padding:4px 0;border:0;background:none;color:var(--purple);font:inherit;font-size:13px;font-weight:650;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.v71-suggest-link:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px;border-radius:4px}
+
+.v71-types{margin:0;padding:0;border:0;min-width:0}
+.v71-types legend{padding:0;margin-bottom:8px;font-size:13px;font-weight:700}
+.v71-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+/* .workspace label is a column flex box elsewhere; these are rows */
+.workspace .v71-type,.v71-type{position:relative;display:flex!important;flex-direction:row!important;align-items:center;gap:12px!important;min-height:56px;padding:0 14px 0 16px;border:1.5px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);cursor:pointer;font-size:14px!important;font-weight:650!important;transition:border-color .2s,background-color .2s,box-shadow .2s}
+.v71-type:hover{border-color:var(--hx-royal-300,#9db6ff)}
+.v71-type input{position:absolute;width:1px;height:1px;margin:0;opacity:0;pointer-events:none}
+.v71-type:focus-within{box-shadow:0 0 0 3px rgb(79 215 255/.45)}
+.v71-type-name{flex:1;min-width:0;line-height:1.35}
+.v71-type-tick{flex:0 0 22px;display:grid;place-items:center;width:22px;height:22px;border:1.5px solid var(--border);border-radius:50%;color:#fff}
+.v71-type.is-selected{border-color:var(--hx-royal-600,#2b5cde);background:var(--soft);box-shadow:inset 0 0 0 1px var(--hx-royal-600,#2b5cde)}
+.v71-type.is-selected .v71-type-tick{border-color:var(--hx-royal-600,#2b5cde);background:var(--hx-royal-600,#2b5cde)}
+@media(max-width:520px){.v71-type-grid{grid-template-columns:1fr}}
+
+/* Delete a service from the seller list */
+.v71-service-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px}
+.v71-delete{display:inline-flex;align-items:center;gap:6px;color:#b42318!important;border-color:rgb(180 35 24/.35)!important}
+.night .v71-delete{color:#ff9b8f!important;border-color:rgb(255 155 143/.35)!important}
+.v71-delete-yes{background:#b42318!important;border-color:#b42318!important;color:#fff!important}
+.v72-delete-problem{margin:0;padding:10px 12px;border-radius:10px;background:#fde8e6;color:#8a1f15;font-size:13px;font-weight:600}
+.night .v72-delete-problem{background:#3a1512;color:#ffb4ab}
+
+/* V72: the delete question opens in a small centred dialog */
+.v72-dialog-layer{position:fixed;inset:0;z-index:95;display:grid;place-items:center;padding:16px}
+.v72-dialog-scrim{position:absolute;inset:0;background:rgb(4 11 31/.5)}
+.v72-dialog{position:relative;display:grid;gap:18px;width:min(400px,100%);padding:24px;border:1px solid var(--border);border-radius:18px;background:var(--surface);color:var(--text);box-shadow:0 24px 60px rgb(4 11 31/.35)}
+.v72-dialog h2{margin:0;font-size:18px;line-height:1.4;font-weight:750;overflow-wrap:anywhere}
+.v72-dialog-actions{display:flex;justify-content:flex-end;gap:10px}
+.v72-dialog-actions .button{min-height:44px;padding:0 18px}

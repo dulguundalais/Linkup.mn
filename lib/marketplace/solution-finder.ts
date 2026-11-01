@@ -75,6 +75,7 @@ const solutions:Record<OutcomeKey,Outcome>={
  {id:'market',mn:'Маркетинг ба контент',en:'Marketing & content',whyMn:'Хэрэглэгчид хүрэх арга барилаа сонгох.',whyEn:'Choose ways to reach your audience.',categories:['marketing','creative']}
  ]}
 };
+export const HIDDEN_OUTCOMES:OutcomeKey[]=['learning','wellbeing'];
 const keywords:Record<Exclude<OutcomeKey,'general'>,RegExp>={
  automation:/автомат|automati|automation|automat|n8n|make.com|zapier|chatbot|бот|bot|crm|integrat|давтаг|гараар|систем холб|ajil hɵngɵ|ajil hongol|ai agent/i,
  growth:/борлуул|захиалга.*(бага|нэм|олон)|захиалг.*өс|үйлчлүүлэгч|орлого нэм|sales|growth|revenue|customer|booking.*(more|increase)|zahialga|borluulalt|ads|хэрэглэгч.*тат/i,
@@ -97,7 +98,8 @@ export const problemExamples=[
 export function classifyNeed(input:string):Outcome{
  const clean=input.trim().slice(0,1200);
  if(!clean)return solutions.general;
- const scores=Object.entries(keywords).map(([key,rx])=>({key:key as Exclude<OutcomeKey,'general'>,score:(clean.match(new RegExp(rx.source,'gi'))||[]).length}));
+ // V71 (owner): learning and wellbeing services are not offered for now; those needs fall back to «general».
+ const scores=Object.entries(keywords).filter(([key])=>!HIDDEN_OUTCOMES.includes(key as OutcomeKey)).map(([key,rx])=>({key:key as Exclude<OutcomeKey,'general'>,score:(clean.match(new RegExp(rx.source,'gi'))||[]).length}));
  scores.sort((a,b)=>b.score-a.score);
  return scores[0]?.score>0?solutions[scores[0].key]:solutions.general;
 }

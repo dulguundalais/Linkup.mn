@@ -13,11 +13,13 @@ test('homepage category cards use the category names from the taxonomy',async()=
  const js=ts.transpileModule(src,{compilerOptions:{module:ts.ModuleKind.ES2022,target:ts.ScriptTarget.ES2022}}).outputText;
  const tax=await import('data:text/javascript;base64,'+Buffer.from(js).toString('base64'));
  for(const card of tax.SHOWCASE){
-  if(card.key==='legal-finance'){assert.equal(card.mn,tax.LEGAL_FINANCE_GROUP.mn);continue}
   const c=tax.categoryById(card.key);
   assert.equal(card.mn,c.mn,card.key);assert.equal(card.en,c.en,card.key);
  }
- assert.match(read('components/category-directory.tsx'),/LEGAL_FINANCE_GROUP\.mn/,'categories page names the same group');
+ // V72 (owner): no «Хууль ба санхүү» group anywhere; the legal category is «Хууль, эрх зүй».
+ assert.equal(tax.categoryById('legal').mn,'Хууль, эрх зүй');
+ assert.ok(!tax.SHOWCASE.some(c=>c.mn==='Хууль ба санхүү'));
+ assert.doesNotMatch(read('components/category-directory.tsx'),/LEGAL_FINANCE_GROUP|cdir-pair/);
 });
 test('finder page: one purpose, no extra copy, clear result and new search',()=>{
  const f=read('components/solution-finder.tsx');

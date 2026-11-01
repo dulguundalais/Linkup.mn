@@ -18,7 +18,7 @@ export type Category={
 
 const sub=(id:string,mn:string,en:string,keywords:string[]=[]):Subcategory=>({id,mn,en,keywords});
 
-export const CATEGORIES:Category[]=[
+export const ALL_CATEGORIES:Category[]=[
  {id:'ai',mn:'AI ба автоматжуулалт',en:'AI & Automation',
   leadMn:'Давтагддаг ажлаа автоматжуулах шийдлүүд',leadEn:'Turn repetitive work into smart systems',
   keywords:['ai','хиймэл оюун','hiimel oyun','artificial intelligence','automation','автоматжуулалт','avtomatjuulalt','n8n','make','zapier','gpt','chatgpt','бот','bot'],
@@ -85,7 +85,7 @@ export const CATEGORIES:Category[]=[
    sub('reporting','Санхүүгийн тайлан','Financial reporting',['financial report','санхүүгийн тайлан','ifrs']),
    sub('fractional-cfo','Цагийн санхүүгийн захирал (CFO)','Fractional CFO',['cfo','санхүүгийн захирал'])
  ]},
- {id:'legal',mn:'Хууль ба нийцэл',en:'Legal & Compliance',regulated:true,
+ {id:'legal',mn:'Хууль, эрх зүй',en:'Legal',regulated:true,
   leadMn:'Баталгаажсан хуульчдын зөвлөгөө',leadEn:'Advice from verified lawyers',
   keywords:['legal','хууль','huuli','lawyer','хуульч','huulich','contract','гэрээ','geree','compliance'],
   subcategories:[
@@ -162,6 +162,11 @@ export const CATEGORIES:Category[]=[
  ]}
 ];
 
+/** V71 (owner, 2026-11-02): not offered for now. Their definitions stay so they can
+ *  be switched back on by removing them from this list. */
+export const HIDDEN_CATEGORIES:CategoryId[]=['education','wellbeing'];
+/** Categories shown to buyers and sellers. */
+export const CATEGORIES:Category[]=ALL_CATEGORIES.filter(c=>!HIDDEN_CATEGORIES.includes(c.id));
 export const CATEGORY_IDS=CATEGORIES.map(c=>c.id);
 export const REGULATED=CATEGORIES.filter(c=>c.regulated).map(c=>c.id);
 export const categoryById=(id:string)=>CATEGORIES.find(c=>c.id===id);
@@ -170,24 +175,22 @@ export const subcategoryLabel=(category:string,subId:string|null|undefined,en:bo
  const s=categoryById(category)?.subcategories.find(x=>x.id===subId);return s?(en?s.en:s.mn):'';
 };
 
-/** Homepage carousel: six featured cards first, then the rest. One card groups Legal and Finance. */
+/** Homepage carousel: one card per category, featured ones first. */
 export type ShowcaseCard={key:string;mn:string;en:string;href:string;categories:CategoryId[];art:string};
 /** V61: card names come from CATEGORIES, so the homepage and the categories page
- *  always say the same thing. Only the Legal + Finance card is a group; the
- *  categories page shows the same group under the same name. */
-export const LEGAL_FINANCE_GROUP={mn:'Хууль ба санхүү',en:'Legal & Finance'};
+ *  always say the same thing. */
 const showcaseCard=(id:CategoryId,art:string=id):ShowcaseCard=>{const c=CATEGORIES.find(x=>x.id===id)!;return {key:id,mn:c.mn,en:c.en,href:'/categories/#'+id,categories:[id],art}};
 export const SHOWCASE:ShowcaseCard[]=[
  showcaseCard('ai'),
  showcaseCard('business'),
  showcaseCard('marketing'),
  showcaseCard('tech'),
- {key:'legal-finance',...LEGAL_FINANCE_GROUP,href:'/categories/#legal-finance',categories:['legal','finance'],art:'legal-finance'},
+ // V72 (owner): «Хууль, эрх зүй» is its own card; finance has its own card next to it.
+ showcaseCard('legal'),
+ showcaseCard('finance'),
  showcaseCard('creative'),
  showcaseCard('research'),
- showcaseCard('commerce'),
- showcaseCard('education'),
- showcaseCard('wellbeing')
+ showcaseCard('commerce')
 ];
 
 /** Category artwork available as raster images in public/categories/<art>.webp.
@@ -196,14 +199,16 @@ export const CATEGORY_IMAGES:string[]=[];
 
 /** How a service is sold. Inquiry-based models never take payment on Hustle. */
 export type ServiceType='fixed'|'hourly'|'custom'|'monthly'|'mentoring';
-export const SERVICE_TYPES:{id:ServiceType;mn:string;en:string;hintMn:string;hintEn:string;priceMn:string;priceEn:string}[]=[
+export const ALL_SERVICE_TYPES:{id:ServiceType;mn:string;en:string;hintMn:string;hintEn:string;priceMn:string;priceEn:string}[]=[
  {id:'fixed',mn:'Тогтмол үнэтэй багц',en:'Fixed-price package',hintMn:'Суурь, Стандарт, Дээд багцаас ажлын хүрээгээ сонгоно.',hintEn:'Clear deliverables in Basic, Standard and Premium packages.',priceMn:'-аас эхэлнэ',priceEn:'starting price'},
  {id:'hourly',mn:'Цагийн зөвлөгөө',en:'Hourly consultation',hintMn:'Мэргэжилтэнтэй цагаар уулзаж зөвлөгөө авна.',hintEn:'Book an expert by the hour.',priceMn:'/ цаг',priceEn:'/ hour'},
  {id:'custom',mn:'Захиалгат төсөл',en:'Custom project',hintMn:'Хэрэгцээгээ тайлбарлаад үнийн санал авна.',hintEn:'Describe your needs and receive a quote.',priceMn:'-аас эхэлнэ',priceEn:'from'},
  {id:'monthly',mn:'Сарын үйлчилгээ',en:'Monthly retainer',hintMn:'Тогтмол дэмжлэг, зөвлөгөө сар бүр.',hintEn:'Ongoing support every month.',priceMn:'/ сар',priceEn:'/ month'},
  {id:'mentoring',mn:'Ментор ба сургалт',en:'Mentoring & training',hintMn:'Ганцаарчилсан ментор, коучинг, хичээл.',hintEn:'One-to-one mentoring, coaching or lessons.',priceMn:'/ уулзалт',priceEn:'/ session'}
 ];
-export const serviceTypeById=(id:string|null|undefined)=>SERVICE_TYPES.find(t=>t.id===id)||SERVICE_TYPES[0];
+/** V71 (owner): «Ментор ба сургалт» is not offered for now; existing rows still get their label. */
+export const SERVICE_TYPES=ALL_SERVICE_TYPES.filter(t=>t.id!=='mentoring');
+export const serviceTypeById=(id:string|null|undefined)=>ALL_SERVICE_TYPES.find(t=>t.id===id)||ALL_SERVICE_TYPES[0];
 
 /** Pre-V50 category ids and where their services now live. */
 export const LEGACY_CATEGORY_MAP:Record<string,{category:CategoryId;subcategory:string}>={
