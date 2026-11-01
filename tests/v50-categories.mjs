@@ -43,8 +43,8 @@ test('legacy mapping in TypeScript matches the SQL data migration',()=>{
   assert.equal(tax.normalizeCategory('tech'),'tech');
   assert.equal(tax.normalizeCategory('nope'),'all');
 });
-test('showcase: six featured cards first; every non-grouped category reachable; legal+finance grouped',()=>{
-  assert.deepEqual(tax.SHOWCASE.slice(0,6).map(c=>c.key),['ai','business','marketing','tech','legal-finance','creative']);
+test('showcase: featured cards first; every category reachable; legal and finance each have a card',()=>{
+  assert.deepEqual(tax.SHOWCASE.slice(0,7).map(c=>c.key),['ai','business','marketing','tech','legal','finance','creative']);
   const covered=new Set(tax.SHOWCASE.flatMap(c=>c.categories));
   for(const id of tax.CATEGORY_IDS)assert.ok(covered.has(id),id);
   assert.equal(new Set(tax.SHOWCASE.map(c=>c.key)).size,tax.SHOWCASE.length);

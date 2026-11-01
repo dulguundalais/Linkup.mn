@@ -85,7 +85,7 @@ export const ALL_CATEGORIES:Category[]=[
    sub('reporting','Санхүүгийн тайлан','Financial reporting',['financial report','санхүүгийн тайлан','ifrs']),
    sub('fractional-cfo','Цагийн санхүүгийн захирал (CFO)','Fractional CFO',['cfo','санхүүгийн захирал'])
  ]},
- {id:'legal',mn:'Хууль ба нийцэл',en:'Legal & Compliance',regulated:true,
+ {id:'legal',mn:'Хууль, эрх зүй',en:'Legal',regulated:true,
   leadMn:'Баталгаажсан хуульчдын зөвлөгөө',leadEn:'Advice from verified lawyers',
   keywords:['legal','хууль','huuli','lawyer','хуульч','huulich','contract','гэрээ','geree','compliance'],
   subcategories:[
@@ -175,19 +175,19 @@ export const subcategoryLabel=(category:string,subId:string|null|undefined,en:bo
  const s=categoryById(category)?.subcategories.find(x=>x.id===subId);return s?(en?s.en:s.mn):'';
 };
 
-/** Homepage carousel: six featured cards first, then the rest. One card groups Legal and Finance. */
+/** Homepage carousel: one card per category, featured ones first. */
 export type ShowcaseCard={key:string;mn:string;en:string;href:string;categories:CategoryId[];art:string};
 /** V61: card names come from CATEGORIES, so the homepage and the categories page
- *  always say the same thing. Only the Legal + Finance card is a group; the
- *  categories page shows the same group under the same name. */
-export const LEGAL_FINANCE_GROUP={mn:'Хууль ба санхүү',en:'Legal & Finance'};
+ *  always say the same thing. */
 const showcaseCard=(id:CategoryId,art:string=id):ShowcaseCard=>{const c=CATEGORIES.find(x=>x.id===id)!;return {key:id,mn:c.mn,en:c.en,href:'/categories/#'+id,categories:[id],art}};
 export const SHOWCASE:ShowcaseCard[]=[
  showcaseCard('ai'),
  showcaseCard('business'),
  showcaseCard('marketing'),
  showcaseCard('tech'),
- {key:'legal-finance',...LEGAL_FINANCE_GROUP,href:'/categories/#legal-finance',categories:['legal','finance'],art:'legal-finance'},
+ // V72 (owner): «Хууль, эрх зүй» is its own card; finance has its own card next to it.
+ showcaseCard('legal'),
+ showcaseCard('finance'),
  showcaseCard('creative'),
  showcaseCard('research'),
  showcaseCard('commerce')

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import {ArrowUpRight,Search,ShieldCheck,X} from 'lucide-react';
 import {Breadcrumbs} from './site-header';
 import CategoryArt from './category-art';
-import {CATEGORIES,LEGAL_FINANCE_GROUP,SERVICE_TYPES,type Category} from '../lib/marketplace/taxonomy';
+import {CATEGORIES,SERVICE_TYPES,type Category} from '../lib/marketplace/taxonomy';
 import {normalizeSearch} from '../lib/marketplace/smart-search';
 import '../app/v50-categories.css';
 import '../app/v61-consistency.css';
@@ -45,7 +45,6 @@ export default function CategoryDirectory({en}:{en:boolean}){
    <Link className="cdir-all" href={'/explore/?category='+c.id}>{t('Бүх үйлчилгээг үзэх','See all services')}<ArrowUpRight size={15} aria-hidden="true"/></Link>
   </div>
  </article>;
- const legalFinance=visible.filter(x=>x.c.id==='legal'||x.c.id==='finance');
  return <section className="cdir shell" aria-labelledby="cdir-title">
   <Breadcrumbs en={en} items={[{label:t('Нүүр','Home'),href:'/'},{label:t('Ангилал','Categories')}]}/>
   <header className="cdir-intro">
@@ -61,9 +60,8 @@ export default function CategoryDirectory({en}:{en:boolean}){
   </header>
   {visible.length===0?<div className="cdir-empty"><p>{t('Тохирох ангилал олдсонгүй.','No matching category.')}</p><Link className="cdir-all" href={'/solutions/?q='+encodeURIComponent(q)}>{t('Хэрэгцээгээрээ хайх','Search by your problem')}<ArrowUpRight size={15}/></Link></div>:
   <div className="cdir-grid">
-   {visible.filter(x=>x.c.id!=='legal'&&x.c.id!=='finance').slice(0,4).map(block)}
-   {legalFinance.length>0&&<div id="legal-finance" className="cdir-pair" role="group" aria-labelledby="cdir-pair-title"><h2 id="cdir-pair-title" className="cdir-pair-title">{en?LEGAL_FINANCE_GROUP.en:LEGAL_FINANCE_GROUP.mn}</h2>{legalFinance.map(block)}</div>}
-   {visible.filter(x=>x.c.id!=='legal'&&x.c.id!=='finance').slice(4).map(block)}
+   {/* V72 (owner): «Хууль, эрх зүй» and finance are listed on their own, like every other category. */}
+   {visible.map(block)}
   </div>}
   <aside className="cdir-models" aria-labelledby="cdir-models-title">
    <h2 id="cdir-models-title">{t('Ажиллах хэлбэрүүд','Ways to work together')}</h2>

@@ -21,12 +21,13 @@ test('sellers can delete their own services; order history is archived, never er
  assert.match(w,/<ServiceDeleteButton en=\{en\} serviceId=\{s\.id\}/);
  assert.match(w,/myServices=listings\.filter\(s=>s\.seller_id===uid&&s\.status!=='archived'\)/);
  assert.match(b,/rpc\('delete_own_service',\{p_service:serviceId\}\)/);
- assert.match(b,/Тийм, устгах/,'asks once before deleting');
+ assert.match(b,/role="alertdialog" aria-modal="true"/,'asks once, in a small dialog');
+ assert.match(b,/«'\+title\+'»-г устгах уу\?/);
  assert.doesNotMatch(b,/window\.confirm|confirm\(/);
 });
 test('V72: feedback is visible where the person is looking',()=>{
  const b=read('components/service-delete-button.tsx'),css=read('app/v72-workspace-toast.css');
- assert.match(b,/\{problem&&<p className="v72-delete-problem" role="alert">\{problem\}<\/p>\}/,'error next to the delete button');
+ assert.match(b,/\{problem&&<p className="v72-delete-problem" role="alert">\{problem\}<\/p>\}/,'error inside the dialog');
  assert.match(b,/Устгах боломж одоохондоо идэвхжээгүй байна/);
  assert.match(css,/\.workspace-message\{position:fixed;/,'messages float in view, not at the top of the page');
  assert.match(read('components/workspace.tsx'),/import '\.\.\/app\/v72-workspace-toast\.css';/);
