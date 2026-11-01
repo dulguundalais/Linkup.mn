@@ -1,0 +1,19 @@
+/* ==========================================================================
+   LINKUP V73 — «Ажиллах хэлбэрүүд» on the categories page (owner, 2026-11-02)
+   The grid was built for five models; with four it left an empty column and the
+   cards looked squeezed. Now four equal, roomier cards fill the row, each with
+   an icon. Same navy panel and colours.
+   ========================================================================== */
+html body .cdir-models{padding:clamp(24px,3vw,40px)}
+html body .cdir-models h2{margin:0 0 20px;font-size:clamp(22px,1.4rem + .4vw,28px);font-weight:800;letter-spacing:-.02em}
+/* As many columns as there are models (four today) */
+html body .cdir-models ul{grid-template-columns:repeat(var(--models,4),minmax(0,1fr));gap:16px}
+html body .cdir-models li{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:22px;border-radius:18px;background:rgb(255 255 255/.06);box-shadow:inset 0 0 0 1px rgb(255 255 255/.12);transition:background-color .2s,box-shadow .2s}
+html body .cdir-models li:hover{background:rgb(255 255 255/.09);box-shadow:inset 0 0 0 1px rgb(157 182 255/.4)}
+html body .cdir-models .cdir-model-icon{display:grid;place-items:center;width:44px;height:44px;margin-bottom:4px;border-radius:12px;background:linear-gradient(135deg,#2b5cde,#1c3ea8);color:#fff;box-shadow:0 8px 20px rgb(43 92 222/.35)}
+html body .cdir-models b{font-size:16px;line-height:1.35;color:#fff}
+html body .cdir-models .cdir-model-hint{font-size:14px;line-height:1.55;color:#c9d6f2}
+html body .cdir-models>p{display:flex;align-items:center;gap:8px;margin:20px 0 0;font-size:13.5px;color:#a9b9de}
+html body .cdir-models>p svg{flex:0 0 auto;color:#4fd7ff}
+@media(max-width:1000px){html body .cdir-models ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){html body .cdir-models ul{grid-template-columns:1fr}html body .cdir-models li{padding:18px}html body .cdir-models>p{align-items:flex-start}}
