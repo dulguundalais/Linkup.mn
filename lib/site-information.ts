@@ -829,8 +829,8 @@ export const informationPages:Record<string,InfoPage>={
         },
         "paragraphs": [
           {
-            "mn": "Туршилтын үндсэн тохиргоо: нөхцөл хангасан бүх түншид 1% урамшуулал, урилга бүртгүүлэх хугацаа 30 хоног, урамшуулал тооцох хугацаа 12 сар. Эдгээр тохиргоо өөрчлөгдөж болно.",
-            "en": "Current configurable beta rules: a 1% reward for every qualifying partner, a 30-day attribution window and 12 months of reward eligibility. They may change."
+            "mn": "Нөхцөл хангасан бүх түншид адил хувь хэмжээгээр урамшуулал тооцно. Урамшууллын хувь, урилга бүртгүүлэх хугацаа, урамшуулал тооцох хугацааг Linkup тогтоодог бөгөөд одоогийн нөхцөл Түншийн хөтөлбөрийн хуудсанд үргэлж шинэчлэгдэж харагдана.",
+            "en": "Every qualifying partner earns the same reward rate. Linkup sets the rate, the invite window and the reward period; the current terms are always shown on the Partner program page."
           },
           {
             "mn": "Туршилтын тооцоолол нь мөнгөн урамшуулал авах эрх, төлбөрийн баталгаа болохгүй. Одоогоор мөнгөн урамшуулал олгохгүй.",
@@ -1057,8 +1057,8 @@ export const helpTopics:{group:Localized;items:{q:Localized;a:Localized}[]}[]=[
     "items": [
       {
         "q": {
-          "mn": "Түншийн 1%-ийн урамшууллыг мөнгөөр олгох уу?",
-          "en": "Is the 1% referral reward paid?"
+          "mn": "Түншийн урамшууллыг мөнгөөр олгох уу?",
+          "en": "Is the referral reward paid?"
         },
         "a": {
           "mn": "Одоогоор олгохгүй. Эдгээр хувь нь туршилтын тооцооллын тохиргоо юм. Мөнгөн урамшуулал олгож эхлэхээс өмнө нөхцөлийг тусад нь нийтэлнэ.",

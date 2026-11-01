@@ -5,6 +5,7 @@ import {ArrowUpRight,ArrowRight,CheckCircle2,ShieldCheck,Copy,Share2,Users,Chart
 import SiteHeader,{useSiteAccount} from './site-header';
 import PremiumFooter from './premium-footer';
 import {marketplaceClient} from '../lib/marketplace/client';
+import {DEFAULT_PARTNER_TERMS,loadPartnerTerms,type PartnerTerms} from '../lib/marketplace/partner-terms';
 import {signInWithReturn} from '../lib/marketplace/ux-flows';
 import '../app/marketplace.css';
 import '../app/partner-program.css';
@@ -13,7 +14,7 @@ import '../app/v54-page-unification.css';
 type Membership={user_id:string;display_name:string;partner_kind:'individual'|'business';promotion_channel:string;website:string;tier:'community'|'growth';status:'active'|'suspended';created_at:string};
 type Referral={id:string;partner_id:string;status:string;created_at:string};
 type Reward={id:string;estimated_amount:number;state:string;created_at:string};
-type Rules={partner_percent:number;attribution_days:number;reward_months:number};
+type Rules=PartnerTerms;
 const txt=(en:boolean,mn:string,eng:string)=>en?eng:mn;
 export default function PartnerProgram(){
  const session=useSiteAccount();
@@ -21,7 +22,7 @@ export default function PartnerProgram(){
  const [loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
  const [membership,setMembership]=useState<Membership|null>(null),[code,setCode]=useState('');
  const [referrals,setReferrals]=useState<Referral[]>([]),[rewards,setRewards]=useState<Reward[]>([]);
- const [rules,setRules]=useState<Rules>({partner_percent:1,attribution_days:30,reward_months:12});
+ const [rules,setRules]=useState<Rules>(DEFAULT_PARTNER_TERMS);
  const [name,setName]=useState(''),[kind,setKind]=useState<'individual'|'business'>('individual'),[channel,setChannel]=useState(''),[website,setWebsite]=useState(''),[accept,setAccept]=useState(false);
  const t=(mn:string,english:string)=>txt(en,mn,english);
  useEffect(()=>{try{setEn(localStorage.getItem('hustle-language')==='en');setDark(localStorage.getItem('hustle-theme')==='dark')}catch{}},[]);
@@ -29,8 +30,8 @@ export default function PartnerProgram(){
   setLoading(true);setError('');
   try{
    const db=await marketplaceClient();
-   const [auth,settings]=await Promise.all([db.auth.getUser(),db.from('business_rules').select('partner_percent,attribution_days,reward_months').eq('id',true).maybeSingle()]);
-   if(settings.data)setRules(settings.data as Rules);
+   const [auth,settings]=await Promise.all([db.auth.getUser(),loadPartnerTerms()]);
+   if(settings)setRules(settings);
    const user=auth.data.user;
    if(!user){setMembership(null);setCode('');setReferrals([]);setRewards([]);return}
    const [m,c,rs,rw,profile]=await Promise.all([
@@ -94,7 +95,7 @@ export default function PartnerProgram(){
     </div>:<form className="pp-form" onSubmit={e=>void enroll(e)}>
       <div className="pp-form-header"><h3>{t('Түншийн мэдээлэл','Partner information')}</h3><p>{t('Мэдээллээ бөглөж, нөхцөл зөвшөөрмөгц хувийн холбоос үүснэ.','Complete the form and accept the program terms to get your link.')}</p></div>
       <div className="pp-form-grid"><label>{t('Нэр / Байгууллагын нэр','Name / Organization')}<input required minLength={2} maxLength={100} value={name} onChange={e=>setName(e.target.value)}/></label><label>{t('Түншийн төрөл','Partner type')}<select value={kind} onChange={e=>setKind(e.target.value as 'individual'|'business')}><option value="individual">{t('Хувь хүн','Individual')}</option><option value="business">{t('Байгууллага','Business')}</option></select></label><label>{t('Танилцуулах үндсэн суваг','Promotion channel')}<input required minLength={2} maxLength={120} placeholder={t('Жишээ: Facebook, LinkedIn','e.g. Facebook, LinkedIn')} value={channel} onChange={e=>setChannel(e.target.value)}/></label><label>{t('Вэб / Сошиал холбоос (заавал биш)','Website / Social link (optional)')}<input type="url" maxLength={250} placeholder="https://" value={website} onChange={e=>setWebsite(e.target.value)}/></label></div>
-      <label className="pp-consent"><input type="checkbox" required checked={accept} onChange={e=>setAccept(e.target.checked)}/><span>{t('Partner хөтөлбөрийн дүрэм, 30 хоногийн хамаарлын нөхцөл болон бета туршилтын үед мөнгөн урамшуулал олгохгүйг ойлгож зөвшөөрч байна.','I accept the program rules, attribution window and beta-only simulated rewards with no payouts.')} <Link href="/terms/">{t('Үйлчилгээний нөхцөл','Terms')}</Link></span></label>
+      <label className="pp-consent"><input type="checkbox" required checked={accept} onChange={e=>setAccept(e.target.checked)}/><span>{t('Түншийн хөтөлбөрийн дүрэм, '+rules.attribution_days+' хоногийн урилгын хугацаа болон бета туршилтын үед мөнгөн урамшуулал олгохгүйг ойлгож зөвшөөрч байна.','I accept the program rules, the '+rules.attribution_days+'-day invite window and beta-only simulated rewards with no payouts.')} <Link href="/terms/">{t('Үйлчилгээний нөхцөл','Terms')}</Link></span></label>
       <button className="pp-primary" type="submit" disabled={busy||!accept}>{busy?t('Бүртгэж байна…','Activating…'):t('Түнш болж, холбоос авах','Activate and get my link')}<ArrowUpRight size={19}/></button>
     </form>}
    </section>
