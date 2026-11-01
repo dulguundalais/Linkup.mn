@@ -33,12 +33,12 @@ test('public profile: short hero, bio rendered once with safe bold and lists',as
  const bio='First line of my story.\n\n**My core areas:**\n\n- Strategy\n- <b>Research</b>';
  const html=m.renderBio(bio);
  assert.match(html,/<strong>My core areas:<\/strong>/);
- assert.match(html,/<ul><li>Strategy<\/li><li>&lt;b&gt;Research&lt;\/b&gt;<\/li><\/ul>/,'list items stay escaped');
+ assert.match(html,/<ul[^>]*><li>Strategy<\/li><li>&lt;b&gt;Research&lt;\/b&gt;<\/li><\/ul>/,'list items stay escaped');
  assert.doesNotMatch(html,/\*\*/);
  assert.equal(m.bioLead(bio),'First line of my story.');
  assert.ok(m.bioLead('x'.repeat(400)).length<=220);
  const r=read('lib/marketplace/public-portfolio-render.ts');
  assert.match(r,/e\(bioLead\(heroBio\)\|\|/);
- assert.match(r,/heroBio\?renderBio\(heroBio\)/);
+ assert.match(r,/heroBio\?renderBioFolded\(heroBio,/,'V66: the About section folds long bios');
  assert.doesNotMatch(r,/>PROJECT '/);
 });

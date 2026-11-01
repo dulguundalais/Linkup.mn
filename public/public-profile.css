@@ -193,3 +193,99 @@ body{background:#fff}
 .portfolio-about-copy strong{color:#0a1430;font-weight:700}
 .portfolio-about-copy ul{margin:0 0 25px;padding-left:20px;display:grid;gap:6px;color:#4e617c;font-size:15px;line-height:1.7}
 .portfolio-about-copy li::marker{color:#2b5cde}
+
+/* ==========================================================================
+   V66 — "About" that does not scroll forever (owner request 2026-11-01)
+   Left: the section title, three quick facts and the contact button, kept in
+   view while the bio is read. Right: the opening of the bio; anything longer
+   folds under "Дэлгэрэнгүй унших". Lists become a compact two-column grid.
+   Tools and skills take less height.
+   ========================================================================== */
+.portfolio-about-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:start}
+.portfolio-about-aside{position:sticky;top:96px;display:grid;gap:18px;align-content:start}
+.portfolio-about-aside h2{margin:0}
+.portfolio-about-facts{margin:6px 0 0;display:grid;gap:0;border:1px solid var(--line,#dfe8f5);border-radius:16px;background:#f8fafd;overflow:hidden}
+.portfolio-about-facts>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:13px 18px}
+.portfolio-about-facts>div+div{border-top:1px solid var(--line,#dfe8f5)}
+.portfolio-about-facts dt{font-size:13px;color:#69788c;font-weight:600}
+.portfolio-about-facts dd{margin:0;font-size:14px;font-weight:750;color:#0a1430;text-align:right;overflow-wrap:anywhere}
+.portfolio-about-cta{justify-self:start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:12px;background:#0a1430;color:#fff!important;font-size:14px;font-weight:750;text-decoration:none}
+.portfolio-about-cta:hover{background:#1d3a78}
+
+.portfolio-about-copy p{font-size:16px;line-height:1.75;margin:0 0 18px}
+.portfolio-about-copy .portfolio-bio-list{list-style:none;margin:4px 0 20px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.portfolio-about-copy .portfolio-bio-list li{position:relative;padding:10px 12px 10px 34px;border:1px solid var(--line,#dfe8f5);border-radius:12px;background:#f8fafd;font-size:14px;line-height:1.45;color:#344963}
+.portfolio-about-copy .portfolio-bio-list li::before{content:'';position:absolute;left:13px;top:15px;width:9px;height:5px;border-left:2px solid #2b5cde;border-bottom:2px solid #2b5cde;transform:rotate(-45deg)}
+
+.portfolio-bio-more>summary{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;margin:2px 0 8px;border:1px solid var(--line,#dfe8f5);border-radius:12px;background:#fff;color:#0a1430;font-size:14px;font-weight:700;cursor:pointer;list-style:none}
+.portfolio-bio-more>summary::-webkit-details-marker{display:none}
+.portfolio-bio-more>summary::after{content:'';width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.portfolio-bio-more[open]>summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.portfolio-bio-more>summary:hover{border-color:#9db6ff}
+.portfolio-bio-more>summary:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
+.portfolio-bio-close,.portfolio-bio-more[open] .portfolio-bio-open{display:none}
+.portfolio-bio-more[open] .portfolio-bio-close{display:inline}
+.portfolio-bio-more[open]>summary{order:2}
+.portfolio-bio-more[open]{display:flex;flex-direction:column}
+
+/* Tools and skills: same content, less height */
+.portfolio-tool-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.portfolio-tool-card{padding:12px 14px;gap:12px;border-radius:14px;box-shadow:none}
+.portfolio-skills{gap:8px;margin-bottom:24px}
+.portfolio-skill-chip{padding:8px 13px}
+
+@media(max-width:900px){
+ .portfolio-about-aside{position:static}
+}
+@media(max-width:640px){
+ .portfolio-about-copy .portfolio-bio-list{grid-template-columns:1fr}
+ .portfolio-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* V66 hero (owner references): text · portrait · numbers */
+.v66-hero .v66-hero-inner{grid-template-columns:minmax(0,1.1fr) minmax(220px,.75fr) minmax(140px,.35fr);gap:clamp(24px,4vw,56px);align-items:center;min-height:0;padding-top:clamp(56px,7vw,96px);padding-bottom:clamp(56px,7vw,96px)}
+.v66-hero-role{margin:0 0 10px;font-size:clamp(15px,1.4vw,18px);font-weight:600;color:#aebdd4}
+.v66-hero .portfolio-hero-copy h1{margin:0;font-size:clamp(40px,4.6vw,66px);line-height:1.05;letter-spacing:-.045em;color:#fff}
+.v66-hero-rule{display:block;width:64px;height:3px;margin:22px 0 20px;border-radius:2px;background:linear-gradient(90deg,#4fd7ff,#2b5cde)}
+.v66-hero .portfolio-hero-description{margin:0;font-size:15px;line-height:1.75;max-width:460px;white-space:normal}
+.v66-hero .portfolio-hero-actions{align-items:center;gap:20px;margin-top:28px}
+.v66-hero-link{color:#8be6ff;font-size:14px;font-weight:700;text-decoration:none}
+.v66-hero-link:hover{color:#fff}
+.v66-hero-portrait{position:relative;aspect-ratio:4/5;width:100%;max-width:340px;justify-self:center;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#1d3a78,#0a1430);box-shadow:0 30px 70px rgb(0 0 0/.35),inset 0 0 0 1px rgb(255 255 255/.08)}
+.v66-hero-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.v66-hero-portrait .portfolio-hero-avatar>span,.v66-hero-portrait>span{position:absolute;inset:0;display:grid;place-items:center;font-size:84px;font-weight:850;letter-spacing:-.06em;color:#eef3ff}
+.v66-hero-stats{display:grid;gap:clamp(22px,3vw,38px);justify-items:end;text-align:right}
+.v66-hero-stats>div{display:grid;gap:6px}
+.v66-hero-stats span{font-size:13px;line-height:1.35;color:#a9b9de;max-width:120px;justify-self:end}
+.v66-hero-stats b{font-size:clamp(34px,3.4vw,48px);line-height:1;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+
+/* V66 services: title on the left, one row per service on the right */
+.v66-services-shell{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(26px,5vw,90px);align-items:start}
+.v66-services-shell .portfolio-section-title{margin:0}
+.v66-service-list{display:grid;gap:12px}
+.v66-service-row{display:flex;align-items:center;gap:18px;min-height:76px;padding:14px 20px;border:1px solid var(--line,#dfe8f5);border-radius:16px;background:var(--soft,#f8fafd);color:#0a1430;text-decoration:none;transition:border-color .2s,transform .2s,box-shadow .2s}
+.v66-service-row:hover{border-color:#9db6ff;transform:translateY(-2px);box-shadow:0 12px 28px rgb(28 62 168/.10)}
+.v66-service-row:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
+.v66-service-index{flex:0 0 44px;height:44px;display:grid;place-items:center;border-radius:12px;background:#e3eaff;color:#2b5cde;font-weight:750;font-size:14px}
+.v66-service-main{flex:1;min-width:0;display:grid;gap:4px}
+.v66-service-main strong{font-size:17px;line-height:1.3;overflow-wrap:anywhere}
+.v66-service-main small{font-size:13px;color:#69788c}
+.v66-service-arrow{flex:0 0 auto;font-size:20px;color:#2b5cde;transition:transform .2s}
+.v66-service-row:hover .v66-service-arrow{transform:translateX(3px)}
+
+@media(max-width:980px){
+ .v66-hero .v66-hero-inner{grid-template-columns:minmax(0,1fr) minmax(200px,.7fr)}
+ .v66-hero-stats{grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr));justify-items:start;text-align:left;padding-top:20px;border-top:1px solid #ffffff22}
+ .v66-hero-stats span{justify-self:start}
+ .v66-services-shell{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+ .v66-hero .v66-hero-inner{grid-template-columns:1fr}
+ .v66-hero-portrait{max-width:220px;justify-self:start;order:-1}
+ .v66-hero-stats b{font-size:30px}
+}
+@media(prefers-reduced-motion:reduce){.v66-service-row,.v66-service-arrow{transition:none}.v66-service-row:hover{transform:none}}
+.v66-hero .v66-hero-portrait .portfolio-hero-avatar img{border-radius:0;width:100%;height:100%;object-fit:cover}
+/* The portrait frame holds the existing avatar element; undo its circle. */
+.v66-hero .v66-hero-portrait .portfolio-hero-avatar{width:100%;height:100%;border:0;border-radius:0;box-shadow:none;background:none;font-size:84px;display:grid;place-items:center}
+.v66-hero .v66-hero-portrait .portfolio-hero-avatar::before,.v66-hero .v66-hero-portrait .portfolio-hero-avatar::after{display:none}
