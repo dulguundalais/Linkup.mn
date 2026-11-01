@@ -96,7 +96,7 @@ export default function GuidedEntry({en}:{en:boolean}){
    </div>
   </div>
   {open&&typeof document!=='undefined'&&createPortal(<div className="guided-modal-backdrop" onPointerDown={e=>{if(e.target===e.currentTarget)close()}}>
-   <div ref={modalRef} className="guided-modal guided-simplified" role="dialog" aria-modal="true" aria-labelledby="guided-dialog-title" aria-describedby="guided-dialog-description">
+   <div ref={modalRef} className="guided-modal guided-simplified" role="dialog" aria-modal="true" aria-labelledby="guided-dialog-title" aria-describedby={screen==='results'?'guided-dialog-description':undefined}>
     <div className="guided-modal-header">
      {/* V62: the header only switches between the two audiences; no logo, labels or step counter. */}
      <div className="guided-audience-switch" role="group" aria-label={t('Хэнд зориулсан бэ','Who is this for')}>
@@ -108,7 +108,6 @@ export default function GuidedEntry({en}:{en:boolean}){
     <div className="guided-modal-body">
      {screen==='choose'?<>
       <h2 id="guided-dialog-title">{audience==='business'?t('Юуг сайжруулахыг хүсэж байна?','What would you like to improve?'):t('Ямар ажилд тусламж хэрэгтэй вэ?','What can we help you with?')}</h2>
-      <p id="guided-dialog-description">{t('Нэгийг сонгох эсвэл өөрийн үгээр бичихэд тохирох шийдлүүд шууд гарна.','Pick one or describe it in your own words — matching solutions appear right away.')}</p>
       <div className="guided-goals">{guidedGoals[audience].map(item=>{
        const Icon=icons[item.key as GuidedGoalKey];
        return <button className="guided-goal" type="button" key={item.key} onClick={()=>choose(item)}>
