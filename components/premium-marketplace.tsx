@@ -1,5 +1,6 @@
 "use client";
-import {useEffect,useMemo,useState} from 'react';
+import {useEffect,useMemo,useState,useLayoutEffect} from 'react';
+import {endThemeLoading} from '../lib/use-site-theme';
 import Link from 'next/link';
 import {rememberPendingSave,useSavedServices} from '../lib/marketplace/use-saved-services';
 import {ArrowUpRight,ArrowRight,Search,X,Heart,PenTool,Clapperboard,Languages,Megaphone,Code2,Armchair,PanelsTopLeft,Sparkles,FileText,Check,Clock,Share2,ArrowLeft,Bot,BriefcaseBusiness,Calculator,Scale,BarChart3,Store,GraduationCap,HeartHandshake} from 'lucide-react';
@@ -42,6 +43,8 @@ const [exploreOpen,setExploreOpen]=useState(false),[exploreActive,setExploreActi
 const [exploreLoad,setExploreLoad]=useState<'loading'|'ready'|'error'>('loading');
 const [en,setEn]=useState(false),[dark,setDark]=useState(false),[ready,setReady]=useState(false),[query,setQuery]=useState(''),[cat,setCat]=useState('all'),[sub,setSub]=useState(''),[sort,setSort]=useState('featured'),[onlySaved,setOnlySaved]=useState(false),[notice,setNotice]=useState('');
 const t=(mn:string,english:string)=>en?english:mn;
+// V68: theme before first paint (no white flash in dark mode).
+useLayoutEffect(()=>{try{setDark(localStorage.getItem('hustle-theme')==='dark')}catch{};endThemeLoading()},[]);
 useEffect(()=>{try{setEn(localStorage.getItem('hustle-language')==='en');setDark(localStorage.getItem('hustle-theme')==='dark');const s=JSON.parse(localStorage.getItem('hustle-saved')||'[]');if(Array.isArray(s))setSampleSaved(s.filter(x=>typeof x==='string'&&!/^[0-9a-f-]{36}$/i.test(x)));}catch{}const p=new URLSearchParams(location.search);setQuery(p.get('q')||'');setCat(normalizeCategory(p.get('category')));setSub(p.get('sub')||'');setOnlySaved(p.get('saved')==='1');const so=p.get('sort');if(so==='low'||so==='high')setSort(so);setReady(true)},[]);
 // V52: Back/Forward between categories restores the filters instead of leaving them stale.
 useEffect(()=>{const pop=()=>{const p=new URLSearchParams(location.search);setQuery(p.get('q')||'');setCat(normalizeCategory(p.get('category')));setSub(p.get('sub')||'');setOnlySaved(p.get('saved')==='1');const so=p.get('sort');setSort(so==='low'||so==='high'?so:'featured')};window.addEventListener('popstate',pop);return()=>window.removeEventListener('popstate',pop)},[]);

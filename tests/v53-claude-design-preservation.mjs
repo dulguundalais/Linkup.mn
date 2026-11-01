@@ -5,12 +5,12 @@ import {createHash} from 'node:crypto';
 // Hashes for signature-home, site-header and premium-footer were updated for the
 // owner-approved Linkup rebrand (wordmark and copy only; PR #82); premium-marketplace
 // for the /solutions/ shared-shell view the owner approved; signature-home again
-// when the owner removed the duplicate talent section (V55), and for the animated example searches the owner asked for (V56); site-header for closing the phone menu on an outside tap (V58); signature-home for the hero cleanup the owner specified (V59); premium-marketplace and signature-home for the homepage order the owner specified (V60); premium-footer for Mongolian labels and one About link (V61); premium-marketplace for the Explore page heading and the UX-sweep stylesheet (V63); premium-marketplace for the save-intent sign-in reason and premium-footer for removing the duplicate pricing link (V65); signature-home for the single 1% partner rate without the platform commission, and for reading the partner numbers from Business rules (V67).
+// when the owner removed the duplicate talent section (V55), and for the animated example searches the owner asked for (V56); site-header for closing the phone menu on an outside tap (V58); signature-home for the hero cleanup the owner specified (V59); premium-marketplace and signature-home for the homepage order the owner specified (V60); premium-footer for Mongolian labels and one About link (V61); premium-marketplace for the Explore page heading and the UX-sweep stylesheet (V63); premium-marketplace for the save-intent sign-in reason and premium-footer for removing the duplicate pricing link (V65); signature-home for the single 1% partner rate without the platform commission, and for reading the partner numbers from Business rules (V67); premium-marketplace for reading the theme before the first paint so dark mode never flashes white (V68).
 const protectedFiles={
  'app/v51-home-system.css':'d614e398889fa3a1912b4ffe57443194ee86f2ea',
  'app/marketplace.css':'bc5e705e9960d5f48c117b1ff5f373fc89710ebc',
  'app/globals.css':'5f3bc376e8c064a2a357f635c952a4d8845acd55',
- 'components/premium-marketplace.tsx':'f3678f3a9598b7fa0bb0226d718a7d0ab381dbde',
+ 'components/premium-marketplace.tsx':'eab29be494433f0502b0ef6487f6b5e2db021122',
  'components/signature-home.tsx':'c04300cc38ca8783774b5c0d6a7c7541c51cb564',
  'components/site-header.tsx':'ced42869764f517b6ec1f435e305b11cad1129dd',
  'components/premium-footer.tsx':'5b66a9a7fcfa0cc1cfa4611280941a46ebc45266',

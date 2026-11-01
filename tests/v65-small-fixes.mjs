@@ -28,7 +28,9 @@ test('the saved theme reaches info pages, service pages and 404',()=>{
   assert.match(s,/\(dark\?" night":""\)/,f);
  }
  const css=read('app/v65-small-fixes.css');
- for(const sel of ['.hustle-info.night{','.v50-listing-page.night{','.v65-plain-page.night{','html.v65-pre-dark'])assert.ok(css.includes(sel),sel);
+ for(const sel of ['.hustle-info.night{','.v50-listing-page.night{','.v65-plain-page.night{'])assert.ok(css.includes(sel),sel);
+ // V68: the pre-paint dark background moved inline into the root layout (applies on every page).
+ assert.ok(read('app/layout.tsx').includes('html.v65-pre-dark,html.v65-pre-dark body{background:#050c22'));
  assert.match(read('lib/use-site-theme.ts'),/localStorage\.setItem\('hustle-theme',next\?'dark':'light'\)/);
 });
 test('the service page remembers a language switch',()=>{

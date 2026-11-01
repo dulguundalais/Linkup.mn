@@ -1,6 +1,7 @@
 'use client';
 import {roleLabel,auditLabel} from '../lib/marketplace/ui-labels';
-import {Fragment,useEffect,useRef,useState,type FormEvent} from 'react';
+import {Fragment,useEffect,useRef,useState,type FormEvent,useLayoutEffect} from 'react';
+import {endThemeLoading} from '../lib/use-site-theme';
 import Link from 'next/link';
 import {ArrowUpRight,ArrowLeft,ChevronLeft,CheckCircle2,Package,PackageCheck,RefreshCw,Search,LayoutDashboard,PanelsTopLeft,BriefcaseBusiness,UserRound,ShoppingBag,Users,Settings2,Plus,Check,Clock,Image as ImageIcon,Share2,ShieldCheck,LoaderCircle,X,Handshake,MessageCircle,Send,Paperclip,Smile,Download,CheckCheck,Heart} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
@@ -117,6 +118,8 @@ async function load(){
    entryApplied.current=true;
  }
 }
+// V68: theme before first paint (no white flash in dark mode).
+useLayoutEffect(()=>{try{setDark(localStorage.getItem('hustle-theme')==='dark')}catch{};endThemeLoading()},[]);
 useEffect(()=>{const mode=new URLSearchParams(location.search).get('mode');
  // V52: keep the visitor's intent across sign-up and the e-mail confirmation round trip.
  if(login){const p=new URLSearchParams(location.search);rememberReturnIntent(intentFromLoginParams(p));if(p.get('confirmed')==='1'||/type=signup/.test(location.hash))setNotice(en?'Your e-mail is confirmed. Welcome to Linkup!':'Имэйл баталгаажлаа. Linkup-д тавтай морил!')}

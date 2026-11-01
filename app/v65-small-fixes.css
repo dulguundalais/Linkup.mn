@@ -11,8 +11,7 @@
 
 /* 2a. No white flash: page background follows the saved theme before scripts run,
        and colour transitions wait until the page has settled. */
-html.v65-pre-dark,html.v65-pre-dark body{background:#050c22;color-scheme:dark}
-html.v65-loading .hustle-v5,html.v65-loading .hustle-v5 *{transition:none!important}
+/* V68: the first-load theme rules moved inline into app/layout.tsx so they apply on every page before any stylesheet loads. */
 
 /* 2b. Information pages (About, FAQ, Terms…) */
 .hustle-info.night{--i-ink:#eef3ff;--i-muted:#a9b9de;--i-soft:#0f1d45;--i-blue:#9db6ff;--i-border:#1c2b55;--text:#eef3ff;--sub:#a9b9de;--surface:#0b1636;--border:#1c2b55;--soft:#0f1d45;background:#050c22;color:var(--i-ink);color-scheme:dark}
