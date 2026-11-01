@@ -193,3 +193,51 @@ body{background:#fff}
 .portfolio-about-copy strong{color:#0a1430;font-weight:700}
 .portfolio-about-copy ul{margin:0 0 25px;padding-left:20px;display:grid;gap:6px;color:#4e617c;font-size:15px;line-height:1.7}
 .portfolio-about-copy li::marker{color:#2b5cde}
+
+/* ==========================================================================
+   V66 — "About" that does not scroll forever (owner request 2026-11-01)
+   Left: the section title, three quick facts and the contact button, kept in
+   view while the bio is read. Right: the opening of the bio; anything longer
+   folds under "Дэлгэрэнгүй унших". Lists become a compact two-column grid.
+   Tools and skills take less height.
+   ========================================================================== */
+.portfolio-about-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:start}
+.portfolio-about-aside{position:sticky;top:96px;display:grid;gap:18px;align-content:start}
+.portfolio-about-aside h2{margin:0}
+.portfolio-about-facts{margin:6px 0 0;display:grid;gap:0;border:1px solid var(--line,#dfe8f5);border-radius:16px;background:#f8fafd;overflow:hidden}
+.portfolio-about-facts>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:13px 18px}
+.portfolio-about-facts>div+div{border-top:1px solid var(--line,#dfe8f5)}
+.portfolio-about-facts dt{font-size:13px;color:#69788c;font-weight:600}
+.portfolio-about-facts dd{margin:0;font-size:14px;font-weight:750;color:#0a1430;text-align:right;overflow-wrap:anywhere}
+.portfolio-about-cta{justify-self:start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:12px;background:#0a1430;color:#fff!important;font-size:14px;font-weight:750;text-decoration:none}
+.portfolio-about-cta:hover{background:#1d3a78}
+
+.portfolio-about-copy p{font-size:16px;line-height:1.75;margin:0 0 18px}
+.portfolio-about-copy .portfolio-bio-list{list-style:none;margin:4px 0 20px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.portfolio-about-copy .portfolio-bio-list li{position:relative;padding:10px 12px 10px 34px;border:1px solid var(--line,#dfe8f5);border-radius:12px;background:#f8fafd;font-size:14px;line-height:1.45;color:#344963}
+.portfolio-about-copy .portfolio-bio-list li::before{content:'';position:absolute;left:13px;top:15px;width:9px;height:5px;border-left:2px solid #2b5cde;border-bottom:2px solid #2b5cde;transform:rotate(-45deg)}
+
+.portfolio-bio-more>summary{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;margin:2px 0 8px;border:1px solid var(--line,#dfe8f5);border-radius:12px;background:#fff;color:#0a1430;font-size:14px;font-weight:700;cursor:pointer;list-style:none}
+.portfolio-bio-more>summary::-webkit-details-marker{display:none}
+.portfolio-bio-more>summary::after{content:'';width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.portfolio-bio-more[open]>summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.portfolio-bio-more>summary:hover{border-color:#9db6ff}
+.portfolio-bio-more>summary:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
+.portfolio-bio-close,.portfolio-bio-more[open] .portfolio-bio-open{display:none}
+.portfolio-bio-more[open] .portfolio-bio-close{display:inline}
+.portfolio-bio-more[open]>summary{order:2}
+.portfolio-bio-more[open]{display:flex;flex-direction:column}
+
+/* Tools and skills: same content, less height */
+.portfolio-tool-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.portfolio-tool-card{padding:12px 14px;gap:12px;border-radius:14px;box-shadow:none}
+.portfolio-skills{gap:8px;margin-bottom:24px}
+.portfolio-skill-chip{padding:8px 13px}
+
+@media(max-width:900px){
+ .portfolio-about-aside{position:static}
+}
+@media(max-width:640px){
+ .portfolio-about-copy .portfolio-bio-list{grid-template-columns:1fr}
+ .portfolio-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
