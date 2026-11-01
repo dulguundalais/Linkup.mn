@@ -21,21 +21,21 @@ test('buyer can find a real published logo service, not invented matches',async(
 });
 test('project brief adapts to business, budget and optional timeline',async({page})=>{
  await page.goto('/solutions/?audience=business&q='+encodeURIComponent('We need a website'));
- await expect(page.locator('.finder-audience button[aria-pressed=true]')).toContainText('Бизнес');
+ await expect(page.locator('.finder-audience button[aria-pressed=true]')).toContainText('Байгууллага');
  await page.locator('.finder-brief-fields input').nth(0).fill('500,000 MNT');
  await page.locator('.finder-brief-fields input').nth(1).fill('2 weeks');
  await expect(page.locator('.finder-brief-preview')).toContainText('500,000 MNT');
  await expect(page.locator('.finder-brief-preview')).toContainText('2 weeks');
- await page.locator('.finder-audience button').filter({hasText:'Хувийн'}).click();
+ await page.locator('.finder-audience button').filter({hasText:'Хувь хүн'}).click();
  await expect(page.locator('.finder-brief-preview')).toContainText('Хувь хүн');
 });
 test('buyer registration offers personal/business preference without separate accounts',async({page})=>{
  await page.goto('/login/?mode=buyer&audience=business');
  await page.getByRole('button',{name:/Бүртгэл үүсгэх|Create account/}).first().click();
  await expect(page.locator('.hustle-buyer-context')).toBeVisible();
- await expect(page.locator('.hustle-buyer-context button[aria-pressed=true]')).toContainText('Бизнес');
- await page.locator('.hustle-buyer-context button').filter({hasText:'Хувийн'}).click();
- await expect(page.locator('.hustle-buyer-context button[aria-pressed=true]')).toContainText('Хувийн');
+ await expect(page.locator('.hustle-buyer-context button[aria-pressed=true]')).toContainText('Байгууллага');
+ await page.locator('.hustle-buyer-context button').filter({hasText:'Хувь хүн'}).click();
+ await expect(page.locator('.hustle-buyer-context button[aria-pressed=true]')).toContainText('Хувь хүн');
 });
 for(const width of [390,768]){
  test('responsive smart finder '+width,async({page})=>{

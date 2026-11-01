@@ -1,0 +1,21 @@
+/* ==========================================================================
+   LINKUP V61 — one vocabulary and one search purpose (owner request 2026-10-31)
+   Finder page: title → Хувь хүн / Байгууллага → field; results say what was
+   searched and offer a new search. Categories page: the Legal + Finance group
+   carries the same name as its homepage card.
+   ========================================================================== */
+.solution-finder .hx-crumbs{margin-bottom:8px}
+.solution-finder .finder-form-foot{justify-content:flex-end}
+.finder-searched{margin:8px 0 0;font-size:14px;color:var(--sub,#4a5677);overflow-wrap:anywhere}
+.finder-searched q{font-weight:650;color:var(--text,#0a1430)}
+.finder-result-side{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+.finder-new-search{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--border,#e1e7f3);border-radius:12px;background:var(--surface,#fff);color:var(--text,#0a1430);font:inherit;font-size:14px;font-weight:650;cursor:pointer}
+.finder-new-search:hover{border-color:var(--hx-royal-300,#9db6ff);background:var(--soft,#f1f4ff)}
+.finder-new-search:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
+@media(max-width:700px){.finder-result-side{align-items:flex-start}}
+
+.cdir-pair-title{grid-column:1/-1;margin:8px 0 -4px;font-size:clamp(20px,1rem + .6vw,26px);line-height:1.25;letter-spacing:-.02em;color:var(--text,#0a1430)}
+
+/* Homepage category cards now use the full category names; a long one may take a
+   third line (its artwork gets slightly shorter) instead of being cut off. */
+html body .hustle-v5 .cat-showcase .cat-card-title{height:auto;min-height:2.5em;max-height:3.75em}

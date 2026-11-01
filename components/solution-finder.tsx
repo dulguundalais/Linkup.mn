@@ -2,10 +2,12 @@
 import {useEffect,useMemo,useRef,useState,type FormEvent} from 'react';
 import Link from 'next/link';
 import LinkupWordmark from './linkup-wordmark';
-import {ArrowRight,ArrowUpRight,Send,Building2,Check,ClipboardCopy,Lightbulb,Search,Sparkles,UserRound,Workflow} from 'lucide-react';
+import {ArrowRight,ArrowUpRight,Send,Building2,Check,ClipboardCopy,Lightbulb,Search,UserRound} from 'lucide-react';
+import {Breadcrumbs} from './site-header';
 import {marketplaceClient} from '../lib/marketplace/client';
-import {buildProjectBrief,classifyNeed,matchingPublished,problemExamples,type Audience,type PublishedMatch} from '../lib/marketplace/solution-finder';
+import {buildProjectBrief,classifyNeed,matchingPublished,type Audience,type PublishedMatch} from '../lib/marketplace/solution-finder';
 import '../app/solution-finder.css';
+import '../app/v61-consistency.css';
 
 export default function SolutionFinder({compact=false,embedded=false,en:language=false}:{compact?:boolean;embedded?:boolean;en?:boolean}){
  // Embedded in the shared site shell, language comes from the site header.
@@ -50,8 +52,9 @@ export default function SolutionFinder({compact=false,embedded=false,en:language
  // Keep the search in the address bar so Back, refresh and sharing return to the same results.
  const remember=(need:string)=>{try{const url=new URL(location.href);url.searchParams.set('q',need);url.searchParams.set('audience',audience);history.replaceState(history.state,'',url)}catch{}};
  const run=(need:string)=>{setSubmitted(need);setCopied(false);setTooShort(false);remember(need);setReveal(r=>r+1)};
+ // V61: back to an empty field at the top of the page, ready to type.
+ const newSearch=()=>{setQuery('');needField.current?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'center'});needField.current?.focus({preventScroll:true})};
  const submit=(e:FormEvent<HTMLFormElement>)=>{e.preventDefault();const need=query.trim().slice(0,1200);if(need.length<5){setTooShort(true);needField.current?.focus();return}run(need)};
- const ask=(example:string)=>{setQuery(example);run(example)};
  // Arriving with ?q= (e.g. from the homepage search): reveal once the matches have
  // loaded, so the page no longer shifts underneath the scroll.
  // Wait for the page load event as well: the browser settles its own scroll
@@ -78,27 +81,23 @@ export default function SolutionFinder({compact=false,embedded=false,en:language
  return <section className={'solution-finder '+(compact?'finder-compact':'')} aria-labelledby="hustle-finder-title">
   <div className="solution-shell">
    {!compact&&!embedded&&<div className="solution-top"><Link href="/" className="solution-brand" aria-label="Linkup"><LinkupWordmark decorative/></Link><Link href="/explore/">{t('Бүх үйлчилгээг үзэх','Browse all services')} <ArrowUpRight size={16}/></Link></div>}
-   <div className="finder-heading"><div className="finder-eyebrow"><Sparkles size={15}/>{t('LINKUP · Шийдэл хайх','LINKUP SMART FINDER · BETA')}</div>
-    <h1 id="hustle-finder-title">{t('Ямар асуудал шийдэх хэрэгтэй байна?','What are you trying to solve?')}</h1>
-    <p>{t('Үйлчилгээний нэрийг мэдэхгүй байсан ч болно. Хийлгэх ажлаа тайлбарлаарай. Бид боломжит шийдэл, тохирох үйлчилгээг санал болгоно.','No need to know the service name. Describe your challenge and explore possible solutions and real published services.')}</p>
-   </div>
+   {/* V61: one clear purpose, like the homepage search — a title, the two audiences, the field. */}
+   {embedded&&<Breadcrumbs en={en} items={[{label:t('Нүүр','Home'),href:'/'},{label:t('Шийдэл олох','Find a solution')}]}/>}
+   <div className="finder-heading"><h1 id="hustle-finder-title">{t('Ямар асуудал шийдэх хэрэгтэй байна?','What are you trying to solve?')}</h1></div>
    <div className="finder-audience" role="group" aria-label={t('Төслийн төрөл','Project context')}>
-    <button type="button" aria-pressed={audience==='business'} onClick={()=>setType('business')}><Building2 size={18}/>{t('Бизнес / байгууллага','Business / organization')}</button>
-    <button type="button" aria-pressed={audience==='personal'} onClick={()=>setType('personal')}><UserRound size={18}/>{t('Хувийн төсөл','Personal project')}</button>
+    <button type="button" aria-pressed={audience==='personal'} onClick={()=>setType('personal')}><UserRound size={18}/>{t('Хувь хүн','Personal')}</button>
+    <button type="button" aria-pressed={audience==='business'} onClick={()=>setType('business')}><Building2 size={18}/>{t('Байгууллага','Organization')}</button>
    </div>
    <form className="finder-form" onSubmit={submit} role="search" noValidate>
     <label htmlFor="hustle-need">{t('Хэрэгцээгээ тайлбарлана уу','Describe what you need')}</label>
     <textarea ref={needField} id="hustle-need" name="q" rows={compact?2:3} minLength={5} maxLength={1200} required aria-invalid={tooShort||undefined} aria-describedby={tooShort?'hustle-need-hint':undefined} value={query} onChange={e=>{setQuery(e.target.value);if(tooShort&&e.target.value.trim().length>=5)setTooShort(false)}} placeholder={t('Жишээ: Манай рестораны захиалгыг нэмэгдүүлэх хэрэгтэй. Хаанаас эхлэхээ мэдэхгүй байна.','Example: We want more restaurant bookings but do not know where to start.')}/>
     {tooShort&&<p className="finder-hint" id="hustle-need-hint" role="alert">{t('Дор хаяж 5 тэмдэгтээр хэрэгцээгээ бичнэ үү.','Describe your need in at least 5 characters.')}</p>}
-    <div className="finder-form-foot"><span><Workflow size={15}/>{t('Кирилл · латин галиг · англи · нээлттэй туршилт','Mongolian · Latin · English · Free beta')}</span><button type="submit">{t('Шийдэл олох','Find solutions')} <ArrowRight size={18}/></button></div>
+    <div className="finder-form-foot"><button type="submit">{t('Шийдэл олох','Find solutions')} <ArrowRight size={18}/></button></div>
    </form>
-   <div className="finder-prompts" aria-label={t('Түгээмэл асуудлын жишээ','Popular challenges')}>
-    {problemExamples.map(item=><button type="button" key={item.key} onClick={()=>ask(en?item.exampleEn:item.exampleMn)}>{en?item.mn===item.en?item.en:item.en:item.mn} <ArrowUpRight size={14}/></button>)}
-   </div>
    <p className="finder-sr-only" role="status">{submitted?t('Боломжит 3 чиглэл доор гарлаа.','3 possible directions are shown below.'):''}</p>
    {submitted&&<div className="finder-results" id="solution-results">
-    <div className="finder-result-heading"><div><span className="finder-eyebrow"><Lightbulb size={15}/>{t('ТАНЫ БОЛОМЖИТ ЧИГЛЭЛ','POSSIBLE NEXT STEPS')}</span>
-     <h2 ref={resultsTitle} tabIndex={-1}>{en?outcome.en:outcome.mn}</h2><p>{en?outcome.enWhy:outcome.mnWhy}</p></div><span className="finder-result-count">3 {t('шийдэл','approaches')}</span></div>
+    <div className="finder-result-heading"><div><span className="finder-eyebrow"><Lightbulb size={15}/>{t('ТАНЫ БОЛОМЖИТ ЧИГЛЭЛ','POSSIBLE NEXT STEPS')}</span><p className="finder-searched">{t('Таны хайлт:','You searched:')} <q>{submitted}</q></p>
+     <h2 ref={resultsTitle} tabIndex={-1}>{en?outcome.en:outcome.mn}</h2><p>{en?outcome.enWhy:outcome.mnWhy}</p></div><div className="finder-result-side"><span className="finder-result-count">3 {t('шийдэл','approaches')}</span><button type="button" className="finder-new-search" onClick={newSearch}><Search size={16} aria-hidden="true"/>{t('Шинээр хайх','New search')}</button></div></div>
     <div className="finder-solution-grid">{outcome.solutions.map((idea,i)=>{
      const matches=matchingPublished(catalog,idea);
      return <article className="finder-solution-card" key={idea.id}>

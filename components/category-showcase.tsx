@@ -5,6 +5,7 @@ import {ArrowUpRight,ChevronLeft,ChevronRight} from 'lucide-react';
 import CategoryArt from './category-art';
 import {SHOWCASE,CATEGORY_IMAGES} from '../lib/marketplace/taxonomy';
 import '../app/v50-categories.css';
+import '../app/v61-consistency.css';
 
 /* V50 homepage category carousel: Fiverr-style cards (name on top, artwork below)
    in a horizontal row. Native scroll-snap gives touch swipe; arrows page by view. */

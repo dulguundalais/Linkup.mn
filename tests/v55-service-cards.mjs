@@ -5,7 +5,7 @@ const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 
 test('V55: homepage service section is titled for the experts and shows a count',()=>{
  const c=read('components/live-catalog.tsx');
- assert.match(c,/Шилдэг мэргэжилтнүүд ба тэдний үйлчилгээ/);
+ assert.match(c,/Мэргэжилтнүүд ба тэдний үйлчилгээ/);
  assert.match(c,/className="v55-count"/);
  assert.doesNotMatch(c,/Төслөө хэрэгжүүлэх хүнээ олоорой/);
  assert.match(c,/import '\.\.\/app\/v55-service-cards\.css';/);

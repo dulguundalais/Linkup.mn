@@ -96,8 +96,8 @@ export default function PremiumAuth({
    </form>:<form className="hustle-auth-form" onSubmit={onSubmit}>
      {register&&!forSeller&&!isAdmin&&<fieldset className="hustle-buyer-context"><legend>{t('Linkup-ыг юунд ашиглах вэ?','What will you use Linkup for?')}</legend>
       <div role="group" aria-label={t('Хэрэглээний чиглэл','Buyer experience')}>
-       <button type="button" aria-pressed={buyerAudience==='personal'} onClick={()=>chooseBuyerAudience('personal')}><span className="hustle-choice-icon"><UserRound size={18} aria-hidden="true"/></span><span className="hustle-choice-text"><b>{t('Хувийн төсөл','Personal project')}</b><small>{t('Өөртөө зориулсан ажил','Work for yourself')}</small></span></button>
-       <button type="button" aria-pressed={buyerAudience==='business'} onClick={()=>chooseBuyerAudience('business')}><span className="hustle-choice-icon"><Building2 size={18} aria-hidden="true"/></span><span className="hustle-choice-text"><b>{t('Бизнес','Business')}</b><small>{t('Компани, байгууллагын ажил','For a company or team')}</small></span></button>
+       <button type="button" aria-pressed={buyerAudience==='personal'} onClick={()=>chooseBuyerAudience('personal')}><span className="hustle-choice-icon"><UserRound size={18} aria-hidden="true"/></span><span className="hustle-choice-text"><b>{t('Хувь хүн','Personal')}</b><small>{t('Өөртөө зориулсан ажил','Work for yourself')}</small></span></button>
+       <button type="button" aria-pressed={buyerAudience==='business'} onClick={()=>chooseBuyerAudience('business')}><span className="hustle-choice-icon"><Building2 size={18} aria-hidden="true"/></span><span className="hustle-choice-text"><b>{t('Байгууллага','Organization')}</b><small>{t('Компани, байгууллагын ажил','For a company or team')}</small></span></button>
       </div>
       <p>{t('Дараа нь хүссэн үедээ сольж болно.','You can change this any time.')}</p>
      </fieldset>}
