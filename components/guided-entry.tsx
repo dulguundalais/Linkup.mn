@@ -2,12 +2,12 @@
 import {useEffect,useRef,useState,type KeyboardEvent} from 'react';
 import {createPortal} from 'react-dom';
 import Link from 'next/link';
-import LinkupWordmark from './linkup-wordmark';
-import {ArrowLeft,ArrowRight,ArrowUpRight,Building2,Check,ChevronDown,ClipboardCopy,Compass,LoaderCircle,Search,Sparkles,UserRound,X,Workflow,TrendingUp,Monitor,Clapperboard,Palette,ChartNoAxesCombined,Ellipsis} from 'lucide-react';
+import {ArrowLeft,ArrowRight,ArrowUpRight,Building2,Check,ChevronDown,ChevronRight,ClipboardCopy,Compass,LoaderCircle,Search,Sparkles,UserRound,X,Workflow,TrendingUp,Monitor,Clapperboard,Palette,ChartNoAxesCombined,Ellipsis} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
 import {buildProjectBrief,classifyNeed,matchingPublished,type Audience,type PublishedMatch} from '../lib/marketplace/solution-finder';
 import {guidedGoals,guidedProblem,type GuidedGoal,type GuidedGoalKey} from '../lib/marketplace/guided-entry';
 import '../app/guided-entry.css';
+import '../app/v62-guided-modal.css';
 
 const icons={growth:TrendingUp,automation:Workflow,web:Monitor,content:Clapperboard,brand:Palette,analytics:ChartNoAxesCombined,design:Palette,skills:Sparkles,'personal-it':Monitor,video:Clapperboard,writing:Compass,other:Ellipsis};
 type Screen='choose'|'results';
@@ -39,6 +39,11 @@ export default function GuidedEntry({en}:{en:boolean}){
   setNotes('');setBudget('');setTimeline('');setDetailsOpen(false);setCopied(false);
   setOpen(true);
   setRemembered(kind);
+  try{localStorage.setItem('hustle-buyer-audience',kind)}catch{}
+ };
+ const switchAudience=(kind:Audience)=>{
+  if(kind===audience&&screen==='choose')return;
+  setAudience(kind);setGoal(guidedGoals[kind][0]);setScreen('choose');setNotes('');setDetailsOpen(false);setRemembered(kind);
   try{localStorage.setItem('hustle-buyer-audience',kind)}catch{}
  };
  const choose=(item:GuidedGoal)=>{
@@ -93,27 +98,28 @@ export default function GuidedEntry({en}:{en:boolean}){
   {open&&typeof document!=='undefined'&&createPortal(<div className="guided-modal-backdrop" onPointerDown={e=>{if(e.target===e.currentTarget)close()}}>
    <div ref={modalRef} className="guided-modal guided-simplified" role="dialog" aria-modal="true" aria-labelledby="guided-dialog-title" aria-describedby="guided-dialog-description">
     <div className="guided-modal-header">
-     <div className="guided-modal-mark"><LinkupWordmark decorative className="guided-modal-wordmark"/><small>{t('LINKUP · Хэрэгцээгээ тодорхойлох','LINKUP / GUIDED DISCOVERY')}</small></div>
+     {/* V62: the header only switches between the two audiences; no logo, labels or step counter. */}
+     <div className="guided-audience-switch" role="group" aria-label={t('Хэнд зориулсан бэ','Who is this for')}>
+      <button type="button" aria-pressed={audience==='personal'} onClick={()=>switchAudience('personal')}><UserRound size={16} aria-hidden="true"/>{t('Хувь хүн','Personal')}</button>
+      <button type="button" aria-pressed={audience==='business'} onClick={()=>switchAudience('business')}><Building2 size={16} aria-hidden="true"/>{t('Байгууллага','Organization')}</button>
+     </div>
      <button type="button" className="guided-modal-close" aria-label={t('Хаах','Close')} onClick={close}><X size={19}/></button>
     </div>
     <div className="guided-modal-body">
-     <div className="guided-step-meta"><span>{audience==='business'?<Building2 size={15}/>:<UserRound size={15}/>} {audience==='business'?t('Байгууллага','Organization'):t('Хувь хүн','Personal')}</span><span>{screen==='choose'?'01 / 02':'02 / 02'}</span></div>
      {screen==='choose'?<>
-      <span className="guided-step-eyebrow">{t('Хэрэгцээгээ тодорхойлоё','START WITH A GOAL')}</span>
       <h2 id="guided-dialog-title">{audience==='business'?t('Юуг сайжруулахыг хүсэж байна?','What would you like to improve?'):t('Ямар ажилд тусламж хэрэгтэй вэ?','What can we help you with?')}</h2>
-      <p id="guided-dialog-description">{t('Чиглэлээ сонгоод тохирох шийдлүүдийг хараарай.','Pick a goal to see relevant solutions immediately.')}</p>
+      <p id="guided-dialog-description">{t('Нэгийг сонгох эсвэл өөрийн үгээр бичихэд тохирох шийдлүүд шууд гарна.','Pick one or describe it in your own words — matching solutions appear right away.')}</p>
       <div className="guided-goals">{guidedGoals[audience].map(item=>{
        const Icon=icons[item.key as GuidedGoalKey];
        return <button className="guided-goal" type="button" key={item.key} onClick={()=>choose(item)}>
-        <span className="guided-goal-icon"><Icon size={20}/></span><span>{en?item.en:item.mn}</span><ArrowUpRight size={16} className="guided-goal-next"/>
+        <span className="guided-goal-icon"><Icon size={20}/></span><span>{en?item.en:item.mn}</span><ChevronRight size={18} className="guided-goal-next" aria-hidden="true"/>
        </button>;
       })}</div>
       <div className="guided-custom-need">
-       <label className="guided-label" htmlFor="guided-custom-problem">{t('Эсвэл асуудлаа өөрийн үгээр бич','Or describe it in your own words')}</label>
-       <div className="guided-custom-row"><input id="guided-custom-problem" value={notes} maxLength={1200} onChange={event=>setNotes(event.target.value)} placeholder={t('Хэрэгцээгээ өөрийн үгээр бичээрэй','e.g. Our restaurant needs more bookings…')}/><button type="button" disabled={notes.trim().length<5} onClick={()=>setScreen('results')} aria-label={t('Тохирох шийдэл харах','Find solutions for my challenge')}><Search size={18}/><ArrowRight size={15}/></button></div>
+       <label className="guided-sr-only" htmlFor="guided-custom-problem">{t('Өөрийн үгээр бичих','Describe it in your own words')}</label>
+       <div className="guided-custom-row"><input id="guided-custom-problem" value={notes} maxLength={1200} onChange={event=>setNotes(event.target.value)} placeholder={t('Өөр зүйл үү? Өөрийн үгээр бичээрэй…','Something else? Describe it in your own words…')}/><button type="button" disabled={notes.trim().length<5} onClick={()=>setScreen('results')} aria-label={t('Тохирох шийдэл харах','Find solutions for my challenge')}><Search size={18}/><ArrowRight size={15}/></button></div>
       </div>
      </>:<>
-      <span className="guided-step-eyebrow"><Sparkles size={14}/>{t('ТАНД ТОХИРОХ ШИЙДЛҮҮД','SOLUTIONS TO CONSIDER')}</span>
       <h2 id="guided-dialog-title">{en?outcome.en:outcome.mn}</h2>
       <p id="guided-dialog-description">{en?outcome.enWhy:outcome.mnWhy}</p>
       <div className="guided-result-list">
@@ -139,16 +145,19 @@ export default function GuidedEntry({en}:{en:boolean}){
       </div>
      </>}
     </div>
+    {/* V62: choosing needs no footer — ✕ closes, a card or the field moves on. The beta note belongs with the suggestions. */}
+    {screen==='results'&&<>
     <div className="guided-modal-footer">
-     <button className="guided-back" type="button" onClick={()=>{if(screen==='results'){setScreen('choose');setDetailsOpen(false)}else close()}}><ArrowLeft size={16}/>{screen==='results'?t('Өөр чиглэл сонгох','Change goal'):t('Болих','Cancel')}</button>
+     <button className="guided-back" type="button" onClick={()=>{setScreen('choose');setDetailsOpen(false)}}><ArrowLeft size={16}/>{screen==='results'?t('Өөр чиглэл сонгох','Change goal'):t('Болих','Cancel')}</button>
      <div className="guided-modal-footer-actions">
-      {screen==='results'?<>
+      <>
        <Link className="guided-secondary-link" href="/explore/" onClick={close}>{t('Бүх үйлчилгээ','All services')}</Link><Link className="guided-request-cta" href={'/project-requests/?'+new URLSearchParams({q:problem,audience}).toString()} onClick={close}>{t('Төслийн хүсэлт илгээх','Post a project')}</Link>
        <Link className="guided-next" href={'/solutions/?'+new URLSearchParams({audience,q:problem,...(budget.trim()?{budget:budget.trim()}:{}),...(timeline.trim()?{timeline:timeline.trim()}:{})}).toString()} onClick={close}>{t('Илүү дэлгэрэнгүй','Explore more')}<ArrowUpRight size={17}/></Link>
-      </>:<span className="guided-selection-hint">{t('Нэг чиглэл сонгоход л хангалттай','Select a goal above')}</span>}
+      </>
      </div>
     </div>
     <div className="guided-modal-bottomline">{t('Туршилтын хувилбар: түлхүүр үг, ангилалд тулгуурлан санал болгоно. AI зөвлөх хараахан ажиллахгүй.','Smart Finder beta uses transparent rule-based guidance, not a connected AI model.')}</div>
+    </>}
    </div>
   </div>,document.body)}
  </>;

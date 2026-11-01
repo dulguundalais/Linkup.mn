@@ -1,0 +1,41 @@
+/* ==========================================================================
+   LINKUP V62 — calmer "start with a goal" dialog (owner request 2026-11-01)
+   One question, one helping line, six compact choices and an own-words field
+   that looks like one more choice. The header only switches Хувь хүн /
+   Байгууллага. Colours stay those of the existing dialog.
+   ========================================================================== */
+html body .guided-modal.guided-simplified .guided-modal-header{padding:16px 24px;gap:12px;border-bottom:0}
+html body .guided-modal.guided-simplified .guided-modal-close{width:44px;height:44px;flex-basis:44px}
+.guided-audience-switch{display:inline-flex;gap:2px;padding:3px;border-radius:12px;background:#eef3f7;box-shadow:inset 0 0 0 1px #dbe7ec}
+.guided-audience-switch button{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 14px;border:0;border-radius:9px;background:transparent;color:#2e536b;font:inherit;font-size:14px;font-weight:650;cursor:pointer}
+.guided-audience-switch button:hover{color:#092d4d;background:rgb(255 255 255/.6)}
+.guided-audience-switch button[aria-pressed=true]{background:#092d4d;color:#fff}
+.guided-audience-switch button:focus-visible{outline:3px solid #4fd7ff;outline-offset:1px}
+
+html body .guided-modal.guided-simplified .guided-modal-body{padding:4px 24px 24px}
+html body .guided-modal.guided-simplified .guided-modal-body h2{margin:0 0 6px;font-size:clamp(24px,2.6vw,30px);letter-spacing:-.03em}
+html body .guided-modal.guided-simplified #guided-dialog-description{margin:0;font-size:15px;line-height:1.5;color:#4f6b7d}
+
+/* Six compact choices */
+html body .guided-modal.guided-simplified .guided-goals{gap:8px;margin-top:18px}
+html body .guided-modal.guided-simplified .guided-goal{min-height:60px;padding:10px 14px;gap:12px;border-radius:12px;font-size:14px;font-weight:650}
+html body .guided-modal.guided-simplified .guided-goal-icon{flex:0 0 36px;width:36px;height:36px;border-radius:10px}
+html body .guided-modal.guided-simplified .guided-goal>span:nth-child(2){flex:1;min-width:0}
+html body .guided-modal.guided-simplified .guided-goal-next{flex:0 0 auto;color:#7b97a8;transition:transform var(--motion-fast,.2s) var(--motion-ease,ease),color var(--motion-fast,.2s)}
+html body .guided-modal.guided-simplified .guided-goal:hover .guided-goal-next{transform:translateX(2px);color:#092d4d}
+
+/* Own words: the seventh row, same shape as the choices */
+html body .guided-modal.guided-simplified .guided-custom-need{margin:8px 0 0;padding:0;border:0}
+html body .guided-modal.guided-simplified .guided-custom-row{gap:8px}
+html body .guided-modal.guided-simplified .guided-custom-row input{min-height:56px;border-radius:12px;border:1px dashed #b9cfdb;padding:0 16px;font-size:14px;background:#fff}
+html body .guided-modal.guided-simplified .guided-custom-row input:focus{border-style:solid;border-color:#56aac3;outline:0;box-shadow:0 0 0 3px rgb(79 215 255/.25)}
+html body .guided-modal.guided-simplified .guided-custom-row button{min-height:56px;flex-basis:56px;border-radius:12px}
+.guided-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+@media(max-width:560px){
+ html body .guided-modal.guided-simplified .guided-modal-header{padding:12px 16px}
+ html body .guided-modal.guided-simplified .guided-modal-body{padding:4px 16px 20px}
+ .guided-audience-switch button{padding:0 10px;font-size:13px}
+ html body .guided-modal.guided-simplified .guided-goals{grid-template-columns:1fr}
+ html body .guided-modal.guided-simplified .guided-goal{min-height:52px}
+}
