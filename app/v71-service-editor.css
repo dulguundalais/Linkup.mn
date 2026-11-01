@@ -28,3 +28,5 @@
 .v71-delete-confirm{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .v71-delete-confirm>span{font-size:13px;font-weight:700}
 .v71-delete-yes{background:#b42318!important;border-color:#b42318!important;color:#fff!important}
+.v72-delete-problem{flex-basis:100%;margin:2px 0 0;padding:8px 12px;border-radius:10px;background:#fde8e6;color:#8a1f15;font-size:13px;font-weight:600;text-align:right}
+.night .v72-delete-problem{background:#3a1512;color:#ffb4ab}

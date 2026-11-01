@@ -19,6 +19,7 @@ import '../app/workspace.css';
 import PremiumAuth from './premium-auth';
 import ServiceCategoryFields,{parseTags} from './service-category-fields';
 import ServiceDeleteButton from './service-delete-button';
+import '../app/v72-workspace-toast.css';
 import {AdminCategorySuggestions,AdminServiceCategory,categoryErrorMessage} from './category-admin';
 import {categoryLabel,legacyCategory,REGULATED} from '../lib/marketplace/taxonomy';
 import SiteHeader,{useSiteAccount} from './site-header';
