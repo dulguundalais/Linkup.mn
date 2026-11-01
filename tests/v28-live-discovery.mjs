@@ -8,7 +8,10 @@ const normJs=ts.transpileModule(norm,{compilerOptions:{module:ts.ModuleKind.ESNe
 const normUrl='data:text/javascript;base64,'+Buffer.from(normJs).toString('base64');
 const taxJs=ts.transpileModule(read('lib/marketplace/taxonomy.ts'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
 const taxUrl='data:text/javascript;base64,'+Buffer.from(taxJs).toString('base64');
-const moduleText=read('lib/marketplace/live-discovery.ts').replace("import {normalizeSearch,searchTokens,typoClose} from './smart-search';","import {normalizeSearch,searchTokens,typoClose} from '"+normUrl+"';").replace("from './taxonomy';","from '"+taxUrl+"';");
+// V69: live-discovery uses the Explore filter helpers.
+const filtersJs=ts.transpileModule(read('lib/marketplace/explore-filters.ts'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const filtersUrl='data:text/javascript;base64,'+Buffer.from(filtersJs).toString('base64');
+const moduleText=read('lib/marketplace/live-discovery.ts').replace("from './explore-filters';","from '"+filtersUrl+"';").replace("import {normalizeSearch,searchTokens,typoClose} from './smart-search';","import {normalizeSearch,searchTokens,typoClose} from '"+normUrl+"';").replace("from './taxonomy';","from '"+taxUrl+"';");
 const js=ts.transpileModule(moduleText,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
 const {filterLiveServices,suggestLiveServices,liveServicePrice}=await import('data:text/javascript;base64,'+Buffer.from(js).toString('base64'));
 const service=(id,title,category,price,pkg=[])=>({id,title,title_en:title,description:title,category,price,delivery_days:5,revisions:1,package_name:'Basic',display_name:'QA Seller',headline:'Expert',slug:'qa-seller',packages:pkg});

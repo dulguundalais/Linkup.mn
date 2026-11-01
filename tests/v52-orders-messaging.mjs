@@ -80,5 +80,8 @@ test('Explore keeps search, category, saved-only and sort in the URL; Back resto
  assert.match(m,/if\(prevCat!==cat\)window\.history\.pushState/,'a new category is a history entry');
  assert.match(m,/else window\.history\.replaceState/,'typing does not flood history');
  assert.match(m,/window\.addEventListener\('popstate',pop\)/);
- assert.match(m,/\},\[ready,view,query,cat,sub,onlySaved,sort\]\);/);
+ // V69: the filter panel's price, delivery time and skills are part of the URL too.
+ assert.match(m,/\},\[ready,view,query,cat,sub,onlySaved,sort,extra\]\);/);
+ assert.match(m,/writeExtra\(u,extra\);/);
+ assert.match(m,/setExtra\(readExtra\(p\)\)\};window\.addEventListener\('popstate',pop\)/);
 });

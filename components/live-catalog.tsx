@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {ArrowRight,ArrowUpRight,Check,Clock3,Heart,Layers3,MessageCircle,Search,ShieldCheck,Star,X} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
 import {filterLiveServices,liveServicePrice,type LiveService,type LiveSort} from '../lib/marketplace/live-discovery';
+import {EMPTY_EXTRA,activeExtraCount,type ExtraFilters} from '../lib/marketplace/explore-filters';
 import {isValidSellerSlug} from '../lib/marketplace/seller-slug';
 import {sellerContactHref} from '../lib/marketplace/contact-routing';
 import ServiceComparison,{compareSelection,compareLimit} from './service-comparison';
@@ -27,11 +28,13 @@ export function visibleServices<T>(items:T[],homePreview:boolean,count=START_COU
 }
 // V50: names come from the shared taxonomy (pre-V50 ids still resolve).
 const coverClass=(category:string)=>legacyCategory(category)?.category||category;
-type Props={en:boolean;signedIn?:boolean;query?:string;category?:string;subcategory?:string;sort?:LiveSort;onlySaved?:boolean;saved?:string[];
+type Props={en:boolean;signedIn?:boolean;query?:string;
+ /** V69: price, delivery time and skills from the Explore filter panel. */
+ extra?:ExtraFilters;category?:string;subcategory?:string;sort?:LiveSort;onlySaved?:boolean;saved?:string[];
  onSave?:(id:string)=>void;canSave?:boolean;saveBusy?:string[];saveError?:string;onSignInSave?:(id?:string)=>void;homePreview?:boolean;
  /** V52: guest | checking | loading | ready | error — a signed-in person is never sent to login while their list loads. */
  saveState?:'checking'|'guest'|'loading'|'ready'|'error';onRetrySave?:()=>void};
-export default function LiveCatalog({en,signedIn=false,query='',category='all',subcategory='',sort='featured',onlySaved=false,saved=[],onSave,canSave=false,saveBusy=[],saveError='',onSignInSave,homePreview=false,saveState,onRetrySave}:Props){
+export default function LiveCatalog({en,signedIn=false,extra=EMPTY_EXTRA,query='',category='all',subcategory='',sort='featured',onlySaved=false,saved=[],onSave,canSave=false,saveBusy=[],saveError='',onSignInSave,homePreview=false,saveState,onRetrySave}:Props){
  const heartState=saveState||(canSave?'ready':'guest');
  const [services,setServices]=useState<LiveService[]>([]);
  const [state,setState]=useState<'loading'|'ready'|'error'>('loading');
@@ -49,8 +52,8 @@ export default function LiveCatalog({en,signedIn=false,query='',category='all',s
   }).catch(()=>{if(alive)setState('error')});
   return()=>{alive=false};
  },[]);
- useEffect(()=>{setVisibleCount(START_COUNT)},[query,category,subcategory,sort,onlySaved]);
- const filtered=useMemo(()=>filterLiveServices(services,{query,category,subcategory,sort,onlySaved,saved}),[services,query,category,subcategory,sort,onlySaved,saved]);
+ useEffect(()=>{setVisibleCount(START_COUNT)},[query,category,subcategory,sort,onlySaved,extra]);
+ const filtered=useMemo(()=>filterLiveServices(services,{query,category,subcategory,sort,onlySaved,saved,...extra}),[services,query,category,subcategory,sort,onlySaved,saved,extra]);
  const visible=visibleServices(filtered,homePreview,visibleCount);
  const compareReady=compared.length>=2;
  const toggleCompare=(id:string)=>setCompared(current=>compareSelection(current,id));
@@ -66,7 +69,7 @@ export default function LiveCatalog({en,signedIn=false,query='',category='all',s
    <p>{services.length===0?t('Мэргэжилтнүүд үйлчилгээгээ нийтлэхэд энд харагдана.','Published freelancer services will appear here.'):onlySaved?t('Таалагдсан үйлчилгээн дээрх ♡-г дарж хадгалаарай. Энд харагдана.','Tap ♡ on a service you like to save it here.'):t('Ангилал эсвэл хайлтаа өөрчлөөд үзээрэй.','Try another category or a different search.')}</p>
    {/* V52: no dead ends — offer the next useful step, never invented results. */}
    <div className="v52-empty-actions">
-    {(query||category!=='all'||subcategory||onlySaved)&&<Link href="/explore/" className="v39-empty-link">{t('Шүүлтүүр арилгах','Clear filters')}</Link>}
+    {(query||category!=='all'||subcategory||onlySaved||activeExtraCount(extra)>0)&&<Link href="/explore/" className="v39-empty-link">{t('Шүүлтүүр арилгах','Clear filters')}</Link>}
     <Link href="/categories/" className="v39-empty-link">{t('Бүх ангилал','Browse all categories')} <ArrowUpRight size={16}/></Link>
     <Link href={'/solutions/'+(query?'?q='+encodeURIComponent(query):'')} className="v39-empty-link">{t('Асуудлаа тайлбарлах','Describe your problem')} <ArrowUpRight size={16}/></Link>
     <Link href={'/project-requests/'+(query?'?q='+encodeURIComponent(query):'')} className="v39-empty-link">{t('Төслийн хүсэлт илгээх','Post a project request')} <ArrowUpRight size={16}/></Link>
