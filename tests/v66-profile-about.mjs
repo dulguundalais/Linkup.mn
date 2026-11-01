@@ -18,11 +18,19 @@ test('a short bio is not folded; labels are escaped',()=>{
  assert.doesNotMatch(m.renderBioFolded('Short bio.','x','y'),/<details/);
  assert.match(m.renderBioFolded(long,'<b>','y'),/&lt;b&gt;/);
 });
-test('About shows facts and the contact button beside the bio',()=>{
+test('About keeps the contact button beside the bio, without repeating the hero numbers',()=>{
  const r=read('lib/marketplace/public-portfolio-render.ts');
- assert.match(r,/<dl class="portfolio-about-facts">/);
+ assert.doesNotMatch(r,/portfolio-about-facts/);
  assert.match(r,/class="portfolio-about-cta"/);
  const css=read('public/public-profile.css');
  assert.match(css,/\.portfolio-about-aside\{position:sticky/);
  assert.match(css,/\.portfolio-bio-list\{[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+});
+test('hero follows the reference: role, name, portrait, real counts; services are rows',()=>{
+ const r=read('lib/marketplace/public-portfolio-render.ts');
+ assert.match(r,/<p class="v66-hero-role">/);
+ assert.match(r,/<div class="v66-hero-portrait"><div class="portfolio-hero-avatar">/);
+ assert.match(r,/heroStats=\[\[services\.length,[^\]]*\],\[photos\.length,[^\]]*\],\[tools\.length,/,'only real counts');
+ assert.match(r,/<a class="v66-service-row" href="'\+link\+'">/);
+ assert.doesNotMatch(r,/Сайн байна уу, би/);
 });
