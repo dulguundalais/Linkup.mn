@@ -829,8 +829,8 @@ export const informationPages:Record<string,InfoPage>={
         },
         "paragraphs": [
           {
-            "mn": "Туршилтын үндсэн тохиргоо: түншийн урамшуулал 1%, идэвхтэй түншийнх 2%, платформын шимтгэл 10%, урилга бүртгүүлэх хугацаа 30 хоног. Эдгээр тохиргоо өөрчлөгдөж болно.",
-            "en": "Current configurable beta rules propose 1% standard partner, 2% active partner, a 10% platform commission and a 30-day attribution window. They may change."
+            "mn": "Туршилтын үндсэн тохиргоо: нөхцөл хангасан бүх түншид 1% урамшуулал, урилга бүртгүүлэх хугацаа 30 хоног, урамшуулал тооцох хугацаа 12 сар. Эдгээр тохиргоо өөрчлөгдөж болно.",
+            "en": "Current configurable beta rules: a 1% reward for every qualifying partner, a 30-day attribution window and 12 months of reward eligibility. They may change."
           },
           {
             "mn": "Туршилтын тооцоолол нь мөнгөн урамшуулал авах эрх, төлбөрийн баталгаа болохгүй. Одоогоор мөнгөн урамшуулал олгохгүй.",
@@ -1057,8 +1057,8 @@ export const helpTopics:{group:Localized;items:{q:Localized;a:Localized}[]}[]=[
     "items": [
       {
         "q": {
-          "mn": "Түншийн 1%, 2%-ийн урамшууллыг мөнгөөр олгох уу?",
-          "en": "Are the 1% and 2% referral rewards paid?"
+          "mn": "Түншийн 1%-ийн урамшууллыг мөнгөөр олгох уу?",
+          "en": "Is the 1% referral reward paid?"
         },
         "a": {
           "mn": "Одоогоор олгохгүй. Эдгээр хувь нь туршилтын тооцооллын тохиргоо юм. Мөнгөн урамшуулал олгож эхлэхээс өмнө нөхцөлийг тусад нь нийтэлнэ.",
