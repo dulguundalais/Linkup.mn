@@ -1,5 +1,6 @@
 'use client';
-import {useEffect,useState,type FormEvent} from 'react';
+import {useEffect,useState,type FormEvent,useLayoutEffect} from 'react';
+import {endThemeLoading} from '../lib/use-site-theme';
 import Link from 'next/link';
 import {ArrowUpRight,ArrowRight,CheckCircle2,ShieldCheck,Copy,Share2,Users,ChartNoAxesCombined,HandHeart,Clock3,LockKeyhole,ChevronDown,LoaderCircle} from 'lucide-react';
 import SiteHeader,{useSiteAccount} from './site-header';
@@ -25,6 +26,8 @@ export default function PartnerProgram(){
  const [rules,setRules]=useState<Rules>(DEFAULT_PARTNER_TERMS);
  const [name,setName]=useState(''),[kind,setKind]=useState<'individual'|'business'>('individual'),[channel,setChannel]=useState(''),[website,setWebsite]=useState(''),[accept,setAccept]=useState(false);
  const t=(mn:string,english:string)=>txt(en,mn,english);
+// V68: theme before first paint (no white flash in dark mode).
+useLayoutEffect(()=>{try{setDark(localStorage.getItem('hustle-theme')==='dark')}catch{};endThemeLoading()},[]);
  useEffect(()=>{try{setEn(localStorage.getItem('hustle-language')==='en');setDark(localStorage.getItem('hustle-theme')==='dark')}catch{}},[]);
  async function refresh(){
   setLoading(true);setError('');
