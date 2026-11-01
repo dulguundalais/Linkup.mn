@@ -6,6 +6,9 @@ test('the how-it-works title keeps its text and gets a decorative streak',()=>{
  const h=read('components/signature-home.tsx');
  assert.match(h,/<h2 id="how-title"><span className="v70-swoosh-text" ref=\{swooshRef\}>\{t\('Санаанаас бодит ажил хүртэл\.','From idea to finished work\.'\)\}<span className="v70-swoosh" aria-hidden="true">/);
  assert.match(h,/<path d="M0 10 L100 10"/,'straight, level line (owner)');
+ // A level line has a zero-height box: the gradient must use user units, and no filter on the path.
+ assert.match(h,/gradientUnits="userSpaceOnUse"/);
+ assert.doesNotMatch(read('app/v70-process-swoosh.css'),/\.v70-swoosh path\{[^}]*filter/);
 });
 test('it plays once per page load when first seen, then disappears',()=>{
  const h=read('components/signature-home.tsx'),css=read('app/v70-process-swoosh.css');

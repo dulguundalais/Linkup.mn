@@ -7,8 +7,10 @@
    ========================================================================== */
 .v60-process .v70-swoosh-text{position:relative;display:inline-block}
 .v60-process .v70-swoosh{position:absolute;left:-1.5%;right:.42em;bottom:-.34em;height:.42em;pointer-events:none;opacity:0}
-.v60-process .v70-swoosh svg{display:block;width:100%;height:100%;overflow:visible;clip-path:inset(-12px -12px -12px -12px)}
-.v60-process .v70-swoosh path{fill:none;stroke-width:4px;stroke-linecap:round;filter:drop-shadow(0 0 6px rgb(79 215 255/.45))}
+/* Gradient in user units and the glow on the svg box: a level line has a zero-height
+   box, so box-relative gradients and filters on the path would paint nothing. */
+.v60-process .v70-swoosh svg{display:block;width:100%;height:100%;overflow:visible;clip-path:inset(-12px -12px -12px -12px);filter:drop-shadow(0 0 6px rgb(79 215 255/.45))}
+.v60-process .v70-swoosh path{fill:none;stroke-width:4px;stroke-linecap:round}
 /* The glowing head, under the last letter, on the line */
 .v60-process .v70-swoosh-head{position:absolute;right:-5px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:#e6faff;box-shadow:0 0 0 3px rgb(79 215 255/.35),0 0 16px 4px rgb(79 215 255/.7);opacity:0}
 
