@@ -45,3 +45,8 @@ test('the panel is wired into Explore and the catalog',()=>{
  assert.match(d,/\{skills\.length>0&&<section/,'skills only when sellers have tagged');
  assert.doesNotMatch(d,/Full-time|Years experience|Upgrade|\bPro\b/);
 });
+test('"Clear filters" on an empty result resets in place instead of linking to the same page',()=>{
+ const m=read('components/premium-marketplace.tsx'),c=read('components/live-catalog.tsx');
+ assert.match(m,/onClearFilters=\{view==='explore'\?\(\)=>\{setQuery\(''\);setCat\('all'\);setSub\(''\);setOnlySaved\(false\);setExtra\(EMPTY_EXTRA\)\}:undefined\}/);
+ assert.match(c,/onClearFilters\?<button type="button" className="v39-empty-link" onClick=\{onClearFilters\}>/);
+});

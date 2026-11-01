@@ -14,6 +14,7 @@ import '../app/v41-home-card-readability.css';
 import '../app/v50-categories.css';
 import '../app/v55-service-cards.css';
 import '../app/v56-skeletons.css';
+import '../app/v69-explore-filters.css';
 import {categoryLabel,legacyCategory,serviceTypeById,subcategoryLabel} from '../lib/marketplace/taxonomy';
 
 // The marketplace_catalog RPC is the sole source: published services from real sellers only.
@@ -30,11 +31,13 @@ export function visibleServices<T>(items:T[],homePreview:boolean,count=START_COU
 const coverClass=(category:string)=>legacyCategory(category)?.category||category;
 type Props={en:boolean;signedIn?:boolean;query?:string;
  /** V69: price, delivery time and skills from the Explore filter panel. */
- extra?:ExtraFilters;category?:string;subcategory?:string;sort?:LiveSort;onlySaved?:boolean;saved?:string[];
+ extra?:ExtraFilters;
+ /** V69: clears the filters in place (a link to the same page would not reset them). */
+ onClearFilters?:()=>void;category?:string;subcategory?:string;sort?:LiveSort;onlySaved?:boolean;saved?:string[];
  onSave?:(id:string)=>void;canSave?:boolean;saveBusy?:string[];saveError?:string;onSignInSave?:(id?:string)=>void;homePreview?:boolean;
  /** V52: guest | checking | loading | ready | error — a signed-in person is never sent to login while their list loads. */
  saveState?:'checking'|'guest'|'loading'|'ready'|'error';onRetrySave?:()=>void};
-export default function LiveCatalog({en,signedIn=false,extra=EMPTY_EXTRA,query='',category='all',subcategory='',sort='featured',onlySaved=false,saved=[],onSave,canSave=false,saveBusy=[],saveError='',onSignInSave,homePreview=false,saveState,onRetrySave}:Props){
+export default function LiveCatalog({en,signedIn=false,extra=EMPTY_EXTRA,onClearFilters,query='',category='all',subcategory='',sort='featured',onlySaved=false,saved=[],onSave,canSave=false,saveBusy=[],saveError='',onSignInSave,homePreview=false,saveState,onRetrySave}:Props){
  const heartState=saveState||(canSave?'ready':'guest');
  const [services,setServices]=useState<LiveService[]>([]);
  const [state,setState]=useState<'loading'|'ready'|'error'>('loading');
@@ -69,7 +72,7 @@ export default function LiveCatalog({en,signedIn=false,extra=EMPTY_EXTRA,query='
    <p>{services.length===0?t('Мэргэжилтнүүд үйлчилгээгээ нийтлэхэд энд харагдана.','Published freelancer services will appear here.'):onlySaved?t('Таалагдсан үйлчилгээн дээрх ♡-г дарж хадгалаарай. Энд харагдана.','Tap ♡ on a service you like to save it here.'):t('Ангилал эсвэл хайлтаа өөрчлөөд үзээрэй.','Try another category or a different search.')}</p>
    {/* V52: no dead ends — offer the next useful step, never invented results. */}
    <div className="v52-empty-actions">
-    {(query||category!=='all'||subcategory||onlySaved||activeExtraCount(extra)>0)&&<Link href="/explore/" className="v39-empty-link">{t('Шүүлтүүр арилгах','Clear filters')}</Link>}
+    {(query||category!=='all'||subcategory||onlySaved||activeExtraCount(extra)>0)&&(onClearFilters?<button type="button" className="v39-empty-link" onClick={onClearFilters}>{t('Шүүлтүүр арилгах','Clear filters')}</button>:<Link href="/explore/" className="v39-empty-link">{t('Шүүлтүүр арилгах','Clear filters')}</Link>)}
     <Link href="/categories/" className="v39-empty-link">{t('Бүх ангилал','Browse all categories')} <ArrowUpRight size={16}/></Link>
     <Link href={'/solutions/'+(query?'?q='+encodeURIComponent(query):'')} className="v39-empty-link">{t('Асуудлаа тайлбарлах','Describe your problem')} <ArrowUpRight size={16}/></Link>
     <Link href={'/project-requests/'+(query?'?q='+encodeURIComponent(query):'')} className="v39-empty-link">{t('Төслийн хүсэлт илгээх','Post a project request')} <ArrowUpRight size={16}/></Link>
