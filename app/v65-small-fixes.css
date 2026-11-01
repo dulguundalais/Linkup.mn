@@ -17,11 +17,11 @@ html.v65-loading .hustle-v5,html.v65-loading .hustle-v5 *{transition:none!import
 /* 2b. Information pages (About, FAQ, Terms…) */
 .hustle-info.night{--i-ink:#eef3ff;--i-muted:#a9b9de;--i-soft:#0f1d45;--i-blue:#9db6ff;--i-border:#1c2b55;--text:#eef3ff;--sub:#a9b9de;--surface:#0b1636;--border:#1c2b55;--soft:#0f1d45;background:#050c22;color:var(--i-ink);color-scheme:dark}
 .hustle-info.night :is(.info-sidebar,.info-empty){background:#0b1636;border-color:#1c2b55}
-.hustle-info.night :is(h2,h3,strong,b,summary){color:#eef3ff}
-.hustle-info.night :is(p,li,dd,small){color:#a9b9de}
-.hustle-info.night a:not(.footer-main-cta):not(.footer-outline-cta){color:#9db6ff}
-.hustle-info.night :is(input,textarea,select){background:#0f1d45;border-color:#1c2b55;color:#eef3ff}
-.hustle-info.night :is(details,article,section>div>div)[class]{border-color:#1c2b55}
+.hustle-info.night main :is(h2,h3,strong,b,summary){color:#eef3ff}
+.hustle-info.night main :is(p,li,dd,small){color:#a9b9de}
+.hustle-info.night main a{color:#9db6ff}
+.hustle-info.night main :is(input,textarea,select){background:#0f1d45;border-color:#1c2b55;color:#eef3ff}
+.hustle-info.night main :is(details,article,section>div>div)[class]{border-color:#1c2b55}
 
 /* 2c. Service page */
 .v50-listing-page.night{background:#050c22;color:#eef3ff;color-scheme:dark}
