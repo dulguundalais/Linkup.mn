@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useMemo,useState} from 'react';
+import {useEffect,useMemo,useRef,useState} from 'react';
 import Link from 'next/link';
 import {ArrowRight,ArrowUpRight,Check,ChevronRight,Clapperboard,Code2,Globe2,Layers3,MessageCircle,MousePointer2,Search,ShieldCheck,Sparkles,Star,PenTool,BriefcaseBusiness,CheckCircle2} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
@@ -12,6 +12,7 @@ import '../app/v50-hero.css';
 import '../app/v56-search-hints.css';
 import '../app/v59-hero-cleanup.css';
 import '../app/v60-home-sections.css';
+import '../app/v70-process-swoosh.css';
 
 type T=(mn:string,en:string)=>string;
 const topics=[
@@ -95,9 +96,20 @@ export function SignatureProcess({en}:{en:boolean}){
  const [mode,setMode]=useState<'buyer'|'seller'>('buyer');
  const t:T=(mn,english)=>en?english:mn;
  const steps=mode==='buyer'?buyerSteps:sellerSteps;
+ // V70: a light streak sweeps under the title and lands on its last letter, once,
+ // when the section scrolls into view. Without JS or with reduced motion it simply shows.
+ const swooshRef=useRef<HTMLSpanElement>(null);
+ useEffect(()=>{
+  const el=swooshRef.current;
+  if(!el||typeof IntersectionObserver==='undefined'||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  el.classList.add('v70-armed');
+  const io=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){el.classList.remove('v70-armed');el.classList.add('v70-play');io.disconnect()}},{threshold:.6});
+  io.observe(el);
+  return()=>{io.disconnect();el.classList.remove('v70-armed')};
+ },[]);
  return <section id="how" className="signature-process v60-process" aria-labelledby="how-title">
     <div className="shell">
-     <div className="signature-section-heading"><div><span className="signature-section-eyebrow">{t('Хэрхэн ажилладаг','How it works')}</span><h2 id="how-title">{t('Санаанаас бодит ажил хүртэл.','From idea to finished work.')}</h2></div><div className="signature-process-switch" role="group" aria-label={t('Хэрэглэгчийн төрөл','How it works for')}><button aria-pressed={mode==='buyer'} className={mode==='buyer'?'active':''} onClick={()=>setMode('buyer')}>{t('Захиалагчдад','For buyers')}</button><button aria-pressed={mode==='seller'} className={mode==='seller'?'active':''} onClick={()=>setMode('seller')}>{t('Мэргэжилтнүүдэд','For freelancers')}</button></div></div>
+     <div className="signature-section-heading"><div><span className="signature-section-eyebrow">{t('Хэрхэн ажилладаг','How it works')}</span><h2 id="how-title"><span className="v70-swoosh-text" ref={swooshRef}>{t('Санаанаас бодит ажил хүртэл.','From idea to finished work.')}<span className="v70-swoosh" aria-hidden="true"><svg viewBox="0 0 100 20" preserveAspectRatio="none" focusable="false"><defs><linearGradient id="v70-swoosh-grad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stopColor="#4a77ee" stopOpacity="0"/><stop offset=".55" stopColor="#4a77ee" stopOpacity=".75"/><stop offset=".9" stopColor="#4fd7ff"/><stop offset="1" stopColor="#d9f7ff"/></linearGradient></defs><path d="M0 17 C 30 19, 66 16, 100 5" pathLength={100} vectorEffect="non-scaling-stroke" stroke="url(#v70-swoosh-grad)"/></svg><i className="v70-swoosh-head"/></span></span></h2></div><div className="signature-process-switch" role="group" aria-label={t('Хэрэглэгчийн төрөл','How it works for')}><button aria-pressed={mode==='buyer'} className={mode==='buyer'?'active':''} onClick={()=>setMode('buyer')}>{t('Захиалагчдад','For buyers')}</button><button aria-pressed={mode==='seller'} className={mode==='seller'?'active':''} onClick={()=>setMode('seller')}>{t('Мэргэжилтнүүдэд','For freelancers')}</button></div></div>
      <ol className="v60-steps">{steps.map(({index,mn,en:eng,descMn,descEn,Icon})=><li key={mode+index} className="v60-step"><div className="v60-step-head"><span className="v60-step-icon" aria-hidden="true"><Icon size={26} strokeWidth={1.8}/></span><span className="v60-step-num">{index}</span></div><h3>{en?eng:mn}</h3><p>{en?descEn:descMn}</p></li>)}</ol>
      <p className="signature-process-note"><ShieldCheck size={15}/>{t('Туршилтын хугацаанд Linkup төлбөр хүлээн авахгүй, эскроу үйлчилгээ үзүүлэхгүй.','No real payments or escrow during open beta.')}</p>
     </div>
