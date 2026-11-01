@@ -15,11 +15,25 @@ export function safePostLoginPath(input:string|null|undefined):string|null{
   return normalized+url.search;
  }catch{return null}
 }
-export function signInWithReturn(path:string,mode:'buyer'|'seller'='buyer'){
+/** V65: why a guest was sent to sign in, so the sign-in page can say so. */
+export type SignInReason='save'|'order'|'message'|'request';
+const reasons:SignInReason[]=['save','order','message','request'];
+export function signInWithReturn(path:string,mode:'buyer'|'seller'='buyer',why?:SignInReason){
  const url=new URLSearchParams({mode});
  const safe=safePostLoginPath(path);
  if(safe)url.set('next',safe);
+ if(why&&reasons.includes(why))url.set('why',why);
  return '/login/?'+url.toString();
+}
+/** Reads the reason from ?why=, or infers it from where the visitor was going. */
+export function signInReason(params:URLSearchParams):SignInReason|null{
+ const why=params.get('why');
+ if(why&&(reasons as string[]).includes(why))return why as SignInReason;
+ if(params.get('seller'))return 'message';
+ const next=safePostLoginPath(params.get('next'))||'';
+ if(params.get('service')||next.startsWith('/listing/'))return 'order';
+ if(next.startsWith('/project-requests/'))return 'request';
+ return null;
 }
 // Client-only, per-identity local draft keys. Keys must not contain e-mail or passwords.
 export function projectDraftKey(userId:string){

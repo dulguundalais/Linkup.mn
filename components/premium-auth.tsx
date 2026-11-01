@@ -7,6 +7,8 @@ import {ArrowLeft,ArrowRight,BadgeCheck,Building2,Check,CheckCircle2,Eye,EyeOff,
 import {marketplaceClient} from '../lib/marketplace/client';
 import '../app/premium-auth.css';
 import '../app/v54-page-unification.css';
+import '../app/v65-small-fixes.css';
+import {signInReason,type SignInReason} from '../lib/marketplace/ux-flows';
 
 type Entry='buyer'|'seller'|'admin';
 type Props={
@@ -26,6 +28,9 @@ export default function PremiumAuth({
  useEffect(()=>{const selected=new URLSearchParams(location.search).get('audience')||localStorage.getItem('hustle-buyer-audience');if(selected==='personal'||selected==='business')setBuyerAudience(selected);if(new URLSearchParams(location.search).get('reset')==='1')setResetMode(true)},[]);
  const chooseBuyerAudience=(next:'personal'|'business')=>{setBuyerAudience(next);try{localStorage.setItem('hustle-buyer-audience',next)}catch{}};
  const [resetMode,setResetMode]=useState(false);
+ // V65: a guest sent here by ♡, an order or a message is told why.
+ const [reason,setReason]=useState<SignInReason|null>(null);
+ useEffect(()=>{try{setReason(signInReason(new URLSearchParams(location.search)))}catch{}},[]);
  const [resetBusy,setResetBusy]=useState(false);
  const [resetMessage,setResetMessage]=useState('');
  const [resetError,setResetError]=useState('');
@@ -52,15 +57,16 @@ export default function PremiumAuth({
    finally{setResetBusy(false)}
  }
  const isAdmin=entry==='admin';
+ const reasonText:Record<SignInReason,string>={save:t('Үйлчилгээг хадгалахын тулд нэвтэрнэ үү.','Sign in to save this service.'),order:t('Захиалга илгээхийн тулд нэвтэрнэ үү.','Sign in to send your order.'),message:t('Мэргэжилтэнд мессеж бичихийн тулд нэвтэрнэ үү.','Sign in to message this freelancer.'),request:t('Төслийн хүсэлт илгээхийн тулд нэвтэрнэ үү.','Sign in to post a project request.')};
  const forSeller=entryMode==='seller';
  const title=isAdmin?t('Админ нэвтрэлт','Admin sign in'):
   resetMode?t('Нууц үг сэргээх','Reset your password'):
   register?forSeller?t('Мэргэжилтнээр бүртгүүлэх','Join as a freelancer'):t('Linkup-д нэгдэх','Create your account'):
-  t('Эргэн тавтай морил','Welcome back');
+  reason?t('Нэвтэрч үргэлжлүүлнэ үү','Sign in to continue'):t('Эргэн тавтай морил','Welcome back');
  const lead=resetMode?t('Имэйлээ оруулаад нууц үг сэргээх холбоос хүсээрэй.','Enter your email to request a password reset link.'):
   isAdmin?t('Зөвхөн эрх бүхий админ нэвтэрнэ.','For authorized administrators only.'):
   register?forSeller?t('Үйлчилгээгээ багц болгон нийтэлж, захиалга аваарай.','Publish your services as packages and start taking orders.'):t('Имэйлээ баталгаажуулмагц шууд ашиглаж эхэлнэ.','Confirm your email and you are ready to go.'):
-  t('Төсөл, захиалга, мессежээ үргэлжлүүлээрэй.','Pick up your projects, orders and messages.');
+  reason?'':t('Төсөл, захиалга, мессежээ үргэлжлүүлээрэй.','Pick up your projects, orders and messages.');
  const benefits:[typeof Package,string,string][]=forSeller?[
    [Package,t('Багцын нөхцөлөө өөрөө сонгоно','Set your own packages'),t('Үнэ, хугацаа, засварын тоогоо гурван түвшинд тохируулна.','Choose price, delivery time and revisions across three tiers.')],
    [Inbox,t('Захиалга, мессеж нэг дор','Orders and messages together'),t('Ирсэн захиалга, яриагаа нэг самбараас удирдана.','Handle incoming orders and conversations from one dashboard.')],
@@ -84,7 +90,8 @@ export default function PremiumAuth({
    </aside>}
    <section className="hustle-auth-panel" aria-labelledby="hustle-auth-title">
    {isAdmin&&<Link href="/" className="hustle-auth-wordmark" aria-label="Linkup"><LinkupWordmark decorative/></Link>}
-   <div className="hustle-auth-intro"><h1 id="hustle-auth-title">{title}</h1><p>{lead}</p></div>
+   <div className="hustle-auth-intro"><h1 id="hustle-auth-title">{title}</h1>{lead&&<p>{lead}</p>}</div>
+   {reason&&!resetMode&&!isAdmin&&<p className="hustle-auth-reason" role="note"><Info size={16} aria-hidden="true"/><span>{reasonText[reason]}{!register&&t(' Бүртгэлгүй бол «Бүртгэл үүсгэх»-ийг сонгоорой — нэг минут болно.',' New here? Choose “Create account” — it takes a minute.')}</span></p>}
    {!resetMode&&!isAdmin&&<div className="hustle-auth-tabs" role="group" aria-label={t('Бүртгэлийн горим','Authentication mode')}>
      <button type="button" className={!register?'active':''} aria-pressed={!register} onClick={()=>changeMode(false)}>{t('Нэвтрэх','Sign in')}</button>
      <button type="button" className={register?'active':''} aria-pressed={register} onClick={()=>changeMode(true)}>{t('Бүртгэл үүсгэх','Create account')}</button>

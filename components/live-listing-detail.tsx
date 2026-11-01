@@ -16,6 +16,8 @@ import '../app/live-listing.css';
 import '../app/v39-service-detail.css';
 import '../app/v50-order-flow.css';
 import '../app/v56-skeletons.css';
+import '../app/v65-small-fixes.css';
+import {useSiteTheme} from '../lib/use-site-theme';
 
 const money=(n:number)=>new Intl.NumberFormat('mn-MN').format(n)+' ₮';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
@@ -29,6 +31,7 @@ export default function LiveListingDetail(){
  const [status,setStatus]=useState<'loading'|'ready'|'missing'|'error'>('loading');
  const [tier,setTier]=useState<Tier>('Basic');
  const [en,setEn]=useState(false);
+ const [dark,toggleTheme]=useSiteTheme();
  const [signedIn,setSignedIn]=useState(false);
  const [drawer,setDrawer]=useState<DrawerState>('closed');
  const [brief,setBrief]=useState('');
@@ -154,8 +157,8 @@ export default function LiveListingDetail(){
   ...(listing&&normalizeCategory(catId)!=='all'?[{label:categoryLabel(catId,en),href:'/explore/?category='+catId}]:[{label:t('Үйлчилгээ','Services'),href:'/explore/'}]),
   ...(listing&&subLabel?[{label:subLabel,href:'/explore/?category='+catId+'&sub='+encodeURIComponent(subId)}]:[]),
   {label:title||t('Үйлчилгээ','Service')}];
- return <div className="v50-listing-page">
- <SiteHeader en={en} onToggleLanguage={()=>setEn(v=>!v)} active="services" session={session}/>
+ return <div className={"v50-listing-page"+(dark?" night":"")}>
+ <SiteHeader en={en} onToggleLanguage={()=>setEn(v=>{const next=!v;try{localStorage.setItem('hustle-language',next?'en':'mn')}catch{}return next})} dark={dark} onToggleTheme={toggleTheme} active="services" session={session}/>
  <main className="v28-detail-page v39-detail-page">
   {/* V56: a skeleton in the shape of the page instead of a line of text. */}
   {status==='loading'&&<section className="v28-detail-shell v28-detail-grid v56-sk-detail" role="status" aria-label={t('Үйлчилгээ ачаалж байна','Loading service')}>
