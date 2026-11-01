@@ -286,3 +286,6 @@ body{background:#fff}
 }
 @media(prefers-reduced-motion:reduce){.v66-service-row,.v66-service-arrow{transition:none}.v66-service-row:hover{transform:none}}
 .v66-hero .v66-hero-portrait .portfolio-hero-avatar img{border-radius:0;width:100%;height:100%;object-fit:cover}
+/* The portrait frame holds the existing avatar element; undo its circle. */
+.v66-hero .v66-hero-portrait .portfolio-hero-avatar{width:100%;height:100%;border:0;border-radius:0;box-shadow:none;background:none;font-size:84px;display:grid;place-items:center}
+.v66-hero .v66-hero-portrait .portfolio-hero-avatar::before,.v66-hero .v66-hero-portrait .portfolio-hero-avatar::after{display:none}
