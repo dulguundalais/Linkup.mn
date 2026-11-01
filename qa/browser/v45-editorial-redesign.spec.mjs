@@ -11,7 +11,7 @@ test('V45: editorial homepage keeps live search, guided path and category links'
  await expect(hero.locator('.signature-search input')).toBeVisible();
  await expect(hero.locator('.guided-entry-choice')).toHaveCount(2);
  await expect(page.locator('.business-solution-card')).toHaveCount(4);
- await expect(page.locator('.cat-showcase .cat-card')).toHaveCount(10);
+ await expect(page.locator('.cat-showcase .cat-card')).toHaveCount(8); // V71: education and wellbeing hidden by the owner
  await expect(page.locator('.cat-showcase .cat-card').first()).toHaveAttribute('href','/categories/#ai');
  await expect(page.locator('.v39-catalog-home .v39-talent-card')).toBeVisible();
  await expect(page.locator('.v19-featured-intro')).toHaveCount(0);
@@ -26,7 +26,7 @@ for(const width of [360,390,768,1024]){
   await page.goto('/');
   await expect(page.locator('.signature-hero h1')).toBeVisible();
   await expect(page.locator('.guided-entry-choices')).toBeVisible();
-  await expect(page.locator('.cat-showcase .cat-card')).toHaveCount(10);
+  await expect(page.locator('.cat-showcase .cat-card')).toHaveCount(8); // V71: education and wellbeing hidden by the owner
   await expect(page.locator('.v39-catalog-home .v39-talent-card')).toBeVisible();
   const dimensions=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
   expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.viewport+4);
