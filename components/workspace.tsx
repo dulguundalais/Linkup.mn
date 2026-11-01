@@ -40,7 +40,7 @@ const [emailCooldown,setEmailCooldown]=useState(0);
 const [slugDraft,setSlugDraft]=useState<string|null>(null);
 const entryApplied=useRef(false);
 const [entryMode,setEntryMode]=useState<'buyer'|'seller'|'admin'>(entry);
-const [en,setEn]=useState(false),[dark,setDark]=useState(false),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[uid,setUid]=useState(''),[role,setRole]=useState(''),[email,setEmail]=useState(''),[password,setPassword]=useState(''),[register,setRegister]=useState(false),[tab,setTab]=useState<Tab>(entry==='seller'?'seller':entry==='admin'?'admin':'buyer-home');
+const [en,setEn]=useState(false),[dark,setDark]=useState(false),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[uid,setUid]=useState(''),[role,setRole]=useState(''),[email,setEmail]=useState(''),[password,setPassword]=useState(''),[register,setRegister]=useState(login&&entry==='seller'),[tab,setTab]=useState<Tab>(entry==='seller'?'seller':entry==='admin'?'admin':'buyer-home');
 const [profile,setProfile]=useState<Profile|null>(null),[people,setPeople]=useState<Profile[]>([]),[listings,setListings]=useState<Listing[]>([]),[orders,setOrders]=useState<Order[]>([]),[portfolio,setPortfolio]=useState<Portfolio[]>([]),[referrals,setReferrals]=useState<Referral[]>([]),[rules,setRules]=useState<Rules|null>(null),[members,setMembers]=useState<BetaMember[]>([]),[code,setCode]=useState(''),[audit,setAudit]=useState<{id:number;entity:string;action:string;created_at:string}[]>([]);
 // V50: the service a buyer came from, shown as context at the top of the chat.
 const [chatCtx,setChatCtx]=useState('');

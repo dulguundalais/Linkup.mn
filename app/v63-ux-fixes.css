@@ -1,0 +1,16 @@
+/* ==========================================================================
+   LINKUP V63 — fixes from the pre-launch UX sweep (2026-11-01)
+   Explore gets a real page heading; the 404 page speaks Mongolian and offers
+   the three ways forward.
+   ========================================================================== */
+html body .hustle-v5:not(.workspace) .discovery .section-top h1.v63-explore-title{margin:10px 0 0;font-size:clamp(36px,3.6vw,52px);line-height:1.3;letter-spacing:-.05em;font-weight:800;color:var(--text)}
+
+.v63-not-found{min-height:56vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:72px 24px;text-align:center}
+.v63-not-found .v63-code{margin:0;font-size:15px;font-weight:700;letter-spacing:.12em;color:var(--hx-royal-600,#2b5cde)}
+.v63-not-found h1{margin:0;font-size:clamp(30px,4vw,44px);line-height:1.15;letter-spacing:-.03em;color:var(--text,#0a1430)}
+.v63-not-found>p:not(.v63-code){margin:0;font-size:16px;color:var(--sub,#4a5677)}
+.v63-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:12px}
+.v63-actions a{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 18px;border:1px solid var(--border,#e1e7f3);border-radius:12px;color:var(--text,#0a1430);font-weight:650;text-decoration:none;background:var(--surface,#fff)}
+.v63-actions a:hover{border-color:var(--hx-royal-300,#9db6ff)}
+.v63-actions a.v63-primary{background:#0a1430;border-color:#0a1430;color:#fff}
+.v63-actions a.v63-primary:hover{background:#1d3a78}
