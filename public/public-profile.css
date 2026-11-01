@@ -285,3 +285,4 @@ body{background:#fff}
  .v66-hero-stats b{font-size:30px}
 }
 @media(prefers-reduced-motion:reduce){.v66-service-row,.v66-service-arrow{transition:none}.v66-service-row:hover{transform:none}}
+.v66-hero .v66-hero-portrait .portfolio-hero-avatar img{border-radius:0;width:100%;height:100%;object-fit:cover}
