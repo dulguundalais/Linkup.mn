@@ -31,7 +31,7 @@ test('the Linkup wordmark replaces every text logo and follows the theme colour'
  const mark=read('components/linkup-wordmark.tsx');
  assert.match(mark,/fill="currentColor"/);
  assert.match(mark,/aria-label=\{decorative\?undefined:'Linkup'\}/);
- for(const file of ['components/site-header.tsx','components/premium-footer.tsx','components/premium-auth.tsx','components/reset-password.tsx','components/solution-finder.tsx','components/guided-entry.tsx'])
+ for(const file of ['components/site-header.tsx','components/premium-footer.tsx','components/premium-auth.tsx','components/reset-password.tsx','components/solution-finder.tsx']/* V62: the guided dialog no longer shows a logo (owner) */)
   assert.match(read(file),/<LinkupWordmark/,file);
  assert.match(read('components/site-header.tsx'),/className="hx-brand" href="\/" aria-label="Linkup"/);
 });
