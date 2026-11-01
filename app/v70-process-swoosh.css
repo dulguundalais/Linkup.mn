@@ -7,19 +7,20 @@
    ========================================================================== */
 .v60-process .v70-swoosh-text{position:relative;display:inline-block}
 .v60-process .v70-swoosh{position:absolute;left:-1.5%;right:.42em;bottom:-.3em;height:.42em;pointer-events:none}
-.v60-process .v70-swoosh svg{display:block;width:100%;height:100%;overflow:visible}
-.v60-process .v70-swoosh path{fill:none;stroke-width:4px;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:0;filter:drop-shadow(0 0 6px rgb(79 215 255/.45))}
+.v60-process .v70-swoosh svg{display:block;width:100%;height:100%;overflow:visible;clip-path:inset(-12px -12px -12px -12px)}
+.v60-process .v70-swoosh path{fill:none;stroke-width:4px;stroke-linecap:round;filter:drop-shadow(0 0 6px rgb(79 215 255/.45))}
 /* The glowing head sits where the streak meets the last letter */
 .v60-process .v70-swoosh-head{position:absolute;right:-4px;top:-1px;width:10px;height:10px;border-radius:50%;background:#e6faff;box-shadow:0 0 0 3px rgb(79 215 255/.35),0 0 16px 4px rgb(79 215 255/.7)}
 
 /* Before it is seen: hidden (only ever set by script) */
-.v60-process .v70-armed .v70-swoosh path{stroke-dashoffset:100}
+.v60-process .v70-armed .v70-swoosh svg{clip-path:inset(-12px 100% -12px -12px)}
 .v60-process .v70-armed .v70-swoosh-head{opacity:0}
 /* Seen: draw left to right, then the head lights up and settles */
-.v60-process .v70-play .v70-swoosh path{animation:v70-draw 1.05s cubic-bezier(.25,.8,.25,1)}
+.v60-process .v70-play .v70-swoosh svg{animation:v70-draw 1.05s cubic-bezier(.25,.8,.25,1)}
 .v60-process .v70-play .v70-swoosh-head{animation:v70-land 1.5s cubic-bezier(.25,.8,.25,1)}
-@keyframes v70-draw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+/* Revealed left to right with a clip (dash lengths are unreliable on a stretched, non-scaling stroke) */
+@keyframes v70-draw{from{clip-path:inset(-12px 100% -12px -12px)}to{clip-path:inset(-12px -12px -12px -12px)}}
 @keyframes v70-land{0%,62%{opacity:0;transform:scale(.3)}80%{opacity:1;transform:scale(1.6)}100%{opacity:1;transform:scale(1)}}
 
 @media(max-width:640px){.v60-process .v70-swoosh{bottom:-.26em;height:.36em}.v60-process .v70-swoosh path{stroke-width:3px}.v60-process .v70-swoosh-head{width:8px;height:8px}}
-@media(prefers-reduced-motion:reduce){.v60-process .v70-play .v70-swoosh path,.v60-process .v70-play .v70-swoosh-head{animation:none}}
+@media(prefers-reduced-motion:reduce){.v60-process .v70-play .v70-swoosh svg,.v60-process .v70-play .v70-swoosh-head{animation:none}}

@@ -7,7 +7,7 @@ test('the how-it-works title keeps its text and gets a decorative streak',()=>{
  assert.match(h,/<h2 id="how-title"><span className="v70-swoosh-text" ref=\{swooshRef\}>\{t\('Санаанаас бодит ажил хүртэл\.','From idea to finished work\.'\)\}<span className="v70-swoosh" aria-hidden="true">/);
  assert.match(h,/prefers-reduced-motion: reduce/);
  // The resting state is the finished streak; only script hides it until seen.
- assert.match(css,/stroke-dashoffset:0;/);
- assert.match(css,/\.v70-armed \.v70-swoosh path\{stroke-dashoffset:100\}/);
+ assert.match(css,/\.v70-swoosh svg\{[^}]*clip-path:inset\(-12px -12px -12px -12px\)\}/);
+ assert.match(css,/\.v70-armed \.v70-swoosh svg\{clip-path:inset\(-12px 100% -12px -12px\)\}/);
  assert.doesNotMatch(css,/animation:[^;]*\b(both|forwards|backwards)\b/,'no fill-mode: never stuck hidden');
 });
