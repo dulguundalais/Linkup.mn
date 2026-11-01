@@ -1,0 +1,50 @@
+/* ==========================================================================
+   LINKUP V65 — small irritants (owner request 2026-11-01)
+   1. Sign-in says why a guest was sent there.
+   2. The saved theme applies to information pages, service pages and 404 too,
+      and dark-mode visitors no longer see a white page fade in on load.
+   ========================================================================== */
+
+/* 1. Why am I signing in? */
+.hustle-auth-reason{display:flex;align-items:flex-start;gap:10px;margin:0 0 16px;padding:12px 14px;border-radius:12px;border:1px solid var(--auth-line,#e1e7f3);background:color-mix(in srgb,var(--auth-accent,#2b5cde) 8%,transparent);color:var(--auth-text,#0a1430);font-size:14px;line-height:1.5}
+.hustle-auth-reason svg{flex:0 0 auto;margin-top:2px;color:var(--auth-accent,#2b5cde)}
+
+/* 2a. No white flash: page background follows the saved theme before scripts run,
+       and colour transitions wait until the page has settled. */
+html.v65-pre-dark,html.v65-pre-dark body{background:#050c22;color-scheme:dark}
+html.v65-loading .hustle-v5,html.v65-loading .hustle-v5 *{transition:none!important}
+
+/* 2b. Information pages (About, FAQ, Terms…) */
+.hustle-info.night{--i-ink:#eef3ff;--i-muted:#a9b9de;--i-soft:#0f1d45;--i-blue:#9db6ff;--i-border:#1c2b55;--text:#eef3ff;--sub:#a9b9de;--surface:#0b1636;--border:#1c2b55;--soft:#0f1d45;background:#050c22;color:var(--i-ink);color-scheme:dark}
+.hustle-info.night :is(.info-sidebar,.info-empty){background:#0b1636;border-color:#1c2b55}
+.hustle-info.night :is(h2,h3,strong,b,summary){color:#eef3ff}
+.hustle-info.night :is(p,li,dd,small){color:#a9b9de}
+.hustle-info.night a:not(.footer-main-cta):not(.footer-outline-cta){color:#9db6ff}
+.hustle-info.night :is(input,textarea,select){background:#0f1d45;border-color:#1c2b55;color:#eef3ff}
+.hustle-info.night :is(details,article,section>div>div)[class]{border-color:#1c2b55}
+
+/* 2c. Service page */
+.v50-listing-page.night{background:#050c22;color:#eef3ff;color-scheme:dark}
+.v50-listing-page.night .v28-detail-page{background:transparent;color:#eef3ff}
+.v50-listing-page.night :is(h1,h2,h3,strong,b,label,.v28-detail-price){color:#eef3ff}
+.v50-listing-page.night :is(p,.v28-detail-description,.v28-detail-seller span,.v28-detail-spec span,.v39-detail-reviews,.v50-price-from,.v50-price-unit,small){color:#a9b9de}
+.v50-listing-page.night :is(.v28-detail-offer,.v50-drawer,.v50-drawer-foot,.v50-order-service,.v50-detail-tags li,.v50-retry,.v50-sent-icon,.v50-order-error){background:#0b1636;border-color:#1c2b55;color:#eef3ff;box-shadow:none}
+.v50-listing-page.night .v39-detail-page .v28-detail-kicker{background:#0f1d45;color:#9db6ff}
+.v50-listing-page.night .v28-detail-tiers{background:#0f1d45;border-color:#1c2b55}
+.v50-listing-page.night .v28-detail-tiers button{background:transparent;color:#a9b9de}
+.v50-listing-page.night .v28-detail-tiers button[aria-pressed=true]{background:#eef3ff;color:#0a1430}
+.v50-listing-page.night .v28-detail-primary{background:#eef3ff;color:#0a1430!important}
+.v50-listing-page.night :is(.v28-detail-secondary,.v50-btn){background:transparent;border-color:#2a3b6b;color:#eef3ff!important}
+.v50-listing-page.night :is(.v28-detail-secondary,.v50-btn):hover{background:#0f1d45}
+.v50-listing-page.night .v50-tier-pick label{background:#0b1636;border-color:#1c2b55;color:#eef3ff}
+.v50-listing-page.night .v50-tier-pick label.selected{background:#0f1d45;border-color:#9db6ff}
+.v50-listing-page.night :is(input,textarea,select){background:#0f1d45;border-color:#1c2b55;color:#eef3ff}
+.v50-listing-page.night .v50-profile-link{color:#9db6ff}
+.v50-listing-page.night .hx-crumbs :is(a,span){color:#a9b9de}
+.v50-listing-page.night .hx-crumbs [aria-current]{color:#eef3ff}
+.v50-listing-page.night .v56-sk-offer{background:#0b1636;border-color:#1c2b55}
+
+/* 2d. 404 */
+.v65-plain-page{min-height:100vh;background:var(--paper,#f6f8fd)}
+.v65-plain-page.night{--paper:#050c22;--surface:#0b1636;--text:#eef3ff;--sub:#a9b9de;--border:#1c2b55;--soft:#0f1d45;background:#050c22;color:#eef3ff;color-scheme:dark}
+.v65-plain-page.night .v63-actions a.v63-primary{background:#eef3ff;border-color:#eef3ff;color:#0a1430}

@@ -86,6 +86,9 @@ test('referral capture retains attribution until a confirmed database claim',()=
 // dropped; the site keeps each visitor's own theme choice.
 test('layout keeps the visitor theme choice and only adds referral capture',()=>{
  const layout=read('app/layout.tsx');
- assert.doesNotMatch(layout,/hustle-theme/);
+ // V65: the layout may read the saved theme to paint the right background before
+ // scripts run (no white flash), but must never set or overwrite the visitor's choice.
+ assert.doesNotMatch(layout,/setItem\(['"]hustle-theme/);
+ assert.match(layout,/getItem\('hustle-theme'\)==='dark'\)d\.classList\.add\('v65-pre-dark'\)/,'dark only when the visitor chose it');
  assert.match(layout,/<PartnerReferralCapture\/>/);
 });
