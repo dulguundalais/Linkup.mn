@@ -90,7 +90,7 @@ export default function ExploreFilterDrawer({en,open,onClose,services,base,value
      </div>
      <div className="v69-price-inputs">
       <label><span>{t('Доод ₮','From ₮')}</span><input inputMode="numeric" value={ex.priceMin===null?'':String(ex.priceMin)} placeholder="0" onChange={e=>{const n=typed(e.target.value);setExtra({priceMin:e.target.value.trim()===''||n<=0?null:n})}}/></label>
-      <label><span>{t('Дээд ₮','To ₮')}</span><input inputMode="numeric" value={ex.priceMax===null?'':String(ex.priceMax)} placeholder={String(ceiling)} onChange={e=>{const n=typed(e.target.value);setExtra({priceMax:e.target.value.trim()===''?null:n})}}/></label>
+      <label><span>{t('Дээд ₮','To ₮')}</span><input inputMode="numeric" value={ex.priceMax===null?'':String(ex.priceMax)} placeholder={new Intl.NumberFormat('mn-MN').format(ceiling)} onChange={e=>{const n=typed(e.target.value);setExtra({priceMax:e.target.value.trim()===''?null:n})}}/></label>
      </div>
     </section>
 

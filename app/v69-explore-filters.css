@@ -3,8 +3,10 @@
    A filter button next to the Explore title opens a side panel (a bottom sheet on
    phones). Colours come from the page tokens, so dark mode follows automatically.
    ========================================================================== */
-.v69-title-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.v69-filter-button{position:relative;display:inline-grid;place-items:center;width:48px;height:48px;margin-top:10px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);cursor:pointer}
+.v69-title-row{display:flex;align-items:center;gap:14px}
+.v69-title-row h1{min-width:0}
+@media(max-width:640px){.v69-title-row{align-items:flex-start}}
+.v69-filter-button{position:relative;flex:0 0 auto;display:inline-grid;place-items:center;width:48px;height:48px;margin-top:10px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);cursor:pointer}
 .v69-filter-button:hover{border-color:var(--hx-royal-300,#9db6ff);background:var(--soft)}
 .v69-filter-button:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
 .v69-filter-button[aria-expanded=true]{border-color:var(--purple);color:var(--purple)}
@@ -21,10 +23,10 @@
 .v69-active button:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
 .v69-active .v69-clear-all{background:transparent;border-color:transparent;color:var(--purple);text-decoration:underline;text-underline-offset:3px}
 
-/* Panel */
+/* Panel. No animation fill: where animations do not run the panel still shows in place. */
 .v69-filter-layer{position:fixed;inset:0;z-index:80}
-.v69-filter-scrim{position:absolute;inset:0;background:rgb(4 11 31/.42);animation:v69-fade .2s var(--motion-ease,ease) both}
-.v69-filter-panel{position:absolute;top:0;right:0;bottom:0;width:min(420px,100%);display:flex;flex-direction:column;background:var(--surface);color:var(--text);border-left:1px solid var(--border);box-shadow:-24px 0 60px rgb(4 11 31/.18);animation:v69-slide .28s var(--motion-ease,ease) both}
+.v69-filter-scrim{position:absolute;inset:0;background:rgb(4 11 31/.42);animation:v69-fade .2s var(--motion-ease,ease)}
+.v69-filter-panel{position:absolute;top:0;right:0;bottom:0;width:min(420px,100%);display:flex;flex-direction:column;background:var(--surface);color:var(--text);border-left:1px solid var(--border);box-shadow:-24px 0 60px rgb(4 11 31/.18);animation:v69-slide .28s var(--motion-ease,ease)}
 .v69-filter-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px 12px}
 .v69-filter-head h2{margin:0;font-size:22px;font-weight:800;letter-spacing:-.02em}
 .v69-filter-close{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--soft);color:var(--text);cursor:pointer}
