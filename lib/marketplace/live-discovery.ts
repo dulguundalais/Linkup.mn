@@ -1,5 +1,6 @@
 import {normalizeSearch,searchTokens,typoClose} from './smart-search';
 import {legacyCategory,serviceSearchTerms} from './taxonomy';
+import {matchesExtra,serviceStart,type ExtraFilters} from './explore-filters';
 
 // Only published, opt-in marketplace_catalog RPC records are accepted here.
 // Never mix editorial sample services into the buyer discovery index.
@@ -11,10 +12,11 @@ export type LiveService = {
  review_count?:number;average_rating?:number|null;completed_orders?:number;
  subcategory?:string|null;service_type?:string|null;tags?:string[]|null;
 };
-export type LiveSort = 'featured'|'low'|'high';
+export type LiveSort = 'featured'|'low'|'high'|'fast';
+export const isLiveSort=(v:unknown):v is LiveSort=>v==='featured'||v==='low'||v==='high'||v==='fast';
 export type LiveFilters = {
  query:string;category:string;subcategory?:string;sort:LiveSort;onlySaved:boolean;saved:string[];
-};
+} & Partial<ExtraFilters>;
 
 // Search the existing server-filtered, published marketplace_catalog records only.
 // Never manufacture sellers or mix sample/demo listings into the real catalog.
@@ -79,13 +81,15 @@ export function filterLiveServices<T extends LiveService>(items:T[],filters:Live
  const hasQuery=searchTokens(filters.query).length>0;
  const scored=items
   // V52: rows saved under pre-V50 ids still match their new category and subcategory.
-  .filter(s=>{const legacy=legacyCategory(s.category);const cat=legacy?.category||s.category;const sub=s.subcategory||legacy?.subcategory||'';return (filters.category==='all'||cat===filters.category||s.category===filters.category)&&(!filters.subcategory||sub===filters.subcategory)&&(!filters.onlySaved||filters.saved.includes(s.id))})
+  .filter(s=>{const legacy=legacyCategory(s.category);const cat=legacy?.category||s.category;const sub=s.subcategory||legacy?.subcategory||'';return (filters.category==='all'||cat===filters.category||s.category===filters.category)&&(!filters.subcategory||sub===filters.subcategory)&&(!filters.onlySaved||filters.saved.includes(s.id))&&matchesExtra(s,filters)})
   .map((s,i)=>({s,i,score:hasQuery?liveSearchScore(s,filters.query):0}))
   .filter(row=>!hasQuery||row.score>=0);
  if(filters.sort==='featured'){
   if(hasQuery)scored.sort((a,b)=>b.score-a.score||a.i-b.i);
  }else{
   scored.sort((a,b)=>{
+   // V69: fastest delivery first (the starting package), cheaper first on a tie.
+   if(filters.sort==='fast'){const da=serviceStart(a.s).days||999,db=serviceStart(b.s).days||999;return (da-db)||(liveServicePrice(a.s)-liveServicePrice(b.s))||a.i-b.i}
    const priceDelta=liveServicePrice(a.s)-liveServicePrice(b.s);
    return (filters.sort==='low'?priceDelta:-priceDelta)||(b.score-a.score)||a.i-b.i;
   });

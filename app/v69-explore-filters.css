@@ -1,0 +1,99 @@
+/* ==========================================================================
+   LINKUP V69 — Explore filter panel (owner request 2026-11-01)
+   A filter button next to the Explore title opens a side panel (a bottom sheet on
+   phones). Colours come from the page tokens, so dark mode follows automatically.
+   ========================================================================== */
+.v69-title-row{display:flex;align-items:center;gap:14px}
+.v69-title-row h1{min-width:0}
+@media(max-width:640px){.v69-title-row{align-items:flex-start}}
+.v69-filter-button{position:relative;flex:0 0 auto;display:inline-grid;place-items:center;width:48px;height:48px;margin-top:10px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);cursor:pointer}
+.v69-filter-button:hover{border-color:var(--hx-royal-300,#9db6ff);background:var(--soft)}
+.v69-filter-button:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
+.v69-filter-button[aria-expanded=true]{border-color:var(--purple);color:var(--purple)}
+.v69-filter-badge{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--hx-royal-600,#2b5cde);color:#fff;font-size:11px;font-weight:750;line-height:20px;text-align:center}
+
+/* Category buttons show how many services each has */
+.hustle-v5 .categories button .v69-cat-count{font-size:11px;font-weight:650;color:var(--sub);line-height:1}
+.hustle-v5 .categories button.selected .v69-cat-count{color:var(--purple)}
+
+/* Active filters under the search row */
+.v69-active{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 0}
+.v69-active button{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border:1px solid var(--border);border-radius:999px;background:var(--soft);color:var(--text);font:inherit;font-size:13px;font-weight:650;cursor:pointer}
+.v69-active button:hover{border-color:var(--purple)}
+.v69-active button:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
+.v69-active .v69-clear-all{background:transparent;border-color:transparent;color:var(--purple);text-decoration:underline;text-underline-offset:3px}
+
+/* Panel. No animation fill: where animations do not run the panel still shows in place. */
+.v69-filter-layer{position:fixed;inset:0;z-index:80}
+.v69-filter-scrim{position:absolute;inset:0;background:rgb(4 11 31/.42);animation:v69-fade .2s var(--motion-ease,ease)}
+.v69-filter-panel{position:absolute;top:0;right:0;bottom:0;width:min(420px,100%);display:flex;flex-direction:column;background:var(--surface);color:var(--text);border-left:1px solid var(--border);box-shadow:-24px 0 60px rgb(4 11 31/.18);animation:v69-slide .28s var(--motion-ease,ease)}
+.v69-filter-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px 12px}
+.v69-filter-head h2{margin:0;font-size:22px;font-weight:800;letter-spacing:-.02em}
+.v69-filter-close{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--soft);color:var(--text);cursor:pointer}
+.v69-filter-close:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
+.v69-filter-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:4px 24px 24px}
+.v69-filter-group{display:flex;flex-direction:column;gap:10px;padding:18px 0;border-bottom:1px solid var(--border)}
+.v69-filter-group:last-child{border-bottom:0}
+.v69-group-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.v69-group-head h3{margin:0;font-size:15px;font-weight:750}
+.v69-reset{min-height:32px;padding:0 4px;border:0;background:none;color:var(--purple);font:inherit;font-size:13px;font-weight:650;cursor:pointer}
+
+.v69-select{display:flex;flex-direction:column;gap:2px;padding:9px 14px;border:1px solid var(--border);border-radius:14px;background:var(--soft)}
+.v69-select>span{font-size:12px;color:var(--sub);font-weight:600}
+.v69-select select{width:100%;min-height:28px;padding:0;border:0;background:transparent;color:var(--text);font:inherit;font-size:15px;font-weight:650;cursor:pointer}
+.v69-select:focus-within{border-color:var(--purple);box-shadow:0 0 0 3px rgb(79 215 255/.25)}
+.v69-select select:focus{outline:0}
+.v69-filter-panel option{color:#0a1430;background:#fff}
+
+/* Two-thumb price slider */
+.v69-range{position:relative;height:32px;margin:4px 10px 0}
+.v69-range::before,.v69-range::after{content:'';position:absolute;top:50%;height:4px;margin-top:-2px;border-radius:2px}
+.v69-range::before{left:0;right:0;background:var(--border)}
+.v69-range::after{left:var(--lo);right:calc(100% - var(--hi));background:var(--hx-royal-600,#2b5cde)}
+.v69-range input{position:absolute;inset:0;width:100%;height:100%;margin:0;background:none;pointer-events:none;-webkit-appearance:none;appearance:none;z-index:1}
+.v69-range input::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:3px solid var(--hx-royal-600,#2b5cde);pointer-events:auto;cursor:grab;box-shadow:0 2px 6px rgb(4 11 31/.2)}
+.v69-range input::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--surface);border:3px solid var(--hx-royal-600,#2b5cde);pointer-events:auto;cursor:grab}
+.v69-range input::-moz-range-track{background:none}
+.v69-range input:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px rgb(79 215 255/.55)}
+.v69-range input:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgb(79 215 255/.55)}
+.v69-price-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.v69-price-inputs label{display:flex;flex-direction:column;gap:2px;padding:9px 14px;border:1px solid var(--border);border-radius:14px;background:var(--soft)}
+.v69-price-inputs span{font-size:12px;color:var(--sub);font-weight:600}
+.v69-price-inputs input{width:100%;min-height:26px;padding:0;border:0;background:transparent;color:var(--text);font:inherit;font-size:15px;font-weight:650}
+.v69-price-inputs input:focus{outline:0}
+.v69-price-inputs label:focus-within{border-color:var(--purple);box-shadow:0 0 0 3px rgb(79 215 255/.25)}
+
+/* Choice chips (delivery, skills) */
+.v69-chips{display:flex;flex-wrap:wrap;gap:8px}
+.v69-chips button{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 14px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text);font:inherit;font-size:14px;font-weight:650;cursor:pointer}
+.v69-chips button small{font-size:12px;font-weight:650;color:var(--sub)}
+.v69-chips button:hover:not(:disabled){border-color:var(--hx-royal-300,#9db6ff);background:var(--soft)}
+.v69-chips button[aria-pressed=true]{background:var(--hx-royal-600,#2b5cde);border-color:var(--hx-royal-600,#2b5cde);color:#fff}
+.v69-chips button[aria-pressed=true] small{color:rgb(255 255 255/.8)}
+.v69-chips button:disabled{opacity:.45;cursor:not-allowed}
+.v69-chips button:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
+
+.v69-filter-foot{display:flex;flex-direction:column;gap:8px;padding:16px 24px calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--border);background:var(--surface)}
+.v69-apply{min-height:52px;border:0;border-radius:999px;background:var(--hx-ink-900,#071330);color:#fff;font:inherit;font-size:15px;font-weight:750;cursor:pointer}
+.hustle-v5.night .v69-apply{background:var(--hx-royal-600,#2b5cde)}
+.v69-apply:hover{filter:brightness(1.12)}
+.v69-reset-all{min-height:48px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text);font:inherit;font-size:14px;font-weight:650;cursor:pointer}
+.v69-apply:focus-visible,.v69-reset-all:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px}
+
+@keyframes v69-slide{from{transform:translateX(100%)}to{transform:none}}
+@keyframes v69-rise{from{transform:translateY(100%)}to{transform:none}}
+@keyframes v69-fade{from{opacity:0}to{opacity:1}}
+
+/* Phones: a sheet that rises from the bottom */
+@media(max-width:640px){
+ .v69-filter-panel{top:auto;left:0;width:100%;max-height:88vh;border-left:0;border-top:1px solid var(--border);border-radius:22px 22px 0 0;box-shadow:0 -20px 50px rgb(4 11 31/.2);animation-name:v69-rise}
+ .v69-filter-head{padding:16px 18px 8px}
+ .v69-filter-body{padding:0 18px 18px}
+ .v69-filter-foot{flex-direction:row-reverse;padding:12px 18px calc(12px + env(safe-area-inset-bottom))}
+ .v69-filter-foot button{flex:1}
+ .v69-filter-button{width:44px;height:44px}
+}
+@media(prefers-reduced-motion:reduce){.v69-filter-panel,.v69-filter-scrim{animation:none}}
+
+/* "Clear filters" in the empty state is a button now (it resets in place); look like its sibling links */
+html body .hustle-v5 button.v39-empty-link{border:0;background:none;padding:0;font:inherit;font-size:13px;font-weight:800;color:inherit;cursor:pointer}
