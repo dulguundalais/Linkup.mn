@@ -3,6 +3,7 @@ import {useEffect,useMemo,useState} from 'react';
 import Link from 'next/link';
 import {ArrowRight,ArrowUpRight,Check,ChevronRight,Clapperboard,Code2,Globe2,Layers3,MessageCircle,MousePointer2,Search,ShieldCheck,Sparkles,Star,PenTool,BriefcaseBusiness,CheckCircle2} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
+import {DEFAULT_PARTNER_TERMS,loadPartnerTerms} from '../lib/marketplace/partner-terms';
 import {services} from '../lib/marketplace/catalog';
 import {suggestLiveServices,type LiveService} from '../lib/marketplace/live-discovery';
 import GuidedEntry from './guided-entry';
@@ -111,7 +112,10 @@ export function SignatureSellerBand({en}:{en:boolean}){
 }
 export function SignaturePartner({en}:{en:boolean}){
  const t:T=(mn,english)=>en?english:mn;
+ // V67: the numbers come from Business rules, so an admin change shows here at once.
+ const [terms,setTerms]=useState(DEFAULT_PARTNER_TERMS);
+ useEffect(()=>{let live=true;void loadPartnerTerms().then(v=>{if(live&&v)setTerms(v)});return()=>{live=false}},[]);
  return <section className="signature-partner shell">
-    <div className="signature-partner-inner"><div className="signature-partner-copy"><span className="signature-section-eyebrow">{t('Түншлэл','Partners')}</span><h2>{t('Холбоогоо боломж болго.','Good connections make great things happen.')}</h2><p>{t('Мэргэжилтнүүдийг Linkup-д урьж, түншийн хөтөлбөрт оролцоорой. Туршилтын хугацаанд урамшууллыг зөвхөн тооцоолох бөгөөд мөнгө олгохгүй.', 'Introduce skilled freelancers to the marketplace. Referral rewards are simulated during beta, not paid out.')}</p><Link className="signature-partner-link" href="/referrals/">{t('Түншийн мэдээлэл үзэх','Explore referrals')}<ArrowUpRight size={16}/></Link></div><div className="signature-partner-stats"><div><strong>1%</strong><span>{t('Үндсэн түнш','Standard partner')}</span></div><div><strong>2%</strong><span>{t('Идэвхтэй түнш','Active partner')}</span></div><div><strong>10%</strong><span>{t('Платформын шимтгэл','Platform commission')}</span></div></div></div>
+    <div className="signature-partner-inner"><div className="signature-partner-copy"><span className="signature-section-eyebrow">{t('Түншлэл','Partners')}</span><h2>{t('Холбоогоо боломж болго.','Good connections make great things happen.')}</h2><p>{t('Мэргэжилтнүүдийг Linkup-д урьж, түншийн хөтөлбөрт оролцоорой. Туршилтын хугацаанд урамшууллыг зөвхөн тооцоолох бөгөөд мөнгө олгохгүй.', 'Introduce skilled freelancers to the marketplace. Referral rewards are simulated during beta, not paid out.')}</p><Link className="signature-partner-link" href="/referrals/">{t('Түншийн мэдээлэл үзэх','Explore referrals')}<ArrowUpRight size={16}/></Link></div><div className="signature-partner-stats"><div><strong>{terms.partner_percent}%</strong><span>{t('Түншийн урамшуулал','Partner reward')}</span></div><div><strong>{terms.attribution_days}</strong><span>{t('хоногийн урилгын хугацаа','day invite window')}</span></div><div><strong>{terms.reward_months}</strong><span>{t('сар урамшуулал тооцно','months of rewards')}</span></div></div></div>
    </section>;
 }
