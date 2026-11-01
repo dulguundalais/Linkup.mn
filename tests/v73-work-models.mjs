@@ -10,3 +10,8 @@ test('work models: one card per model fills the row, each with an icon',()=>{
  assert.match(d,/'--models':SERVICE_TYPES\.length/);
  assert.match(d,/import '\.\.\/app\/v73-work-models\.css';/);
 });
+test('V74: breadcrumbs are readable in dark mode on every page',()=>{
+ const css=read('app/site-header.css');
+ assert.match(css,/\.night \.hx-crumbs a\{color:#c9d6f2\}/);
+ assert.match(css,/\.night \.hx-crumbs \[aria-current=page\]\{color:#eef3ff\}/);
+});

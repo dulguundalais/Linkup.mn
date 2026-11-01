@@ -36,6 +36,12 @@
 .hx-crumbs a{color:#3e5566;text-decoration:none;border-radius:4px}
 .hx-crumbs a:hover{color:#2b5cde;text-decoration:underline;text-underline-offset:3px}
 .hx-crumbs [aria-current=page]{color:#0a1430;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:42ch}
+/* V74 (owner): readable breadcrumbs in dark mode on every page (they were dark grey on navy) */
+.night .hx-crumbs ol{color:#a9b9de}
+.night .hx-crumbs li+li::before{color:#6b7fa8}
+.night .hx-crumbs a{color:#c9d6f2}
+.night .hx-crumbs a:hover{color:#8be6ff}
+.night .hx-crumbs [aria-current=page]{color:#eef3ff}
 
 @media(max-width:900px){
  .hustle-v5.hx-header .hx-header-inner{height:64px}
