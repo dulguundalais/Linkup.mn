@@ -8,10 +8,12 @@ test('every page reads the saved theme before the browser paints',()=>{
  }
 });
 test('a fresh dark load keeps the light pre-built page hidden on the dark background until it turns dark',()=>{
- const css=read('app/v65-small-fixes.css'),layout=read('app/layout.tsx');
- assert.match(css,/html\.v65-pre-dark\.v65-loading body>:is\(\.hustle-v5,\.v50-listing-page\):not\(\.night\)\{visibility:hidden\}/);
- assert.match(css,/html\.v65-pre-dark,html\.v65-pre-dark body\{background:#050c22/);
+ const layout=read('app/layout.tsx');
+ // Inline in the root layout: present on every page before any stylesheet loads.
+ assert.match(layout,/html\.v65-pre-dark\.v65-loading body>:is\(\.hustle-v5,\.v50-listing-page\):not\(\.night\)\{visibility:hidden\}/);
+ assert.match(layout,/html\.v65-pre-dark,html\.v65-pre-dark body\{background:#050c22/);
+ assert.match(layout,/<style dangerouslySetInnerHTML=\{\{__html:PRE_PAINT_CSS\}\}\/>/);
  // The guard always ends, even if the app never starts.
  assert.match(layout,/classList\.remove\('v65-loading'\)\},3000\)/);
- assert.doesNotMatch(css,/opacity:0/);
+ assert.doesNotMatch(layout,/opacity:0/);
 });
