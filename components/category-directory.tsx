@@ -1,13 +1,14 @@
 'use client';
 import {useMemo,useState} from 'react';
 import Link from 'next/link';
-import {ArrowUpRight,Search,ShieldCheck,X} from 'lucide-react';
+import {ArrowUpRight,Search,ShieldCheck,X,Package,Clock3,FileText,Repeat} from 'lucide-react';
 import {Breadcrumbs} from './site-header';
 import CategoryArt from './category-art';
 import {CATEGORIES,SERVICE_TYPES,type Category} from '../lib/marketplace/taxonomy';
 import {normalizeSearch} from '../lib/marketplace/smart-search';
 import '../app/v50-categories.css';
 import '../app/v61-consistency.css';
+import '../app/v73-work-models.css';
 
 /* V50 /categories/ — every main category with its subcategories, a filter box,
    problem-first entry points and the five service models. */
@@ -18,6 +19,8 @@ const problems=[
  {mn:'Компани байгуулах гэж байна',en:'I want to start a company'},
  {mn:'Татварын тайлангаа зөв гаргамаар байна',en:'I need help with my tax filing'}
 ];
+
+const MODEL_ICONS:Record<string,typeof Package>={fixed:Package,hourly:Clock3,custom:FileText,monthly:Repeat};
 
 export default function CategoryDirectory({en}:{en:boolean}){
  const t=(mn:string,eng:string)=>en?eng:mn;
@@ -65,8 +68,9 @@ export default function CategoryDirectory({en}:{en:boolean}){
   </div>}
   <aside className="cdir-models" aria-labelledby="cdir-models-title">
    <h2 id="cdir-models-title">{t('Ажиллах хэлбэрүүд','Ways to work together')}</h2>
-   <ul>{SERVICE_TYPES.map(s=><li key={s.id}><b>{en?s.en:s.mn}</b><span>{en?s.hintEn:s.hintMn}</span></li>)}</ul>
-   <p>{t('Бета хугацаанд төлбөр Linkup-аар дамжихгүй. Захиалга, үнийн саналыг мэргэжилтэнтэй шууд тохиролцоно.','During the beta no payments go through Linkup. Agree orders and quotes directly with the professional.')}</p>
+   {/* V73 (owner): one roomy card per way of working, each with its own icon. */}
+   <ul style={{'--models':SERVICE_TYPES.length} as React.CSSProperties}>{SERVICE_TYPES.map(s=>{const Icon=MODEL_ICONS[s.id]||Package;return <li key={s.id}><span className="cdir-model-icon" aria-hidden="true"><Icon size={22} strokeWidth={1.8}/></span><b>{en?s.en:s.mn}</b><span className="cdir-model-hint">{en?s.hintEn:s.hintMn}</span></li>})}</ul>
+   <p><ShieldCheck size={15} aria-hidden="true"/>{t('Бета хугацаанд төлбөр Linkup-аар дамжихгүй. Захиалга, үнийн саналыг мэргэжилтэнтэй шууд тохиролцоно.','During the beta no payments go through Linkup. Agree orders and quotes directly with the professional.')}</p>
   </aside>
  </section>;
 }
