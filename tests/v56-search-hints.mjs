@@ -11,8 +11,8 @@ test('homepage finder animates its rotating example searches',()=>{
  assert.match(home,/prefers-reduced-motion: reduce/,'rotation still stops for reduced motion');
  assert.match(css,/has-hint input::placeholder\{color:transparent\}/);
  assert.match(css,/pointer-events:none/);
- assert.match(css,/justify-content:center;text-align:center/,'example sits in the middle of the field');
- assert.match(css,/\.hx-search-field input\{text-align:center\}/,'typed text starts where the example was');
+ assert.match(css,/justify-content:flex-start;text-align:left/,'example starts right after the search icon');
+ assert.match(css,/\.hx-search-field input\{text-align:left\}/,'typed text starts where the example was');
  assert.match(css,/@keyframes hx-hint-in/);
  assert.match(css,/prefers-reduced-motion:reduce\)\{[^}]*animation:none/);
 });
