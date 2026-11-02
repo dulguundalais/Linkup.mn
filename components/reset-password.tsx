@@ -3,7 +3,7 @@ import {useEffect,useState,type FormEvent} from 'react';
 import Link from 'next/link';
 import LinkupWordmark from './linkup-wordmark';
 import {ArrowLeft,ArrowRight,Eye,EyeOff,LockKeyhole,ShieldCheck} from 'lucide-react';
-import {marketplaceClient} from '../lib/marketplace/client';
+import {clearRecoveryPending,endAbandonedRecovery,markRecoveryPending,marketplaceClient} from '../lib/marketplace/client';
 import {friendlyError} from '../lib/marketplace/friendly-errors';
 import '../app/premium-auth.css';
 import '../app/v54-page-unification.css';
@@ -23,7 +23,8 @@ export default function ResetPassword(){
    void marketplaceClient().then(async db=>{
      const {data:{subscription}}=db.auth.onAuthStateChange((event,session)=>{
        if(!active)return;
-       if(event==='PASSWORD_RECOVERY'&&session){setReady(true);setLoading(false)}
+       // V77: remember that this sign-in exists only to set a new password.
+       if(event==='PASSWORD_RECOVERY'&&session){markRecoveryPending();setReady(true);setLoading(false)}
      });
      cleanup=()=>subscription.unsubscribe();
      // Initializing the client verifies URL tokens and emits PASSWORD_RECOVERY.
@@ -33,7 +34,8 @@ export default function ResetPassword(){
      if(!active)return;
      setLoading(false);
    }).catch(()=>{if(active){setError(localStorage.getItem('hustle-language')==='en'?'Unable to verify the recovery link.':'Сэргээх холбоосыг шалгаж чадсангүй.');setLoading(false)}});
-   return()=>{active=false;cleanup()};
+   // V77: leaving this page inside the site without saving ends the temporary sign-in.
+   return()=>{active=false;cleanup();void marketplaceClient().then(endAbandonedRecovery).catch(()=>{})};
  },[]);
  async function save(e:FormEvent<HTMLFormElement>){
    e.preventDefault();if(!ready||busy)return;
@@ -43,6 +45,7 @@ export default function ResetPassword(){
      const db=await marketplaceClient();
      const r=await db.auth.updateUser({password});
      if(r.error)throw r.error;
+     clearRecoveryPending();
      setNotice(t('Нууц үг шинэчлэгдлээ. Одоо шинэ нууц үгээрээ нэвтэрнэ үү.','Your password has been updated. You can now sign in.'));
      setPassword('');setRepeat('');setReady(false);
      await db.auth.signOut();
