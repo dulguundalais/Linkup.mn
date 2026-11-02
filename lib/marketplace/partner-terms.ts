@@ -3,7 +3,11 @@ import {marketplaceClient} from './client';
 /** V67: the partner numbers an admin saves in Business rules. Every page reads them
  *  from here so a change in the admin panel shows up everywhere at once. */
 export type PartnerTerms={partner_percent:number;attribution_days:number;reward_months:number};
-export const DEFAULT_PARTNER_TERMS:PartnerTerms={partner_percent:1,attribution_days:30,reward_months:12};
+/** V79: only a fallback when the terms cannot be read. Pages show a placeholder
+ *  until the real terms arrive, so this is never painted first and then swapped. */
+export const DEFAULT_PARTNER_TERMS:PartnerTerms={partner_percent:1,attribution_days:30,reward_months:6};
+/** Number for display; a dash while the admin's terms are still loading. */
+export const termValue=(terms:PartnerTerms|null,key:keyof PartnerTerms)=>terms?String(terms[key]):'–';
 
 export async function loadPartnerTerms():Promise<PartnerTerms|null>{
  try{

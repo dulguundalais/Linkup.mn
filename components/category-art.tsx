@@ -136,7 +136,7 @@ const scenes:Record<string,(k:Kit)=>ReactNode>={
   {bar(146,127,32,'#c3cbe6',5)}{bar(119,144,60)}{bar(119,155,46)}
   <rect x="119" y="170" width="66" height="22" rx="11" fill="#1d2b66"/>{bar(132,178,40,'#ffffff',5)}
   {slab({x:18,y:96,w:100,h:64,r:14,d:7})}
-  <text x="31" y="124" fontFamily="Manrope, Arial, sans-serif" fontWeight="800" fontSize="20" fill="#13234f">+48%</text>
+  {/* V79: no invented figure in decoration (owner rule: real numbers only) */}{bar(31,112,52,'#13234f',8)}
   <path d="M31 146 L 50 140 L 64 143 L 82 132 L 104 126" stroke={p.accent} strokeWidth="3" fill="none" strokeLinecap="round"/>
   {orb(238,78,24,'accent2')}
   <path d="M228 78 h14 m-4 -6 l6 6 l-6 6" stroke="#0b1430" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>

@@ -3,7 +3,7 @@ import {useEffect,useMemo,useRef,useState} from 'react';
 import Link from 'next/link';
 import {ArrowRight,ArrowUpRight,Check,ChevronRight,Clapperboard,Code2,Globe2,Layers3,MessageCircle,MousePointer2,Search,ShieldCheck,Sparkles,Star,PenTool,BriefcaseBusiness,CheckCircle2} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
-import {DEFAULT_PARTNER_TERMS,loadPartnerTerms} from '../lib/marketplace/partner-terms';
+import {DEFAULT_PARTNER_TERMS,loadPartnerTerms,termValue,type PartnerTerms} from '../lib/marketplace/partner-terms';
 import {services} from '../lib/marketplace/catalog';
 import {suggestLiveServices,type LiveService} from '../lib/marketplace/live-discovery';
 import GuidedEntry from './guided-entry';
@@ -125,9 +125,10 @@ export function SignatureSellerBand({en}:{en:boolean}){
 export function SignaturePartner({en}:{en:boolean}){
  const t:T=(mn,english)=>en?english:mn;
  // V67: the numbers come from Business rules, so an admin change shows here at once.
- const [terms,setTerms]=useState(DEFAULT_PARTNER_TERMS);
- useEffect(()=>{let live=true;void loadPartnerTerms().then(v=>{if(live&&v)setTerms(v)});return()=>{live=false}},[]);
+ // V79: nothing is shown until the real numbers arrive (no 12 → 6 swap).
+ const [terms,setTerms]=useState<PartnerTerms|null>(null);
+ useEffect(()=>{let live=true;void loadPartnerTerms().then(v=>{if(live)setTerms(v||DEFAULT_PARTNER_TERMS)});return()=>{live=false}},[]);
  return <section className="signature-partner shell">
-    <div className="signature-partner-inner"><div className="signature-partner-copy"><span className="signature-section-eyebrow">{t('Түншлэл','Partners')}</span><h2>{t('Холбоогоо боломж болго.','Good connections make great things happen.')}</h2><p>{t('Мэргэжилтнүүдийг Linkup-д урьж, түншийн хөтөлбөрт оролцоорой. Туршилтын хугацаанд урамшууллыг зөвхөн тооцоолох бөгөөд мөнгө олгохгүй.', 'Introduce skilled freelancers to the marketplace. Referral rewards are simulated during beta, not paid out.')}</p><Link className="signature-partner-link" href="/referrals/">{t('Түншийн мэдээлэл үзэх','Explore referrals')}<ArrowUpRight size={16}/></Link></div><div className="signature-partner-stats"><div><strong>{terms.partner_percent}%</strong><span>{t('Түншийн урамшуулал','Partner reward')}</span></div><div><strong>{terms.attribution_days}</strong><span>{t('хоногийн урилгын хугацаа','day invite window')}</span></div><div><strong>{terms.reward_months}</strong><span>{t('сар урамшуулал тооцно','months of rewards')}</span></div></div></div>
+    <div className="signature-partner-inner"><div className="signature-partner-copy"><span className="signature-section-eyebrow">{t('Түншлэл','Partners')}</span><h2>{t('Холбоогоо боломж болго.','Good connections make great things happen.')}</h2><p>{t('Шинэ захиалагч, бизнесийг Linkup-д урьж, тэдний дууссан захиалгаас урамшуулал тооцуулаарай. Туршилтын хугацаанд урамшууллыг зөвхөн тооцоолох бөгөөд мөнгө олгохгүй.', 'Invite new buyers and businesses to Linkup and earn a reward on their completed orders. Rewards are simulated during beta, not paid out.')}</p><Link className="signature-partner-link" href="/referrals/">{t('Түншийн мэдээлэл үзэх','Explore referrals')}<ArrowUpRight size={16}/></Link></div><div className="signature-partner-stats" aria-busy={!terms}><div><strong>{termValue(terms,'partner_percent')}%</strong><span>{t('Түншийн урамшуулал','Partner reward')}</span></div><div><strong>{termValue(terms,'attribution_days')}</strong><span>{t('хоногийн урилгын хугацаа','day invite window')}</span></div><div><strong>{termValue(terms,'reward_months')}</strong><span>{t('сар урамшуулал тооцно','months of rewards')}</span></div></div></div>
    </section>;
 }
