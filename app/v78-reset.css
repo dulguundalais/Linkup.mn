@@ -1,0 +1,18 @@
+/* ==========================================================================
+   LINKUP V78 — password reset page, one clear state at a time (owner, 2026-11-02)
+   The title fits on one line; an expired link shows an icon, a short title, one
+   sentence and one button instead of a long paragraph with a side link.
+   ========================================================================== */
+.hustle-auth-scene .v78-reset-intro h1{font-size:clamp(22px,1.2rem + 1vw,27px);line-height:1.25;letter-spacing:-.02em;text-wrap:balance}
+.hustle-auth-scene .v78-reset-intro p{margin:6px 0 0}
+.v78-reset-state{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:4px}
+.v78-reset-icon{display:grid;place-items:center;width:52px;height:52px;margin-bottom:6px;border-radius:16px}
+.v78-reset-icon.is-warn{background:#fff4e5;color:#b45309}
+.v78-reset-icon.is-ok{background:#e6f5ec;color:#16794a}
+.hustle-auth-scene .v78-reset-state h1{margin:0;font-size:clamp(22px,1.2rem + 1vw,27px);line-height:1.25;letter-spacing:-.02em;text-wrap:balance}
+.v78-reset-state p{margin:0;font-size:15px;line-height:1.6;color:var(--auth-muted,#5b6785)}
+.v78-reset-state .v78-reset-action{align-self:stretch;margin-top:14px;text-decoration:none}
+
+/* Logo and title no longer compete: a smaller logo, more room before the title */
+.hustle-auth-scene .hustle-auth-brand{margin-bottom:36px}
+.hustle-auth-scene .hustle-auth-brand .linkup-wordmark{height:22px}
