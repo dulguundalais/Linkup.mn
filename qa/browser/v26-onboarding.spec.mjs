@@ -34,7 +34,9 @@ test('invalid reset link never allows changing a password',async({page})=>{
  await page.goto('/auth/reset/');
  await expect(page.locator('#reset-pass')).toHaveCount(0);
  await expect(page.getByRole('button',{name:/Update password|Нууц үг шинэчлэх/})).toHaveCount(0);
- await expect(page.getByRole('heading',{name:/Choose a new password\.|Шинэ нууц үгээ сонгоно уу\./})).toBeVisible();
+ // V78: an invalid link shows one clear state with a way to get a new link.
+ await expect(page.getByRole('heading',{name:/This link has expired|Холбоосын хугацаа дууссан/})).toBeVisible();
+ await expect(page.getByRole('link',{name:/Get a new link|Шинэ холбоос авах/})).toHaveAttribute('href','/login/?reset=1');
 });
 
 test('blocked member does not gain access to a private dashboard',async({page})=>{

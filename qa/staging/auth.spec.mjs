@@ -112,7 +112,8 @@ test('real recovery email changes password, logs out, rejects replay and does no
  await expect(page.locator('.hustle-auth-feedback[role=alert]')).toContainText('Passwords must match');
  await page.locator('#reset-repeat').fill(newPassword);
  await page.locator('.hustle-auth-submit').click();
- await expect(page.locator('.is-success')).toContainText('Your password has been updated');
+ // V78: the done state is its own card with a title and a sign-in button.
+ await expect(page.locator('.v78-reset-state')).toContainText('Password updated');
  await page.goto('/buyer/');
  await expect(page.locator('#hustle-auth-email')).toBeVisible();
  const db=client();
@@ -123,7 +124,7 @@ test('real recovery email changes password, logs out, rejects replay and does no
  const clean=await browser.newContext(),replayPage=await clean.newPage();
  try{
   await openVerified(replayPage,replay);
-  await expect(replayPage.locator('.hustle-auth-feedback')).toContainText(/missing, expired|хугацаа нь дууссан/);
+  await expect(replayPage.locator('.v78-reset-state')).toContainText(/This link has expired|Холбоосын хугацаа дууссан/);
   await expect(replayPage.locator('#reset-pass')).toHaveCount(0);
  }finally{await clean.close();}
  await page.goto('/login/?reset=1');
@@ -136,7 +137,7 @@ test('a signed-in member cannot turn a plain query parameter into a recovery lin
  await page.goto('/buyer/');await form(page,fixture.users.buyer.email,fixture.password);
  await expect(page.locator('.workspace-main')).toBeVisible();
  await page.goto('/auth/reset/?type=recovery');
- await expect(page.locator('.hustle-auth-feedback')).toContainText('missing, expired');
+ await expect(page.locator('.v78-reset-state')).toContainText('This link has expired');
  await expect(page.locator('#reset-pass')).toHaveCount(0);
 });
 
