@@ -35,7 +35,7 @@ test('support channel comes only from owner configuration, never invented',()=>{
 test('password reset screen follows the site language and links back to recovery',()=>{
  const r=read('components/reset-password.tsx');
  assert.match(r,/t\('Нэвтрэх хуудас руу буцах','Back to sign in'\)/);
- assert.match(r,/t\('Шинэ нууц үгээ сонгоно уу\.','Choose a new password\.'\)/);
+ assert.match(r,/t\('Шинэ нууц үгээ сонгоно уу','Choose a new password'\)/); // V78: shorter title, no period (owner)
  assert.match(r,/href="\/login\/\?reset=1"/);
  assert.match(read('components/premium-auth.tsx'),/get\('reset'\)==='1'\)setResetMode\(true\)/);
  assert.doesNotMatch(r,/e instanceof Error\?e\.message/,'raw auth errors are not shown');

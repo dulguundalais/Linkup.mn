@@ -1,0 +1,8 @@
+/* ==========================================================================
+   LINKUP V78 — one font on every page (owner, 2026-11-02)
+   Some pages (password reset, sign-in) never loaded Manrope and fell back to
+   Arial, whose bold weight has no Mongolian ү/ө, so those letters showed in a
+   different font. Manrope now loads from the root layout for every page, and
+   the fallbacks are system fonts that do have ү and ө.
+   ========================================================================== */
+html body,html body .hustle-v5{font-family:Manrope,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
