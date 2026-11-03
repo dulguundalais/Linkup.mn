@@ -54,7 +54,7 @@ export default function CategoryShowcase({en}:{en:boolean}){
     {SHOWCASE.map(card=><div role="listitem" key={card.key} className="cat-slot">
      <Link href={card.href} className={'cat-card cat-card-'+card.art+(CATEGORY_IMAGES.includes(card.art)?' has-image':'')}>
       <span className="cat-card-title">{en?card.en:card.mn}</span>
-      <span className="cat-card-art">{CATEGORY_IMAGES.includes(card.art)?<img src={'/categories/'+card.art+'.webp'} alt="" loading="lazy" decoding="async" width={506} height={270}/>:<CategoryArt art={card.art} label=""/>}</span>
+      <span className="cat-card-art">{CATEGORY_IMAGES.includes(card.art)?<img src={'/categories/'+card.art+'.webp'} alt="" loading="lazy" decoding="async" width={960} height={720}/>:<CategoryArt art={card.art} label=""/>}</span>
      </Link>
     </div>)}
    </div>

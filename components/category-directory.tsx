@@ -38,7 +38,7 @@ export default function CategoryDirectory({en}:{en:boolean}){
   }).filter(x=>x.hit);
  },[term]);
  const block=({c,subs}:{c:Category;subs:Category['subcategories']})=><article key={c.id} id={c.id} className={'cdir-block'+(CATEGORY_IMAGES.includes(c.id)?' has-image':'')}>
-  <Link href={'/explore/?category='+c.id} className="cdir-art" aria-hidden="true" tabIndex={-1}>{CATEGORY_IMAGES.includes(c.id)?<img src={'/categories/'+c.id+'.webp'} alt="" loading="lazy" decoding="async" width={506} height={270}/>:<CategoryArt art={c.id} label=""/>}</Link>
+  <Link href={'/explore/?category='+c.id} className="cdir-art" aria-hidden="true" tabIndex={-1}>{CATEGORY_IMAGES.includes(c.id)?<img src={'/categories/'+c.id+'.webp'} alt="" loading="lazy" decoding="async" width={960} height={720}/>:<CategoryArt art={c.id} label=""/>}</Link>
   <div className="cdir-body">
    <div className="cdir-head">
     <h2><Link href={'/explore/?category='+c.id}>{en?c.en:c.mn}</Link></h2>

@@ -18,10 +18,11 @@ test('every category has its webp artwork and both pages use it',()=>{
  for(const id of IDS){
   const f=new URL('../public/categories/'+id+'.webp',import.meta.url);
   assert.ok(existsSync(f),id);
-  const s=statSync(f).size;assert.ok(s>5000&&s<120000,id+' size '+s);
+  const s=statSync(f).size;assert.ok(s>5000&&s<160000,id+' size '+s);
  }
  assert.match(read('components/category-showcase.tsx'),/has-image/);
  assert.match(read('components/category-directory.tsx'),/CATEGORY_IMAGES\.includes\(c\.id\)\?<img/);
  const css=read('app/v81-category-art.css');
- assert.match(css,/aspect-ratio:506\/270/,'landscape art is not cropped to a square');
+ assert.match(css,/aspect-ratio:4\/3/,'the whole picture is shown');
+ assert.match(css,/object-fit:contain/);
 });
