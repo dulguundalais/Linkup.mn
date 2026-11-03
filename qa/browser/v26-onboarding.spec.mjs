@@ -13,7 +13,7 @@ test('signup sends preview-origin confirmation redirect without sending real ema
  const req=await sent;
  expect(decodeURIComponent(req.url())).toContain('/login/');
  expect(req.url()).not.toContain('localhost:3000');
- await expect(page.locator('.hustle-auth-feedback')).toBeVisible();
+ await expect(page.locator('.v85-sent')).toContainText('qa@example.test');
 });
 
 test('forgot password requests recovery back to current preview origin',async({page})=>{

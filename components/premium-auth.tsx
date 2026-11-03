@@ -123,7 +123,7 @@ export default function PremiumAuth({
   return <div className="v85-sent" role="status">
    <span className="v85-sent-icon" aria-hidden="true"><Inbox size={28}/></span>
    <h2>{t('Имэйлээ шалгана уу','Check your e-mail')}</h2>
-   <p>{t('Баталгаажуулах холбоосыг ','We sent a confirmation link to ')}<b>{sentTo}</b>{t(' хаяг руу илгээлээ. Холбоос дээр дарснаар бүртгэл тань идэвхжинэ.','. Open it to activate your account.')}</p>
+   <p>{t('Баталгаажуулах холбоосыг ','We sent a confirmation link to ')}<b>{sentTo}</b>{t(' хаяг руу илгээлээ. Холбоос дээр дарснаар бүртгэл тань шууд идэвхжинэ — админы зөвшөөрөл хэрэггүй.','. Open it to activate your account — no admin approval needed.')}</p>
    {inbox&&<a className="hustle-auth-submit v85-open-inbox" href={inbox} target="_blank" rel="noopener noreferrer">{t('Имэйл нээх','Open e-mail')}<ArrowRight size={18} aria-hidden="true"/></a>}
    <ul className="v85-sent-tips">
     <li>{t('Ирэхгүй бол Спам, Promotions хавтсаа шалгаарай.','Not there? Check Spam and Promotions.')}</li>
