@@ -64,8 +64,8 @@ export const informationPages:Record<string,InfoPage>={
             "en": "Linkup is in open beta. New users can access their workspace after email verification without manual approval."
           },
           {
-            "mn": "Одоогоор бодит мөнгөн төлбөр, эскроу санхүүгийн хамгаалалт, банк болон QPay холболт ажиллахгүй. Дэлгэцэд харагдах үнэ, урилгын урамшуулал нь туршилтын мэдээлэл бөгөөд төлбөр нэхэмжилсэн гэсэн үг биш.",
-            "en": "Real payments, escrow, bank and QPay integrations are not active. Prices and referral rewards shown in beta are informational/test values, not payment demands or payouts."
+            "mn": "Одоогоор бодит мөнгөн төлбөр, эскроу санхүүгийн хамгаалалт, банк болон QPay холболт ажиллахгүй. Дэлгэцэд харагдах үнэ нь туршилтын мэдээлэл бөгөөд төлбөр нэхэмжилсэн гэсэн үг биш.",
+            "en": "Real payments, escrow, bank and QPay integrations are not active. Prices shown in beta are informational/test values, not payment demands."
           }
         ],
         "bullets": []
@@ -1051,20 +1051,10 @@ export const helpTopics:{group:Localized;items:{q:Localized;a:Localized}[]}[]=[
   },
   {
     "group": {
-      "mn": "Түншлэл ба тусламж",
-      "en": "Referrals & support"
+      "mn": "Тусламж",
+      "en": "Support"
     },
     "items": [
-      {
-        "q": {
-          "mn": "Түншийн урамшууллыг мөнгөөр олгох уу?",
-          "en": "Is the referral reward paid?"
-        },
-        "a": {
-          "mn": "Одоогоор олгохгүй. Эдгээр хувь нь туршилтын тооцооллын тохиргоо юм. Мөнгөн урамшуулал олгож эхлэхээс өмнө нөхцөлийг тусад нь нийтэлнэ.",
-          "en": "Not yet. These are configurable beta calculations. Real payouts would require a separate approved policy and payment system."
-        }
-      },
       {
         "q": {
           "mn": "Албан ёсны тусламжийн имэйл бий юу?",

@@ -11,7 +11,7 @@ async function positions(page){
    hero:'.signature-hero-inner.shell',
    business:'.business-solutions-inner.shell',
    process:'.signature-process > .shell',
-   partner:'.signature-partner.shell',
+   // V80: the partner band is hidden for launch (PARTNER_PROGRAM_PUBLIC=false)
    footer:'.hustle-premium-footer .footer-columns.shell'
   };
   return Object.fromEntries(Object.entries(selectors).map(([name,selector])=>{
@@ -35,15 +35,15 @@ for(const width of [390,768,1024,1297,1366,1440,1536,1728,1920]){
   await page.goto('/');
   await expect(page.locator('.signature-hero-inner')).toBeVisible();
   await expect(page.locator('.business-solutions-inner')).toBeVisible();
+  await expect(page.locator('.signature-partner'),'partner band hidden for launch (V80)').toHaveCount(0);
   const p=await positions(page);
   // V50: the hero is a centred, full-bleed stage, so the shared page column is
   // defined by the header. Cards and sections align to it; the hero is centred on it.
   const cardEdges=await page.evaluate(()=>{
    const seller=document.querySelector('.signature-seller-band.shell');
-   const partner=document.querySelector('.signature-partner-inner');
    const business=document.querySelector('.business-solution-grid');
-   if(!seller||!partner||!business)throw Error('Missing alignment surfaces');
-   return Object.fromEntries([['seller',seller],['partner',partner],['businessCards',business]].map(([name,el])=>{
+   if(!seller||!business)throw Error('Missing alignment surfaces');
+   return Object.fromEntries([['seller',seller],['businessCards',business]].map(([name,el])=>{
     const b=el.getBoundingClientRect();
     return [name,{left:b.left,right:b.right}];
    }));

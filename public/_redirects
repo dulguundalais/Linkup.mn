@@ -7,3 +7,7 @@
 /showcase/* /explore/  301
 /workspace /buyer/  301
 /workspace/ /buyer/  301
+# V80 (owner, 2026-11-03): partner program hidden for launch — temporary (302).
+# Remove these two lines when PARTNER_PROGRAM_PUBLIC in lib/features.ts is set to true.
+/referrals / 302
+/referrals/ / 302

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import LinkupWordmark from './linkup-wordmark';
 import {ArrowUpRight,Compass,ShieldCheck} from 'lucide-react';
 import '../app/v20-footer.css';
+import {PARTNER_PROGRAM_PUBLIC} from '../lib/features';
 const columns=[
  {mn:'Үйлчилгээ',en:'Marketplace',links:[['/explore/','Үйлчилгээ хайх','Browse services'],['/categories/','Ангилал','Categories'],['/#how','Хэрхэн ажилладаг','How it works']]},
  {mn:'Захиалагчдад',en:'For buyers',links:[['/buyers/','Хэрхэн захиалах','How to buy'],['/buyer/','Миний захиалга','My orders'],['/faq/','Түгээмэл асуултууд','FAQ']]},
@@ -17,7 +18,7 @@ export default function PremiumFooter({en}:{en:boolean}){
   </div>
   <div className="shell footer-columns">
    <div className="footer-brand"><Link href="/" className="footer-logo" aria-label="Linkup"><LinkupWordmark decorative/></Link><p>{t('Мэргэжилтэн, захиалагчийг холбох Монгол платформ.','A creative marketplace for Mongolia.')}</p><div className="footer-status"><ShieldCheck size={16}/>{t('Нээлттэй туршилт · төлбөр авахгүй','Open beta · No real payments')}</div></div>
-   {columns.map(col=><nav key={col.en} aria-label={en?col.en:col.mn}><h3>{en?col.en:col.mn}</h3>{col.links.map(([href,mn,english])=><Link href={href} key={href+english}>{en?english:mn}</Link>)}</nav>)}
+   {columns.map(col=><nav key={col.en} aria-label={en?col.en:col.mn}><h3>{en?col.en:col.mn}</h3>{col.links.filter(([href])=>PARTNER_PROGRAM_PUBLIC||href!=='/referrals/').map(([href,mn,english])=><Link href={href} key={href+english}>{en?english:mn}</Link>)}</nav>)}
   </div>
   <div className="shell footer-bottom"><span>© 2026 Linkup. {t('Бүх эрх хуулиар хамгаалагдсан.','All rights reserved.')}</span><span className="footer-bottom-note"><Compass size={15}/>{t('Монголд хөгжүүлж буй нээлттэй бета платформ','An open beta marketplace built for Mongolia')}</span><nav aria-label={t('Хууль эрх зүйн холбоосууд','Legal links')}><Link href="/privacy/">{t('Нууцлал','Privacy')}</Link><Link href="/terms/">{t('Үйлчилгээний нөхцөл','Terms')}</Link><Link href="/cookies/">{t('Күүки','Cookies')}</Link></nav></div>
  </footer>;
