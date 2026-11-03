@@ -1,0 +1,24 @@
+/* ==========================================================================
+   LINKUP V81/V82 — category artwork (owner, 2026-11-03)
+   The owner's nine 3D glass illustrations are landscape (≈ 1.9 : 1). Cards that
+   show them are landscape too, so nothing in the picture is cropped away:
+   three cards per view on desktop, like the owner's reference grid.
+   ========================================================================== */
+/* V83 (owner): five cards in view on a laptop/desktop */
+.cat-track:has(.has-image){grid-auto-columns:calc((100% - 4 * var(--cat-gap)) / 5)}
+.cat-card.has-image .cat-card-title{font-size:15px}
+.cat-card.has-image{aspect-ratio:auto;height:auto;padding:16px 8px 8px}
+.cat-card.has-image .cat-card-title{height:auto;min-height:1.25em;padding:0 10px 12px}
+.cat-card.has-image .cat-card-art{flex:none;aspect-ratio:4/3;background:radial-gradient(70% 60% at 50% 45%,#1c3ea866,transparent 75%),#0b1430}
+/* V82: free-standing 3D cut-outs on the navy stage, shown whole */
+.cat-card.has-image .cat-card-art img{object-fit:contain;padding:4%;box-sizing:border-box}
+@media (max-width:1180px){.cat-track:has(.has-image){grid-auto-columns:calc((100% - 3 * var(--cat-gap)) / 4)}}
+@media (max-width:900px){.cat-track:has(.has-image){grid-auto-columns:calc((100% - 2 * var(--cat-gap)) / 3)}}
+@media (max-width:640px){.cat-track:has(.has-image){grid-auto-columns:calc((100% - var(--cat-gap)) / 1.7)}.cat-card.has-image .cat-card-title{font-size:14px}}
+
+/* Categories page: a landscape picture beside the text, full width on phones */
+.cdir-block.has-image{grid-template-columns:200px minmax(0,1fr)}
+.cdir-block.has-image .cdir-art{aspect-ratio:4/3;background:radial-gradient(70% 60% at 50% 45%,#1c3ea866,transparent 75%),#0b1430}
+.cdir-art img{display:block;width:100%;height:100%;object-fit:contain;padding:4%;box-sizing:border-box}
+@media (max-width:900px){.cdir-block.has-image{grid-template-columns:150px minmax(0,1fr)}}
+@media (max-width:560px){.cdir-block.has-image{grid-template-columns:1fr}}

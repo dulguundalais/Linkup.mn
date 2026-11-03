@@ -19,7 +19,7 @@ export type Category={
 const sub=(id:string,mn:string,en:string,keywords:string[]=[]):Subcategory=>({id,mn,en,keywords});
 
 export const ALL_CATEGORIES:Category[]=[
- {id:'ai',mn:'AI ба автоматжуулалт',en:'AI & Automation',
+ {id:'ai',mn:'AI шийдэл',en:'AI Solutions',
   leadMn:'Давтагддаг ажлаа автоматжуулах шийдлүүд',leadEn:'Turn repetitive work into smart systems',
   keywords:['ai','хиймэл оюун','hiimel oyun','artificial intelligence','automation','автоматжуулалт','avtomatjuulalt','n8n','make','zapier','gpt','chatgpt','бот','bot'],
   subcategories:[
@@ -31,7 +31,7 @@ export const ALL_CATEGORIES:Category[]=[
    sub('ai-consulting','AI зөвлөх үйлчилгээ','AI consulting',['ai strategy','ai зөвлөгөө']),
    sub('reporting','Автомат тайлан','Automated reporting',['report','тайлан','dashboard'])
  ]},
- {id:'business',mn:'Бизнес ба стратеги',en:'Business & Strategy',
+ {id:'business',mn:'Бизнес & Стратеги',en:'Business & Strategy',
   leadMn:'Төлөвлөгөө, стратеги, өсөлтийн зөвлөгөө',leadEn:'Plans, strategy and growth advice',
   keywords:['business','бизнес','biznes','strategy','стратеги','strategi','consulting','зөвлөх','zovloh','startup','стартап'],
   subcategories:[
@@ -45,7 +45,7 @@ export const ALL_CATEGORIES:Category[]=[
    sub('pitch-deck','Хөрөнгө оруулагчдад зориулсан танилцуулга','Investor pitch decks',['pitch deck','хөрөнгө оруулалт','investor']),
    sub('proposals','Төсөл, тендерийн баримт бичиг','Proposals & tenders',['proposal','төсөл','tosol','tender','тендер','грант','grant'])
  ]},
- {id:'marketing',mn:'Маркетинг ба борлуулалт',en:'Marketing & Sales',
+ {id:'marketing',mn:'Маркетинг & Борлуулалт',en:'Marketing & Sales',
   leadMn:'Хэрэглэгч татаж, борлуулалтаа өсгөнө',leadEn:'Reach customers and grow sales',
   keywords:['marketing','маркетинг','marketing','sales','борлуулалт','borluulalt','smm','реклам','reklam','growth'],
   subcategories:[
@@ -59,7 +59,7 @@ export const ALL_CATEGORIES:Category[]=[
    sub('brand-strategy','Брэндийн стратеги','Brand strategy',['brand strategy','брэнд стратеги','positioning']),
    sub('growth','Өсөлтийн маркетинг','Growth marketing',['growth','өсөлт','performance'])
  ]},
- {id:'tech',mn:'Технологи ба дижитал бүтээгдэхүүн',en:'Technology & Digital Products',
+ {id:'tech',mn:'Дижитал бүтээгдэхүүн',en:'Digital Products',
   leadMn:'Вэб, апп, програм хангамж',leadEn:'Websites, apps and software',
   keywords:['web','website','веб','вэб','сайт','sait','app','апп','software','програм','program','developer','хөгжүүлэлт','hogjuulelt','it'],
   subcategories:[
@@ -73,7 +73,7 @@ export const ALL_CATEGORIES:Category[]=[
    sub('qa','Тест ба чанарын хяналт','QA & testing',['qa','test','тест']),
    sub('tech-consulting','Технологийн зөвлөгөө','Technical consulting',['cto','architecture','технологийн зөвлөгөө'])
  ]},
- {id:'finance',mn:'Санхүү, татвар, нягтлан',en:'Finance, Tax & Accounting',
+ {id:'finance',mn:'Санхүү & Татвар',en:'Finance & Tax',
   leadMn:'Нягтлан, татвар, санхүүгийн төлөвлөлт',leadEn:'Accounting, tax and financial planning',
   keywords:['finance','санхүү','sanhuu','accounting','нягтлан','nyagtlan','tax','татвар','tatvar','cfo','budget','төсөв'],
   subcategories:[
@@ -97,7 +97,7 @@ export const ALL_CATEGORIES:Category[]=[
    sub('employment','Хөдөлмөрийн эрх зүй','Employment law',['employment','хөдөлмөрийн гэрээ']),
    sub('compliance','Зохицуулалтын нийцэл','Regulatory compliance',['compliance','зөвшөөрөл','license','тусгай зөвшөөрөл'])
  ]},
- {id:'research',mn:'Судалгаа ба өгөгдөл',en:'Research & Data',
+ {id:'research',mn:'Өгөгдөл & Аналитик',en:'Data & Analytics',
   leadMn:'Баримт, өгөгдөлд тулгуурлан шийдвэр гаргаарай',leadEn:'Decisions grounded in evidence and data',
   keywords:['research','судалгаа','sudalgaa','data','өгөгдөл','ogogdol','analytics','аналитик','excel','power bi'],
   subcategories:[
@@ -110,7 +110,7 @@ export const ALL_CATEGORIES:Category[]=[
    sub('excel','Excel тайлан ба загвар','Excel reporting',['excel','spreadsheet','хүснэгт']),
    sub('bi','Бизнесийн өгөгдлийн шинжилгээ (BI)','Business intelligence',['bi','business intelligence','kpi'])
  ]},
- {id:'creative',mn:'Дизайн, бүтээлч үйлчилгээ',en:'Design & Creative',
+ {id:'creative',mn:'Дизайн & Брэнд',en:'Design & Brand',
   leadMn:'Брэнд, дизайн, видео, орчуулга',leadEn:'Brand, design, video and language',
   keywords:['design','дизайн','dizain','creative','бүтээлч'],
   subcategories:[
@@ -125,7 +125,7 @@ export const ALL_CATEGORIES:Category[]=[
    sub('translation','Орчуулга, нутагшуулалт','Translation & localization',['translation','орчуулга','orchuulga','english','англи','localization']),
    sub('interior','Интерьер дизайн','Interior design',['interior','интерьер','дотоод засал','3d'])
  ]},
- {id:'commerce',mn:'Цахим худалдаа ба үйл ажиллагаа',en:'Ecommerce & Operations',
+ {id:'commerce',mn:'Цахим худалдаа',en:'Ecommerce',
   leadMn:'Онлайн дэлгүүр, нөөц, процесс',leadEn:'Online stores, inventory and processes',
   keywords:['ecommerce','цахим худалдаа','онлайн дэлгүүр','online store','operations','үйл ажиллагаа','inventory','агуулах'],
   subcategories:[
@@ -194,8 +194,9 @@ export const SHOWCASE:ShowcaseCard[]=[
 ];
 
 /** Category artwork available as raster images in public/categories/<art>.webp.
- *  Arts not listed here use the built-in SVG composition. */
-export const CATEGORY_IMAGES:string[]=[];
+ *  Arts not listed here use the built-in SVG composition.
+ *  V81 (owner, 2026-11-03): the owner's 3D glass artwork for all nine categories. */
+export const CATEGORY_IMAGES:string[]=['ai','business','marketing','tech','legal','finance','creative','research','commerce'];
 
 /** How a service is sold. Inquiry-based models never take payment on Hustle. */
 export type ServiceType='fixed'|'hourly'|'custom'|'monthly'|'mentoring';

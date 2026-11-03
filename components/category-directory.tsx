@@ -4,11 +4,12 @@ import Link from 'next/link';
 import {ArrowUpRight,Search,ShieldCheck,X,Package,Clock3,FileText,Repeat} from 'lucide-react';
 import {Breadcrumbs} from './site-header';
 import CategoryArt from './category-art';
-import {CATEGORIES,SERVICE_TYPES,type Category} from '../lib/marketplace/taxonomy';
+import {CATEGORIES,CATEGORY_IMAGES,SERVICE_TYPES,type Category} from '../lib/marketplace/taxonomy';
 import {normalizeSearch} from '../lib/marketplace/smart-search';
 import '../app/v50-categories.css';
 import '../app/v61-consistency.css';
 import '../app/v73-work-models.css';
+import '../app/v81-category-art.css';
 
 /* V50 /categories/ — every main category with its subcategories, a filter box,
    problem-first entry points and the five service models. */
@@ -36,8 +37,8 @@ export default function CategoryDirectory({en}:{en:boolean}){
    return {c,subs:catHit?c.subcategories:subs,hit:catHit||subs.length>0};
   }).filter(x=>x.hit);
  },[term]);
- const block=({c,subs}:{c:Category;subs:Category['subcategories']})=><article key={c.id} id={c.id} className="cdir-block">
-  <Link href={'/explore/?category='+c.id} className="cdir-art" aria-hidden="true" tabIndex={-1}><CategoryArt art={c.id} label=""/></Link>
+ const block=({c,subs}:{c:Category;subs:Category['subcategories']})=><article key={c.id} id={c.id} className={'cdir-block'+(CATEGORY_IMAGES.includes(c.id)?' has-image':'')}>
+  <Link href={'/explore/?category='+c.id} className="cdir-art" aria-hidden="true" tabIndex={-1}>{CATEGORY_IMAGES.includes(c.id)?<img src={'/categories/'+c.id+'.webp'} alt="" loading="lazy" decoding="async" width={960} height={720}/>:<CategoryArt art={c.id} label=""/>}</Link>
   <div className="cdir-body">
    <div className="cdir-head">
     <h2><Link href={'/explore/?category='+c.id}>{en?c.en:c.mn}</Link></h2>
