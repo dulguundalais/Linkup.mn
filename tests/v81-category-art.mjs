@@ -25,4 +25,5 @@ test('every category has its webp artwork and both pages use it',()=>{
  const css=read('app/v81-category-art.css');
  assert.match(css,/aspect-ratio:4\/3/,'the whole picture is shown');
  assert.match(css,/object-fit:contain/);
+ assert.match(css,/grid-auto-columns:calc\(\(100% - 4 \* var\(--cat-gap\)\) \/ 5\)/,'five cards in view on desktop');
 });
