@@ -68,3 +68,6 @@
  .sp-page.night .sp-mobile-switch button[aria-selected=true]{background:#2b5cde;border-color:#2b5cde;color:#fff}
 }
 /* The buyer preview stays a light page on purpose: it shows the public profile. */
+
+/* «Самбар руу буцах» sat on the same line as the eyebrow — give it its own line (both themes). */
+.project-header .project-back{display:flex;width:fit-content;margin-bottom:22px}
