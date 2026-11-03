@@ -11,6 +11,8 @@ import SellerCoverEditor from './seller-cover-editor';
 import SellerToolEditor from './seller-tool-editor';
 import SellerProfilePreview,{splitSkills,type PreviewSection,type PreviewService} from './seller-profile-preview';
 import SiteHeader,{Breadcrumbs,useSiteAccount} from './site-header';
+import SellerStartSteps from './seller-start-steps';
+import {sellerStartSteps,sellerStartComplete} from '../lib/marketplace/seller-start';
 import '../app/v42-profile-owner.css';
 import '../app/v50-profile-studio.css';
 
@@ -268,6 +270,9 @@ export default function SellerProfileManager(){
  const statusChip=<span className={'sp-chip '+(isPublic?'is-public':'is-private')}>{isPublic?<Eye size={14} aria-hidden="true"/>:<EyeOff size={14} aria-hidden="true"/>}{isPublic?t('Нийтэд харагдаж байна','Public'):t('Хувийн горим','Private')}</span>;
  const ring=<div className="sp-ring" style={{'--p':percent} as React.CSSProperties} role="img" aria-label={t('Профайл '+percent+'% бүрдсэн','Profile '+percent+'% complete')}><span>{percent}<small>%</small></span></div>;
  return shell(<main className={'sp v42-owner'+(dirty?' has-savebar':'')}>
+  {/* V84: the way to the first published service, until it is live */}
+  {(()=>{const steps=sellerStartSteps({isSeller:true,name:profile.display_name,headline:profile.headline,statuses:services.map(s=>s.status)});
+   return sellerStartComplete(steps)?null:<SellerStartSteps en={en} steps={steps} onAction={key=>{if(key==='profile')go('about')}} hrefFor={key=>key==='service'?'/seller-studio/?add=service':key==='publish'?'/seller-studio/':undefined}/>})()}
   <div className="sp-head">
    <Breadcrumbs en={en} items={[{label:t('Нүүр','Home'),href:'/'},{label:t('Мэргэжилтэн самбар','Freelancer dashboard'),href:'/seller-studio/'},{label:t('Миний профайл','My profile')}]}/>
    <div className="sp-title">

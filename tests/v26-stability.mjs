@@ -5,7 +5,7 @@ const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
 test('registration, confirmation resend, and reset use current origin',()=>{
  const login=read('components/workspace.tsx'),recovery=read('components/premium-auth.tsx');
- assert.match(login,/emailRedirectTo:location.origin\+'\/login\/'/);
+ assert.match(login,/emailRedirectTo:location\.origin\+\(entry==='seller'\|\|entryMode==='seller'\?'\/login\/\?mode=seller':'\/login\/'\)/);
  assert.match(login,/db\.auth\.resend/);
  assert.match(recovery,/redirectTo:location.origin\+'\/auth\/reset\/'/);
  assert.doesNotMatch(login+recovery,/localhost:3000/);

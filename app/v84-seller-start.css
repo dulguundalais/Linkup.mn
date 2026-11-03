@@ -1,0 +1,21 @@
+/* ==========================================================================
+   LINKUP V84 — new freelancer: ① profile → ② service → ③ published (owner, 2026-11-03)
+   Three steps in a row (a column on phones); only the step to do now has a button.
+   ========================================================================== */
+.v84-start{margin:0 0 18px;padding:18px 20px;border:1px solid var(--border);border-radius:18px;background:var(--surface)}
+.v84-start h2{margin:0 0 14px;font-size:17px;line-height:1.3;font-weight:800}
+.v84-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none;counter-reset:none}
+.v84-step{position:relative;display:flex;align-items:center;gap:10px;min-width:0;padding:12px;border:1.5px solid var(--border);border-radius:14px;background:var(--surface)}
+.v84-dot{flex:0 0 30px;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);font-size:13px;font-weight:800;color:var(--sub)}
+.v84-text{flex:1;min-width:0;display:grid;gap:2px}
+.v84-text b{font-size:14px;line-height:1.3}
+.v84-text small{font-size:12px;line-height:1.35;color:var(--sub)}
+.v84-action{flex:0 0 auto;min-height:36px;white-space:nowrap}
+.v84-step.is-done .v84-dot{border-color:#1f9d68;background:#1f9d68;color:#fff}
+.v84-step.is-current{border-color:var(--hx-royal-600,#2b5cde);box-shadow:inset 0 0 0 1px var(--hx-royal-600,#2b5cde)}
+.v84-step.is-current .v84-dot{border-color:var(--hx-royal-600,#2b5cde);background:var(--hx-royal-600,#2b5cde);color:#fff}
+.v84-step.is-waiting{border-color:#d99a1e}
+.v84-step.is-waiting .v84-dot{border-color:#d99a1e;color:#b7790c}
+.v84-step.is-todo{opacity:.72}
+.night .v84-step.is-waiting .v84-dot{color:#f2c063}
+@media (max-width:900px){.v84-steps{grid-template-columns:1fr}}
