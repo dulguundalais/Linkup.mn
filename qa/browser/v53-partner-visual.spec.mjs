@@ -23,7 +23,7 @@ for(const width of [390,768,1440]){
 test('V53 Partner route never changes the original homepage hero-derived colors',async({page})=>{
  await page.setViewportSize({width:1440,height:900});
  const probe=async()=>page.evaluate(()=>{
-  const selectors=['.signature-process','.signature-seller-band','.signature-partner'];
+  const selectors=['.signature-process','.signature-seller-band']; // V80: partner band hidden on home
   return Object.fromEntries(selectors.map(selector=>{
    const el=document.querySelector(selector);
    if(!el)throw new Error('Missing Claude section '+selector);
