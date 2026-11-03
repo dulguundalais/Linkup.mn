@@ -37,3 +37,9 @@ test('the tracker is shown on the seller studio, the sign-up profile tab and /my
  assert.match(pm,/hrefFor=\{key=>key==='service'\?'\/seller-studio\/\?add=service'/);
  assert.match(read('app/v84-seller-start.css'),/@media \(max-width:900px\)\{\.v84-steps\{grid-template-columns:1fr\}\}/);
 });
+
+test('signing up or in on /join/seller/ lands in the freelancer workspace, not the buyer home',()=>{
+ const ws=read('components/workspace.tsx');
+ assert.equal((ws.match(/emailRedirectTo:location\.origin\+\(entry==='seller'\|\|entryMode==='seller'\?'\/login\/\?mode=seller':'\/login\/'\)/g)||[]).length,2,'sign-up and resend both keep ?mode=seller');
+ assert.match(ws,/asked:current\.get\('mode'\)\|\|\(entry==='seller'\?'seller':null\)/);
+});
