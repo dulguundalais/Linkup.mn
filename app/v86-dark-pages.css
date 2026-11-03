@@ -1,0 +1,70 @@
+/* ==========================================================================
+   LINKUP V86 — dark mode for the pages that ignored it (owner, 2026-11-03):
+   project requests (/project-requests/, /seller-requests/) and the profile
+   studio (/my-profile/). Same palette as the rest of the dark site:
+   page #050c22 · surface #0b1636 · soft #0f1d45 · line #1c2b55 ·
+   text #eef3ff · muted #a9b9de · accent #9db6ff · action #2b5cde.
+   ========================================================================== */
+
+/* ---------- Project requests ---------- */
+.v86-page.night{background:#050c22;color-scheme:dark}
+.night .project-marketplace{background:#050c22;color:#eef3ff}
+.night .project-header h1,.night .project-panel h2,.night .project-panel h3,.night .project-item h3,.night .project-offer strong,.night .project-package-preview strong{color:#eef3ff}
+.night .project-header p,.night .project-panel>p,.night .project-how p,.night .project-item>p,.night .project-offer p,.night .project-empty p,.night .project-muted,.night .project-placeholder,.night .project-package-preview span{color:#a9b9de}
+.night .project-item>small,.night .project-offer small,.night .project-quiet,.night .project-back{color:#8fa3cc}
+.night .project-eyebrow,.night .project-step{color:#4fd7ff}
+.night .project-panel{background:#0b1636;border-color:#1c2b55;box-shadow:none}
+.night .project-how .project-panel{background:#0b1636}
+.night .project-outline,.night .project-toggle{background:#0b1636;border-color:#1c2b55;color:#cfdcff}
+.night .project-toggle.enabled{background:#0f3a2c;border-color:#1f9d68;color:#7fe0b4}
+.night .project-form label{color:#cfdcff}
+.night .project-form input,.night .project-form textarea,.night .project-form select{background:#0f1d45;border-color:#1c2b55;color:#eef3ff}
+.night .project-form input::placeholder,.night .project-form textarea::placeholder{color:#7083ad}
+.night .project-form input:focus,.night .project-form textarea:focus,.night .project-form select:focus{border-color:#4f8bff;box-shadow:0 0 0 3px rgb(79 139 255/.25)}
+.night .project-consent{background:#0f1d45;border-color:#1c2b55;color:#a9b9de!important}
+.night .project-consent svg{color:#4fd7ff}
+.night .project-primary,.night .project-actions>button:first-child,.night .project-offer>button{background:#2b5cde}
+.night .project-alert{background:#3a1512;border-color:#6b2a24;color:#ffb4ab}
+.night .project-ok{background:#0f3a2c;border-color:#1f6b4c;color:#9be8c3}
+.night .project-item{border-color:#1c2b55}
+.night .project-chip{background:#0f1d45;color:#8fdcef}
+.night .project-offer{background:#0f1d45;border-color:#1c2b55}
+.night .project-proposal{border-color:#2b5cde}
+.night .project-package-preview{background:#0f1d45;color:#cfdcff}
+.night .project-draft-status{background:#0f1d45;border-color:#1c2b55;color:#a9b9de}
+.night .project-draft-status button{color:#9db6ff}
+.night .project-draft-status button:hover,.night .project-draft-status button:focus-visible{background:#16244f}
+
+/* ---------- Profile studio (/my-profile/) ---------- */
+.sp-page.night{background:#050c22;color-scheme:dark}
+.sp-page.night .v42-owner{--text:#eef3ff;--muted:#a9b9de;--line:#1c2b55;--paper:#0b1636;--navy:#2b5cde;background:#050c22}
+.sp-page.night .v42-owner.sp{--ink:#eef3ff;--muted:#a9b9de;--line:#1c2b55;--soft:#0f1d45;--navy:#2b5cde;--cyan:#6f9bff;--ok:#5fd3a0}
+.sp-page.night .v42-owner-empty{background:#050c22;color:#eef3ff}
+.sp-page.night .v42-owner-empty a{background:#2b5cde}
+.sp-page.night :is(.sp-link,.sp-progress,.sp-ring span,.sp-nav,.sp-checklist,.sp-card,.sp-card.hustle-v5.sp-v5,.sp-ghost-btn,.sp-skills,.sp-confirm button,.sp-slug,.sp-preview,.sp-full,.sp-leave,.v42-edit-panel,.v42-preview-column,.v42-cover-buttons button,.v42-cover-position button){background:#0b1636;color:#eef3ff;border-color:#1c2b55}
+.sp-page.night .sp .sp-card input:not([type=checkbox]):not([type=file]):not([type=range]),.sp-page.night .sp .sp-card textarea,.sp-page.night .v42-edit-fields :is(input:not([type=checkbox]),textarea){background:#0f1d45;border-color:#1c2b55;color:#eef3ff}
+.sp-page.night .sp .sp-card :is(input,textarea)::placeholder{color:#7083ad}
+.sp-page.night .sp-skills{border-color:#1c2b55}
+.sp-page.night .sp-skills li,.sp-page.night .sp-nav button.selected{background:#16244f;color:#cfdcff}
+.sp-page.night .sp-drop{background:#0f1d45;border-color:#2a3d73}
+.sp-page.night .sp-drop:hover,.sp-page.night .sp-drop.is-drag{background:#16244f}
+.sp-page.night :is(.sp-work-img,.sp-device,.sp-stage,.v42-cover-position,.v42-project-list article div){background:#0f1d45;color:#8fa3cc}
+.sp-page.night .sp-work-img span,.sp-page.night .sp-device button[aria-pressed=true]{background:#16244f;color:#eef3ff}
+.sp-page.night .sp-slug>span{background:#0f1d45;border-color:#1c2b55;color:#8fa3cc}
+.sp-page.night .sp-status{background:#16244f;color:#cfdcff}
+.sp-page.night .sp-status.st-published,.sp-page.night .sp-chip.is-public{background:#0f3a2c;color:#7fe0b4}
+.sp-page.night .sp-status.st-pending{background:#14305a;color:#9cc4ff}
+.sp-page.night .sp-status.st-rejected{background:#3a1512;color:#ffb4ab}
+.sp-page.night .sp-chip.is-private{background:#3a2a10;color:#f2c063}
+.sp-page.night .sp .v42-error.sp-alert,.sp-page.night .v42-editor-content .v42-error{background:#3a1512;color:#ffb4ab}
+.sp-page.night .sp .v42-success.sp-alert,.sp-page.night .v42-editor-content .v42-success{background:#0f3a2c;color:#9be8c3}
+.sp-page.night .sp .sp-icon-btn:hover{background:#3a1512;color:#ffb4ab}
+.sp-page.night .sp-savebar .v42-save{background:#eef3ff;color:#0a1430}
+.sp-page.night .v42-editor-nav button.selected{background:#16244f;border-color:#2a3d73;color:#cfdcff}
+.sp-page.night .v42-editor-nav button:not(.selected):hover{background:#0f1d45;color:#eef3ff}
+@media (max-width:900px){
+ .sp-page.night .sp-mobile-switch{background:#050c22f2;border-color:#1c2b55}
+ .sp-page.night .sp-mobile-switch button{background:#0b1636;color:#cfdcff;border-color:#1c2b55}
+ .sp-page.night .sp-mobile-switch button[aria-selected=true]{background:#2b5cde;border-color:#2b5cde;color:#fff}
+}
+/* The buyer preview stays a light page on purpose: it shows the public profile. */

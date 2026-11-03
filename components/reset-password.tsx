@@ -8,12 +8,14 @@ import {friendlyError} from '../lib/marketplace/friendly-errors';
 import '../app/premium-auth.css';
 import '../app/v54-page-unification.css';
 import '../app/v78-reset.css';
+import {useSiteTheme} from '../lib/use-site-theme';
 
 export default function ResetPassword(){
  const [password,setPassword]=useState(''),[repeat,setRepeat]=useState('');
  const [visible,setVisible]=useState(false),[loading,setLoading]=useState(true);
  const [ready,setReady]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[error,setError]=useState('');
  // V52: the page follows the site language like every other screen.
+ const [dark]=useSiteTheme();
  const [en,setEn]=useState(false);
  const t=(mn:string,english:string)=>en?english:mn;
  useEffect(()=>{document.documentElement.lang=en?'en':'mn'},[en]);
@@ -54,7 +56,7 @@ export default function ResetPassword(){
    }catch(e){setError(friendlyError(e,en))}
    finally{setBusy(false)}
  }
- return <div className="hustle-v5"><main className="hustle-auth-scene"><section className="hustle-auth-panel">
+ return <div className={'hustle-v5'+(dark?' night':'')}><main className="hustle-auth-scene"><section className="hustle-auth-panel">
    <div className="hustle-auth-brand"><LinkupWordmark/></div>
    {/* V78 (owner): one clear state at a time — choose a password, link expired, or done. */}
    {!invalid&&!notice&&<div className="hustle-auth-intro v78-reset-intro"><span className="hustle-auth-eyebrow">{t('НУУЦ ҮГ СЭРГЭЭХ','ACCOUNT RECOVERY')}</span><h1>{t('Шинэ нууц үгээ сонгоно уу','Choose a new password')}</h1><p>{t('Дор хаяж 8 тэмдэгт.','At least 8 characters.')}</p></div>}

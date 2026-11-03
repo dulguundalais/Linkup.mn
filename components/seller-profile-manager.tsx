@@ -15,6 +15,8 @@ import SellerStartSteps from './seller-start-steps';
 import {sellerStartSteps,sellerStartComplete} from '../lib/marketplace/seller-start';
 import '../app/v42-profile-owner.css';
 import '../app/v50-profile-studio.css';
+import '../app/v86-dark-pages.css';
+import {useSiteTheme} from '../lib/use-site-theme';
 
 type Tab=PreviewSection;
 type Item={id:string;title:string;object_path:string;url?:string};
@@ -41,6 +43,7 @@ export default function SellerProfileManager(){
  const [busy,setBusy]=useState(false);
  const [message,setMessage]=useState('');
  const [error,setError]=useState('');
+ const [dark,toggleTheme]=useSiteTheme();
  const [en,setEn]=useState(false);
  const [skillInput,setSkillInput]=useState('');
  const [projectTitle,setProjectTitle]=useState('');
@@ -261,8 +264,8 @@ export default function SellerProfileManager(){
   }catch{setError(t('Бүтээл устгаж чадсангүй.','Could not remove the project.'))}
   finally{setBusy(false)}
  };
- const header=<SiteHeader en={en} onToggleLanguage={()=>setEn(v=>!v)} session={session}/>;
- const shell=(body:React.ReactNode)=><div className="sp-page">{header}{body}</div>;
+ const header=<SiteHeader en={en} dark={dark} onToggleTheme={toggleTheme} onToggleLanguage={()=>setEn(v=>!v)} session={session}/>;
+ const shell=(body:React.ReactNode)=><div className={'sp-page'+(dark?' night':'')}>{header}{body}</div>;
  if(status==='loading')return shell(<main className="v42-owner-empty" role="status"><LoaderCircle className="spin" size={25}/>{t('Профайл ачаалж байна…','Loading your profile…')}</main>);
  if(status==='guest')return shell(<main className="v42-owner-empty"><h1>{t('Профайл руу нэвтрэх','Sign in to your profile')}</h1><Link href="/login/?mode=seller">{t('Нэвтрэх','Sign in')} →</Link></main>);
  if(status==='not-seller')return shell(<main className="v42-owner-empty"><h1>{t('Мэргэжилтэн профайл шаардлагатай','Freelancer profile required')}</h1><p>{t('Эхлээд Мэргэжилтэн болж профайлаа үүсгээрэй.','Become a freelancer first to create your profile.')}</p><Link href="/join/seller/">{t('Үйлчилгээ үзүүлэх','Become a freelancer')} →</Link></main>);
@@ -327,7 +330,7 @@ export default function SellerProfileManager(){
        onBlur={()=>addSkill(skillInput)}/>
      </div>
      <small className={'sp-count'+(skills.length>=3?' ok':'')}>{t(skills.length+' ур чадвар · хийж чаддаг ажлаа тодорхой бичээрэй','{n} skills · 3 or more helps you show up in search').replace('{n}',String(skills.length))}</small>
-     <div className="sp-subsection v42-owner-tools"><h3>{t('Ашигладаг програм','Tools you use')}</h3><div className="hustle-v5 sp-v5 sp-tools"><SellerToolEditor sellerId={uid} en={en} onUpdated={()=>{void loadTools(uid)}}/></div></div>
+     <div className="sp-subsection v42-owner-tools"><h3>{t('Ашигладаг програм','Tools you use')}</h3><div className={'hustle-v5 sp-v5 sp-tools'+(dark?' night':'')}><SellerToolEditor sellerId={uid} en={en} onUpdated={()=>{void loadTools(uid)}}/></div></div>
     </div>}
     {tab==='projects'&&<section className="sp-card v42-project-editor">
      <header><h2 id="sp-editor-title">{t('Бүтээлүүд','Portfolio')}</h2><p>{t('Хамгийн сайн 3–6 ажлаа оруулаарай. Эхний зураг захиалагчид хамгийн түрүүнд харагдана.','Add your best 3–6 pieces. The first one is what buyers see first.')}</p></header>
