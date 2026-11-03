@@ -470,8 +470,8 @@ export const informationPages:Record<string,InfoPage>={
             "en": "Users can edit profile information and change public-profile visibility in the product. The operator must finalize a verified contact channel and process for further access, correction and deletion requests."
           },
           {
-            "mn": "Нэвтрэх боломжгүй үед хэрэглэгч туршилтын хувилбарын админтай өмнө тохиролцсон сувгаар холбогдоно; энэ сайт баталгаажаагүй имэйл хаягийг дэмжлэгийн хаяг мэт нийтлэхгүй.",
-            "en": "If sign-in is unavailable, contact the existing beta administrator through a previously verified channel; this website will not invent an unverified support email."
+            "mn": "Нэвтрэх боломжгүй үед болон мэдээлэлтэй холбоотой хүсэлтээ info@linkup.mn хаягаар илгээнэ үү. Нууц үг, баталгаажуулах код бүү илгээгээрэй.",
+            "en": "If you cannot sign in, or for a privacy request, email info@linkup.mn. Never send passwords or confirmation codes."
           }
         ],
         "bullets": []
@@ -712,7 +712,7 @@ export const informationPages:Record<string,InfoPage>={
       {
         "id": "profile",
         "title": {
-          "mn": "2. Профайл ба Бүтээлийн",
+          "mn": "2. Профайл ба бүтээлийн жишээ",
           "en": "2. Profile and portfolio"
         },
         "paragraphs": [
@@ -803,7 +803,7 @@ export const informationPages:Record<string,InfoPage>={
       "en": "Grow the community together."
     },
     "subtitle": {
-      "mn": "Мэргэжилтнүүдийг танилцуулах түншлэлийн туршилтын бүтэц.",
+      "mn": "Шинэ захиалагч урих түншлэлийн туршилтын бүтэц.",
       "en": "An overview of the beta referral partner model."
     },
     "sections": [
@@ -815,8 +815,8 @@ export const informationPages:Record<string,InfoPage>={
         },
         "paragraphs": [
           {
-            "mn": "Мэргэжилтнүүдийг Linkup-д урьж, үйлчилгээг нь шинэ захиалагчдад таниулах зорилготой. Түншийн бүртгэл, баталгаажуулалтыг админ хянана.",
-            "en": "The program introduces qualified freelancers and helps more buyers discover services. Partner enrollment and verification are administered manually."
+            "mn": "Шинэ захиалагч, бизнесийг Linkup-д урьж, тэдний дууссан захиалгын дүнгээс урамшуулал тооцуулах хөтөлбөр. Урьсан хүн тань захиалагчаар захиалга дуусгасан үед л урамшуулал тооцогдоно.",
+            "en": "Invite new buyers and businesses to Linkup and earn a reward on their completed orders. A reward is counted only when the person you invited completes an order as a buyer."
           }
         ],
         "bullets": []
@@ -889,7 +889,7 @@ export const helpTopics:{group:Localized;items:{q:Localized;a:Localized}[]}[]=[
           "en": "What if I never receive a confirmation email?"
         },
         "a": {
-          "mn": "Ирсэн имэйл болон Спам хавтсаа шалгаарай. Өмнө бүртгүүлсэн бол “Нэвтрэх” сонголтыг ашиглаарай. Имэйл ирэхгүй хэвээр байвал админтай холбогдоорой.",
+          "mn": "Ирсэн имэйл болон Спам хавтсаа шалгаарай. Өмнө бүртгүүлсэн бол “Нэвтрэх” сонголтыг ашиглаарай. Имэйл ирэхгүй хэвээр байвал info@linkup.mn хаягаар бидэнд бичээрэй.",
           "en": "Check Inbox and Spam. If already registered, use Sign in rather than signing up again. An accepted send request does not guarantee delivery; admins should check SMTP for new-email delivery issues."
         }
       },
@@ -1071,8 +1071,8 @@ export const helpTopics:{group:Localized;items:{q:Localized;a:Localized}[]}[]=[
           "en": "Is an official support email available?"
         },
         "a": {
-          "mn": "Албан ёсны тусламжийн имэйл хараахан нийтлэгдээгүй байна. Админтай өмнө ашиглаж байсан баталгаатай сувгаараа холбогдоорой.",
-          "en": "No verified official support mailbox has been published. Contact the platform administrator through an existing trusted channel."
+          "mn": "Тийм. Тусламж, санал хүсэлтээ info@linkup.mn хаягаар илгээнэ үү. Нэвтэрч чадахгүй байгаа ч энэ хаягаар холбогдож болно.",
+          "en": "Yes. Email info@linkup.mn for help or feedback — this works even if you cannot sign in."
         }
       },
       {

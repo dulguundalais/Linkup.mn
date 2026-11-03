@@ -5,13 +5,13 @@ const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 test('partners see one 1% rate, the invite window and the reward period — not the platform commission',()=>{
  const home=read('components/signature-home.tsx'),pp=read('components/partner-program.tsx'),info=read('lib/site-information.ts');
  const band=home.slice(home.indexOf('signature-partner-stats'),home.indexOf('signature-partner-stats')+600);
- assert.match(band,/<strong>\{terms\.partner_percent\}%<\/strong>/);
- assert.match(band,/<strong>\{terms\.attribution_days\}<\/strong>/);
- assert.match(band,/<strong>\{terms\.reward_months\}<\/strong>/);
+ assert.match(band,/<strong>\{termValue\(terms,'partner_percent'\)\}%<\/strong>/);
+ assert.match(band,/<strong>\{termValue\(terms,'attribution_days'\)\}<\/strong>/);
+ assert.match(band,/<strong>\{termValue\(terms,'reward_months'\)\}<\/strong>/);
  assert.doesNotMatch(band,/2%|10%|Платформын шимтгэл/);
  assert.doesNotMatch(pp,/active_partner_percent|Идэвхтэй түнш|Growth Partner/);
- assert.match(pp,/\{rules\.partner_percent\}%/);
- assert.match(pp,/\{rules\.reward_months\} \{t\('сар','months'\)\}/);
+ assert.match(pp,/\{termValue\(rules,'partner_percent'\)\}%/);
+ assert.match(pp,/\{termValue\(rules,'reward_months'\)\} \{t\('сар','months'\)\}/);
  assert.doesNotMatch(info,/идэвхтэй түншийнх 2%|1%, 2%/);
 });
 test('partner page labels are Mongolian',()=>{
