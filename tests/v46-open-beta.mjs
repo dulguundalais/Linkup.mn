@@ -32,7 +32,9 @@ test('public UX explains email verification, no manual approval and no real paym
   const footer=read('components/premium-footer.tsx');
   const info=read('lib/site-information.ts');
   assert.match(w,/Туршилтын хугацаанд төлбөр Linkup-аар дамжихгүй/);
-  assert.match(w,/no admin approval needed/i);
+  // V85: the post-sign-up message now lives on the «check your e-mail» screen.
+  assert.match(read('components/premium-auth.tsx'),/no admin approval needed/i);
+  assert.match(read('components/premium-auth.tsx'),/админы зөвшөөрөл хэрэггүй/);
   assert.match(footer,/Open beta · No real payments/);
   assert.match(info,/Verified new accounts receive standard member access automatically/);
   assert.match(info,/Published services remain subject to moderation|published services remain subject to moderation/i);

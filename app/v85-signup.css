@@ -1,0 +1,42 @@
+/* ==========================================================================
+   LINKUP V85 — sign-up help (owner, 2026-11-03): e-mail typo hints, password
+   strength with ticks, and a clear «check your e-mail» screen after sign-up.
+   ========================================================================== */
+.v85-email-help{margin:-4px 0 4px;padding:9px 12px;border-radius:10px;background:#eef3ff;color:#1c3ea8;font-size:13px;line-height:1.45}
+.v85-email-help b{font-weight:800}
+.v85-email-help button{margin-left:6px;padding:0;border:0;background:none;color:inherit;font:inherit;font-weight:800;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.v85-email-help.is-error{background:#fde8e6;color:#8a1f15}
+.night .v85-email-help{background:#16244f;color:#bcd0ff}.night .v85-email-help.is-error{background:#3a1512;color:#ffb4ab}
+.hustle-auth-input:has(input[aria-invalid="true"]){border-color:#d4483b!important}
+
+.v85-password{display:grid;gap:8px;margin:-2px 0 4px}
+.v85-meter{display:flex;align-items:center;gap:10px}
+.v85-meter span{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.v85-meter i{height:5px;border-radius:3px;background:var(--border,#dfe5f1)}
+.v85-meter b{min-width:72px;font-size:12px;font-weight:800;text-align:right}
+.v85-meter.s1 i:nth-child(-n+1){background:#d4483b}.v85-meter.s1 b{color:#c2392c}
+.v85-meter.s2 i:nth-child(-n+2){background:#e09a1c}.v85-meter.s2 b{color:#b7790c}
+.v85-meter.s3 i:nth-child(-n+3){background:#2b8fd6}.v85-meter.s3 b{color:#1f76b5}
+.v85-meter.s4 i{background:#1f9d68}.v85-meter.s4 b{color:#178256}
+.v85-password ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;margin:0;padding:0;list-style:none}
+.v85-password li{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sub,#5b6785)}
+.v85-password li svg{flex:0 0 18px;width:18px;height:18px;padding:2px;border-radius:50%;border:1.5px solid currentColor;color:#a4adc4;stroke-width:3}
+.v85-password li svg path{opacity:0}
+.v85-password li.is-met{color:var(--text,#13234f)}
+.v85-password li.is-met svg{border-color:#1f9d68;background:#1f9d68;color:#fff}
+.v85-password li.is-met svg path{opacity:1}
+.v85-password li.is-missing{color:#c2392c}.v85-password li.is-missing svg{color:#d4483b}
+.v85-password em{font-style:normal;color:var(--sub,#7a86a3)}
+@media (max-width:380px){.v85-password ul{grid-template-columns:1fr}}
+
+.v85-sent{display:grid;justify-items:center;gap:12px;padding:8px 0 4px;text-align:center}
+.v85-sent-icon{display:grid;place-items:center;width:64px;height:64px;border-radius:20px;background:#eef3ff;color:#2b5cde}
+.night .v85-sent-icon{background:#16244f;color:#8fb3ff}
+.v85-sent h2{margin:4px 0 0;font-size:22px;line-height:1.25;font-weight:800}
+.v85-sent p{margin:0;font-size:14.5px;line-height:1.6;color:var(--sub,#5b6785)}
+.v85-sent p b{color:var(--text,#13234f);overflow-wrap:anywhere}
+.v85-open-inbox{width:100%;justify-content:center;text-decoration:none}
+.v85-sent-tips{margin:2px 0 0;padding:0;list-style:none;display:grid;gap:4px;font-size:13px;color:var(--sub,#5b6785)}
+.v85-sent-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin-top:4px}
+.v85-link{padding:6px 2px;border:0;background:none;color:var(--purple,#2b5cde);font:inherit;font-size:14px;font-weight:750;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.v85-link:disabled{opacity:.55;cursor:default}

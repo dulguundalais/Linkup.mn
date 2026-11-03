@@ -55,7 +55,8 @@ test('real signup, unconfirmed denial, resend, confirmation and member-only admi
  await page.goto('/login/?next='+encodeURIComponent('/buyer/?tab=orders'));
  await page.locator('.hustle-auth-tabs').getByRole('button',{name:'Create account',exact:true}).click();
  await form(page,email,fixture.password);
- await expect(page.locator('.hustle-auth-feedback')).toContainText('Signup request accepted');
+ await expect(page.locator('.v85-sent')).toContainText(email);
+ await expect(page.locator('.v85-sent')).toContainText('no admin approval needed');
  const first=await emailLink(email,'signup');
  const unconfirmed=await db.auth.signInWithPassword({email,password:fixture.password});
  expect(unconfirmed.error?.code).toBe('email_not_confirmed');
