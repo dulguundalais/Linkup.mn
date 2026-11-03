@@ -13,6 +13,8 @@ import type {Profile,Listing} from '../lib/marketplace/types';
 import SiteHeader,{useSiteAccount} from './site-header';
 import {ensureBuyerProfile} from '../lib/marketplace/buyer-profile';
 import '../app/project-matching.css';
+import '../app/v86-dark-pages.css';
+import {useSiteTheme} from '../lib/use-site-theme';
 
 type RequestRow={id:string;buyer_id:string;title:string;brief:string;audience:Audience;category:string;budget_max:number|null;preferred_days:number|null;status:'open'|'awarded'|'cancelled';order_id:string|null;created_at:string};
 type Invite={id:string;request_id:string;seller_id:string;status:string};
@@ -27,6 +29,8 @@ const outcomeCategory:Record<string,string>={automation:'ai',growth:'marketing',
 const currency=(value:number)=>new Intl.NumberFormat('mn-MN').format(value)+' ₮';
 
 export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
+ // V86: this page follows the site's light/dark choice too.
+ const [dark,toggleTheme]=useSiteTheme();
  const [en,setEn]=useState(false),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false);
  const siteSession=useSiteAccount();
  const [user,setUser]=useState(''),[profile,setProfile]=useState<Profile|null>(null),[allowed,setAllowed]=useState(false);
@@ -203,7 +207,7 @@ export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
  const markNotice=async(id:string)=>{if(busy||!user)return;setBusy(true);setError('');try{const db=await marketplaceClient();const result=await db.from('project_notifications').update({read_at:new Date().toISOString()}).eq('id',id).eq('recipient_id',user).is('read_at',null);if(result.error)throw result.error;setNotifications(items=>items.map(n=>n.id===id?{...n,read_at:new Date().toISOString()}:n))}catch(err){setError(reportError(err))}finally{setBusy(false)}};
  const visibleRequests=requests.filter(r=>statusFilter==='all'||r.status===statusFilter);
  const sortedOffers=(offers:Proposal[])=>[...offers].sort((a,b)=>offerSort==='price'?a.quoted_price-b.quoted_price:offerSort==='delivery'?a.delivery_days-b.delivery_days:b.created_at.localeCompare(a.created_at));
- return <><SiteHeader en={en} onToggleLanguage={()=>{const next=!en;setEn(next);try{localStorage.setItem('hustle-language',next?'en':'mn')}catch{}}} active="solutions" session={siteSession}/><main className="project-marketplace">
+ return <div className={'v86-page'+(dark?' night':'')}><SiteHeader en={en} dark={dark} onToggleTheme={toggleTheme} onToggleLanguage={()=>{const next=!en;setEn(next);try{localStorage.setItem('hustle-language',next?'en':'mn')}catch{}}} active="solutions" session={siteSession}/><main className="project-marketplace">
   <div className="project-layout">
    <header className="project-header"><div><Link href={mode==='seller'?'/seller-studio/':'/buyer/'} className="project-back"><ArrowLeft size={16}/>{t('Самбар руу буцах','Back to dashboard')}</Link>
      <span className="project-eyebrow"><Sparkles size={14}/> {t('LINKUP · Төслийн хүсэлт','LINKUP / PROJECT MATCHING · BETA')}</span>
@@ -290,5 +294,5 @@ export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
    </>}
    </>}
   </div>
- </main></>;
+ </main></div>;
 }
