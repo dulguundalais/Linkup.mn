@@ -6,6 +6,7 @@ import CategoryArt from './category-art';
 import {SHOWCASE,CATEGORY_IMAGES} from '../lib/marketplace/taxonomy';
 import '../app/v50-categories.css';
 import '../app/v61-consistency.css';
+import '../app/v81-category-art.css';
 
 /* V50 homepage category carousel: Fiverr-style cards (name on top, artwork below)
    in a horizontal row. Native scroll-snap gives touch swipe; arrows page by view. */
@@ -51,9 +52,9 @@ export default function CategoryShowcase({en}:{en:boolean}){
   <div className="cat-rail">
    <div className="cat-track" ref={track} role="list" aria-label={t('Үйлчилгээний ангиллууд','Service categories')} tabIndex={-1}>
     {SHOWCASE.map(card=><div role="listitem" key={card.key} className="cat-slot">
-     <Link href={card.href} className={'cat-card cat-card-'+card.art}>
+     <Link href={card.href} className={'cat-card cat-card-'+card.art+(CATEGORY_IMAGES.includes(card.art)?' has-image':'')}>
       <span className="cat-card-title">{en?card.en:card.mn}</span>
-      <span className="cat-card-art">{CATEGORY_IMAGES.includes(card.art)?<img src={'/categories/'+card.art+'.webp'} alt="" loading="lazy" decoding="async"/>:<CategoryArt art={card.art} label=""/>}</span>
+      <span className="cat-card-art">{CATEGORY_IMAGES.includes(card.art)?<img src={'/categories/'+card.art+'.webp'} alt="" loading="lazy" decoding="async" width={506} height={270}/>:<CategoryArt art={card.art} label=""/>}</span>
      </Link>
     </div>)}
    </div>
