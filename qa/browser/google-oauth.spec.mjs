@@ -53,7 +53,7 @@ test('login shows a friendly message when the Google provider is disabled',async
  await page.route(supabase+'/auth/v1/settings',route=>route.fulfill({json:{external:{google:false}}}));
  await page.goto('/login/');
  await page.getByRole('button',{name:'Continue with Google'}).click();
- await expect(page.getByRole('alert')).toContainText('Google sign-in is currently unavailable');
+ await expect(page.locator('.hustle-auth-panel').getByRole('alert')).toContainText('Google sign-in is currently unavailable');
  await expect(page).toHaveURL(/\/login\/$/);
  await expect(page.getByRole('button',{name:'Continue with Google'})).toBeEnabled();
 });
@@ -67,7 +67,7 @@ test('Google cancellation returns a localized, retryable login screen',async({pa
  });
  await page.goto('/login/');
  await page.getByRole('button',{name:'Continue with Google'}).click();
- await expect(page.getByRole('alert')).toContainText('Google sign-in was cancelled');
+ await expect(page.locator('.hustle-auth-panel').getByRole('alert')).toContainText('Google sign-in was cancelled');
  await expect(page).toHaveURL(/\/login\/$/);
  await expect(page.getByRole('button',{name:'Continue with Google'})).toBeEnabled();
 });
