@@ -146,8 +146,7 @@ useEffect(()=>{const mode=new URLSearchParams(location.search).get('mode');
   try{
    await googleCallback.current;
    if(!active)return;
-   await load();
-   if(active&&login)await routeSignedIn();
+   await load().then(()=>login?routeSignedIn():undefined);
   }catch(error){
    if(active){
     if(googleCallback.current)setError(friendlyError(error,english));

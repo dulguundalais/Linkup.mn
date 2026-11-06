@@ -43,6 +43,9 @@ test('Google signup exchanges a PKCE code, creates a buyer profile and resumes t
  expect(createHash('sha256').update(exchange.code_verifier).digest('base64url')).toBe(challenge);
  expect(profile).toEqual({id:buyer,display_name:'Buyer',is_seller:false,public_profile:false});
  expect(await page.evaluate(()=>localStorage.getItem('hustle-return-intent'))).toBeNull();
+ await expect(page.locator('.hx-header .global-account-trigger')).toBeVisible();
+ await page.reload();
+ await expect(page.locator('.hx-header .global-account-trigger')).toBeVisible();
 });
 
 test('login shows a friendly message when the Google provider is disabled',async({page})=>{
