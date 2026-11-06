@@ -77,10 +77,20 @@
 .hustle-choice-text small{font-size:12px;line-height:1.35;color:var(--auth-muted)}
 .hustle-auth-scene .hustle-buyer-context p{margin:9px 0 0;font-size:12.5px;color:var(--auth-faint)}
 
-.hustle-auth-submit{display:flex;justify-content:center;align-items:center;gap:9px;min-height:50px;margin-top:18px;padding:0 18px;border:0;border-radius:10px;background:var(--auth-accent);color:#fff;font:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 10px 26px #1f5df040;transition:background-color .15s,transform .15s}
+.hustle-auth-submit,.hustle-auth-google{display:flex;justify-content:center;align-items:center;gap:9px;min-height:50px;margin-top:18px;padding:0 18px;border:0;border-radius:10px;background:var(--auth-accent);color:#fff;font:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 10px 26px #1f5df040;transition:background-color .15s,transform .15s}
 .hustle-auth-submit:hover{background:#5590ff}
 .hustle-auth-submit:active{transform:translateY(1px)}
-.hustle-auth-submit:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.hustle-auth-submit:disabled,.hustle-auth-google:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.hustle-auth-google{gap:10px;margin:0;padding:0 12px;border:1px solid #747775;background:#fff;color:#1f1f1f;box-shadow:none}
+.hustle-auth-google:hover:not(:disabled){border-color:var(--auth-accent);background:#f8faff}
+.hustle-auth-google[aria-busy=true]{opacity:1;cursor:wait}
+.hustle-auth-google>svg{flex:none}
+.hustle-auth-google-mark{width:100%;height:100%;background:conic-gradient(from 45deg at 49.06% 49.39%,#ff4641 4.15deg,#3186ff 39.15deg 72deg,#00a5b7 96.75deg,#0ebc5f 120.9deg 154.72deg,#6cc400 179.14deg,#fc0 203.59deg,#ffd314 226.92deg,#fc0 251.69deg,#ff6a2b 273.13deg,#fd4641 289.31deg,#ff4641 359.59deg)}
+.hustle-auth-google-spinner{animation:hustle-auth-google-spin .8s linear infinite}
+@keyframes hustle-auth-google-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.hustle-auth-google-spinner{animation:none}}
+.hustle-auth-divider{display:flex;align-items:center;gap:12px;margin-top:4px;color:var(--auth-muted);font-size:13px;text-align:center}
+.hustle-auth-divider::before,.hustle-auth-divider::after{content:"";flex:1;border-top:1px solid var(--auth-line)}
 
 .hustle-auth-link,.hustle-auth-support button,.hustle-auth-feedback-actions button,.hustle-auth-scene .hustle-auth-legal a{padding:0;border:0;background:transparent;color:var(--auth-accent-soft);font:inherit;font-weight:650;text-decoration:none;cursor:pointer}
 .hustle-auth-scene .hustle-auth-link{font-size:13px}

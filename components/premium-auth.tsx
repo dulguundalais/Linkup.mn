@@ -1,9 +1,9 @@
 'use client';
-import {useEffect,useRef,useState,type FormEvent} from 'react';
+import {useEffect,useId,useRef,useState,type FormEvent} from 'react';
 import {friendlyError} from '../lib/marketplace/friendly-errors';
 import Link from 'next/link';
 import LinkupWordmark from './linkup-wordmark';
-import {ArrowLeft,ArrowRight,BadgeCheck,Building2,Check,CheckCircle2,Eye,EyeOff,Inbox,Info,LockKeyhole,Mail,MessageCircle,Package,ShieldCheck,UserRound} from 'lucide-react';
+import {ArrowLeft,ArrowRight,BadgeCheck,Building2,Check,CheckCircle2,Eye,EyeOff,Inbox,Info,LoaderCircle,LockKeyhole,Mail,MessageCircle,Package,ShieldCheck,UserRound} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
 import '../app/premium-auth.css';
 import '../app/v54-page-unification.css';
@@ -12,19 +12,44 @@ import {signInReason,type SignInReason} from '../lib/marketplace/ux-flows';
 import {emailFormatProblem,suggestEmail,domainMail,passwordChecks,passwordStrength,inboxUrl} from '../lib/marketplace/signup-checks';
 import '../app/v85-signup.css';
 
+function GoogleLogo(){
+ const id=useId();
+ // Google Identity branding assets, cropped to the G from the light web button.
+ return <svg width="20" height="20" viewBox="10 10 20 20" aria-hidden="true" focusable="false">
+  <defs>
+   <clipPath id={id}><path d="M29.3987 18.1814H19.9849V22.0445H25.3598C25.1286 23.294 24.4294 24.3596 23.3676 25.0712C22.4746 25.6716 21.3266 26.0211 19.9849 26.0211C17.3864 26.0211 15.1823 24.2666 14.3947 21.9004C14.1952 21.2989 14.0853 20.6599 14.0853 19.9983C14.0853 19.3367 14.1952 18.6966 14.3947 18.0962C15.1823 15.7311 17.3864 13.9755 19.9849 13.9755C21.4524 13.9755 22.767 14.4816 23.8039 15.4713L26.6653 12.6057C24.936 10.9908 22.6786 10 19.9849 10C16.0832 10 12.705 12.2414 11.0618 15.5076C10.383 16.8592 10 18.3834 10 19.9994C10 21.6155 10.383 23.1396 11.0618 24.4913C12.705 27.7597 16.0832 30 19.9849 30C22.6797 30 24.9485 29.1137 26.6018 27.5861C28.4887 25.8452 29.5732 23.2702 29.5732 20.2275C29.5732 19.5182 29.5131 18.835 29.3987 18.1825Z"/></clipPath>
+   <filter id={id+'-blur'} x="5" y="5" width="40" height="35" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB"><feGaussianBlur stdDeviation="1"/></filter>
+  </defs>
+  <g clipPath={`url(#${id})`}>
+   <foreignObject x="3" y="3" width="34" height="34" filter={`url(#${id}-blur)`}>
+    <div className="hustle-auth-google-mark"/>
+   </foreignObject>
+   <g filter={`url(#${id}-blur)`}>
+    <ellipse cx="20.0496" cy="20.2413" rx="5.39634" ry="2.83537" transform="rotate(24.4473 20.0496 20.2413)" fill="#3186FF"/>
+    <ellipse cx="33.3538" cy="18.2155" rx="7.43918" ry="3.09357" fill="#3186FF"/>
+    <ellipse cx="25.2744" cy="16.2195" rx="7.40854" ry="2.37805" fill="#FF4641"/>
+    <ellipse cx="29.5427" cy="12.9268" rx="7.40854" ry="2.37805" fill="#FF5B8B"/>
+    <ellipse cx="24.4817" cy="19.878" rx="8.5061" ry="3.10976" fill="#3186FF"/>
+    <ellipse cx="25.1842" cy="14.0197" rx="4.53882" ry="2.37805" transform="rotate(-28.6599 25.1842 14.0197)" fill="#FF4641"/>
+   </g>
+  </g>
+ </svg>;
+}
+
 type Entry='buyer'|'seller'|'admin';
 type Props={
   en:boolean;entry:Entry;entryMode:Entry;register:boolean;onRegisterChange:(value:boolean)=>void;
   email:string;onEmailChange:(value:string)=>void;
   password:string;onPasswordChange:(value:string)=>void;
   busy:boolean;emailCooldown:number;onSubmit:(event:FormEvent<HTMLFormElement>)=>void;
+  onGoogleSignIn:()=>void;googleBusy:boolean;
   onResend:()=>void;notice:string;error:string;onDismiss:()=>void;
   sentTo?:string;onChangeEmail?:()=>void;
 };
 
 export default function PremiumAuth({
  en,entry,entryMode,register,onRegisterChange,email,onEmailChange,password,onPasswordChange,
- busy,emailCooldown,onSubmit,onResend,notice,error,onDismiss,sentTo='',onChangeEmail
+ busy,emailCooldown,onSubmit,onGoogleSignIn,googleBusy,onResend,notice,error,onDismiss,sentTo='',onChangeEmail
 }:Props){
  // V85: catch a mistyped e-mail before sign-up; show password strength as it is typed.
  const [emailIssue,setEmailIssue]=useState<string>('');
@@ -35,7 +60,8 @@ export default function PremiumAuth({
  const [showPassword,setShowPassword]=useState(false);
  const [buyerAudience,setBuyerAudience]=useState<'personal'|'business'>('personal');
  useEffect(()=>{const selected=new URLSearchParams(location.search).get('audience')||localStorage.getItem('hustle-buyer-audience');if(selected==='personal'||selected==='business')setBuyerAudience(selected);if(new URLSearchParams(location.search).get('reset')==='1')setResetMode(true)},[]);
- const chooseBuyerAudience=(next:'personal'|'business')=>{setBuyerAudience(next);try{localStorage.setItem('hustle-buyer-audience',next)}catch{}};
+ const saveBuyerAudience=(value:'personal'|'business')=>{try{localStorage.setItem('hustle-buyer-audience',value)}catch{}};
+ const chooseBuyerAudience=(next:'personal'|'business')=>{setBuyerAudience(next);saveBuyerAudience(next)};
  const [resetMode,setResetMode]=useState(false);
  // V65: a guest sent here by ♡, an order or a message is told why.
  const [reason,setReason]=useState<SignInReason|null>(null);
@@ -75,7 +101,7 @@ export default function PremiumAuth({
   reason?t('Нэвтэрч үргэлжлүүлнэ үү','Sign in to continue'):t('Эргэн тавтай морил','Welcome back');
  const lead=resetMode?t('Имэйлээ оруулаад нууц үг сэргээх холбоос хүсээрэй.','Enter your email to request a password reset link.'):
   isAdmin?t('Зөвхөн эрх бүхий админ нэвтэрнэ.','For authorized administrators only.'):
-  register?forSeller?t('Үйлчилгээгээ багц болгон нийтэлж, захиалга аваарай.','Publish your services as packages and start taking orders.'):t('Имэйлээ баталгаажуулмагц шууд ашиглаж эхэлнэ.','Confirm your email and you are ready to go.'):
+  register?forSeller?t('Үйлчилгээгээ багц болгон нийтэлж, захиалга аваарай.','Publish your services as packages and start taking orders.'):t('1 минутад бүртгүүлээд эхэл.','Sign up in a minute.'):
   reason?'':t('Төсөл, захиалга, мессежээ үргэлжлүүлээрэй.','Pick up your projects, orders and messages.');
  const benefits:[typeof Package,string,string][]=forSeller?[
    [Package,t('Багцын нөхцөлөө өөрөө сонгоно','Set your own packages'),t('Үнэ, хугацаа, засварын тоогоо гурван түвшинд тохируулна.','Choose price, delivery time and revisions across three tiers.')],
@@ -101,6 +127,7 @@ export default function PremiumAuth({
  const checkEmailNow=()=>{if(!register)return;const v=email.trim();if(!v){setEmailIssue('');setSuggestion(null);return}const f=emailFormatProblem(v);setEmailIssue(f&&f!=='empty'?issueText(f,''):'');setSuggestion(f?null:suggestEmail(v))};
  async function submit(event:FormEvent<HTMLFormElement>){
   event.preventDefault();
+  if(busy||checking)return;
   if(!register||isAdmin){onSubmit(event);return}
   const v=email.trim().toLowerCase();
   const f=emailFormatProblem(v);
@@ -115,6 +142,7 @@ export default function PremiumAuth({
   if(mail==='missing'){setEmailIssue(issueText('missing',domain));return}
   if(mail==='no-mail'&&insisted!==v+'#mx'){setEmailIssue(issueText('no-mail',domain));setInsisted(v+'#mx');return}
   setEmailIssue('');setSuggestion(null);
+  if(!forSeller)saveBuyerAudience(buyerAudience);
   onSubmit(event);
  }
  const useSuggestion=()=>{if(suggestion){onEmailChange(suggestion);setSuggestion(null);setEmailIssue('');setInsisted('')}};
@@ -165,6 +193,16 @@ export default function PremiumAuth({
       </div>
       <p>{t('Дараа нь хүссэн үедээ сольж болно.','You can change this any time.')}</p>
      </fieldset>}
+     {!isAdmin&&<>
+      <button className="hustle-auth-google" disabled={busy||checking} aria-busy={googleBusy} type="button" onClick={()=>{
+       if(register&&!forSeller)saveBuyerAudience(buyerAudience);
+       onGoogleSignIn();
+      }}>
+       {googleBusy?<LoaderCircle size={18} className="hustle-auth-google-spinner" aria-hidden="true"/>:<GoogleLogo/>}
+       <span>{googleBusy?t('Google руу шилжиж байна…','Redirecting to Google…'):t('Google-ээр үргэлжлүүлэх','Continue with Google')}</span>
+      </button>
+      <div className="hustle-auth-divider">{t('эсвэл имэйлээр','or with email')}</div>
+     </>}
      <label htmlFor="hustle-auth-email">{t('Имэйл хаяг','Email address')}</label>
      <div className="hustle-auth-input"><Mail size={18} aria-hidden="true"/><input id="hustle-auth-email" name="email" type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" required value={email} onChange={e=>{onEmailChange(e.target.value);if(emailIssue)setEmailIssue('');if(suggestion)setSuggestion(null)}} onBlur={checkEmailNow} aria-invalid={Boolean(emailIssue)||undefined} aria-describedby={emailIssue||suggestion?'v85-email-help':undefined}/></div>
      {register&&(emailIssue||suggestion)&&<p id="v85-email-help" className={'v85-email-help'+(emailIssue?' is-error':'')} role={emailIssue?'alert':'status'}>{emailIssue||<>{t('Та ','Did you mean ')}<b>{suggestion}</b>{t(' гэж бичих гэсэн үү?','?')} <button type="button" onClick={useSuggestion}>{t('Тийм, засах','Yes, fix it')}</button></>}</p>}
@@ -186,9 +224,9 @@ export default function PremiumAuth({
      <div><p>{resetError||error||resetMessage||notice}</p>{error&&!resetMode&&!isAdmin&&<div className="hustle-auth-feedback-actions">{register&&<button type="button" onClick={()=>changeMode(false)}>{t('Нэвтрэх','Sign in')}</button>}<button type="button" onClick={openRecovery}>{t('Нууц үг сэргээх','Reset password')}</button></div>}</div>
    </div>}
    {resetMode?<div className="hustle-auth-support"><button type="button" onClick={()=>{setResetMode(false);setResetError('');setResetMessage('')}}><ArrowLeft size={15} aria-hidden="true"/>{t('Нэвтрэх рүү буцах','Back to sign in')}</button></div>:
-    register&&!isAdmin?<div className="hustle-auth-support">
-      {!sentTo&&<p>{t('Баталгаажуулах имэйл ирээгүй юу?','Didn’t get the confirmation email?')} <button type="button" className="hustle-auth-resend" disabled={busy||emailCooldown>0} onClick={onResend}>{emailCooldown>0?t('Дахин илгээх','Resend')+' · '+cooldown:t('Дахин илгээх','Resend')}</button></p>}
-      <p className="hustle-auth-legal">{t('Бүртгүүлснээр та ','By creating an account you agree to the ')}<Link href="/terms/">{t('Үйлчилгээний нөхцөл','Terms of Service')}</Link>{t(' болон ',' and ')}<Link href="/privacy/">{t('Нууцлалын бодлогыг','Privacy Policy')}</Link>{t(' зөвшөөрч байна.','.')}</p>
+    !isAdmin?<div className="hustle-auth-support">
+      {register&&!sentTo&&<p>{t('Баталгаажуулах имэйл ирээгүй юу?','Didn’t get the confirmation email?')} <button type="button" className="hustle-auth-resend" disabled={busy||emailCooldown>0} onClick={onResend}>{emailCooldown>0?t('Дахин илгээх','Resend')+' · '+cooldown:t('Дахин илгээх','Resend')}</button></p>}
+      <p className="hustle-auth-legal">{register&&t('Бүртгүүлснээр та ','By creating an account you agree to the ')}<Link href="/terms/">{t('Үйлчилгээний нөхцөл','Terms of Service')}</Link>{register?t(' болон ',' and '):' · '}<Link href="/privacy/">{t(register?'Нууцлалын бодлогыг':'Нууцлалын бодлого','Privacy Policy')}</Link>{register&&t(' зөвшөөрч байна.','.')}</p>
     </div>:null}
    </section>
   </div>
