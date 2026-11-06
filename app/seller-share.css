@@ -1,0 +1,14 @@
+.hustle-seller-share{max-width:100%;color:inherit;font-size:13px}
+.hustle-seller-share summary,.hustle-seller-share-options :is(a,button){
+ display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;
+ padding:6px 10px;border:1px solid var(--ws-line,var(--line,#d3dbe8));border-radius:10px;
+ background:transparent;color:inherit;font:inherit;font-weight:700;text-decoration:none;cursor:pointer
+}
+.hustle-seller-share summary::-webkit-details-marker{display:none}
+.hustle-seller-share summary:hover,.hustle-seller-share-options :is(a,button):hover{border-color:currentColor}
+.hustle-seller-share-options{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.hustle-seller-share-fallback{max-width:230px;display:grid;gap:5px;margin-top:6px}
+.hustle-seller-share-fallback p{margin:0;font-size:12px;color:inherit}
+.hustle-seller-share-fallback input{width:100%;min-width:0;font:inherit;color:inherit;background:transparent;border:1px solid var(--ws-line,var(--line,#d3dbe8));border-radius:6px;padding:6px}
+.hustle-seller-share-fallback a{color:inherit;text-decoration:underline;justify-self:start}
+.sp-title-actions:has(.hustle-seller-share){display:flex;flex-wrap:wrap;align-items:start;gap:8px}
