@@ -38,6 +38,9 @@ const KNOWN:Record<string,Pair>={
  'You have started many new conversations today. Please try again tomorrow.':['Өнөөдөр олон шинэ яриа эхлүүлсэн байна. Маргааш дахин оролдоно уу.','You have started many new conversations today. Please try again tomorrow.']
 };
 const BY_CODE:Record<string,Pair>={
+ 'provider_disabled':['Google-ээр нэвтрэх боломж одоогоор идэвхгүй байна. Имэйлээр нэвтэрнэ үү.','Google sign-in is currently unavailable. Please sign in with email.'],
+ 'google_oauth_cancelled':['Google-ээр нэвтрэх үйлдлийг цуцаллаа. Дахин оролдох боломжтой.','Google sign-in was cancelled. You can try again.'],
+ 'google_oauth_failed':['Google-ээр нэвтэрч чадсангүй. Дахин оролдоно уу.','Google sign-in could not be completed. Please try again.'],
  'email_not_confirmed':['Имэйлээ баталгаажуулаагүй байна. Ирсэн имэйл болон Спам хавтаснаас баталгаажуулах холбоосоо нээнэ үү.','Your email is not confirmed. Check Inbox and Spam for the confirmation link.'],
  'invalid_credentials':['Имэйл эсвэл нууц үг буруу байна.','The e-mail or password is incorrect.'],
  'user_already_exists':['Энэ имэйлээр бүртгэл үүсгэсэн байна. Нэвтэрнэ үү.','An account already exists for this e-mail. Please sign in.'],
@@ -62,6 +65,8 @@ export function friendlyError(error:unknown,en:boolean):string{
  const code=typeof e?.code==='string'?e.code:'';
  if(message&&KNOWN[message])return pick(KNOWN[message]);
  if(code&&BY_CODE[code])return pick(BY_CODE[code]);
+ if(/popup.closed|user cancelled|user canceled/i.test(message))return pick(BY_CODE.google_oauth_cancelled);
+ if(/unsupported provider|provider is not enabled/i.test(message))return pick(BY_CODE.provider_disabled);
  if(/email not confirmed/i.test(message))return pick(BY_CODE.email_not_confirmed);
  if(/invalid login credentials/i.test(message))return pick(BY_CODE.invalid_credentials);
  if(/jwt expired|session.*(missing|expired)/i.test(message))return pick(BY_CODE.session_not_found);

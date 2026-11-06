@@ -18,13 +18,14 @@ type Props={
   email:string;onEmailChange:(value:string)=>void;
   password:string;onPasswordChange:(value:string)=>void;
   busy:boolean;emailCooldown:number;onSubmit:(event:FormEvent<HTMLFormElement>)=>void;
+  onGoogleSignIn:()=>void;
   onResend:()=>void;notice:string;error:string;onDismiss:()=>void;
   sentTo?:string;onChangeEmail?:()=>void;
 };
 
 export default function PremiumAuth({
  en,entry,entryMode,register,onRegisterChange,email,onEmailChange,password,onPasswordChange,
- busy,emailCooldown,onSubmit,onResend,notice,error,onDismiss,sentTo='',onChangeEmail
+ busy,emailCooldown,onSubmit,onGoogleSignIn,onResend,notice,error,onDismiss,sentTo='',onChangeEmail
 }:Props){
  // V85: catch a mistyped e-mail before sign-up; show password strength as it is typed.
  const [emailIssue,setEmailIssue]=useState<string>('');
@@ -180,6 +181,7 @@ export default function PremiumAuth({
       </ul>
      </div>}
      <button className="hustle-auth-submit" disabled={busy||checking||(register&&emailCooldown>0)} type="submit">{busy||checking?t('Шалгаж байна…','Please wait…'):register?t('Бүртгэл үүсгэх','Create account'):t('Нэвтрэх','Sign in')}<ArrowRight size={18} aria-hidden="true"/></button>
+     {!isAdmin&&<button className="hustle-auth-google" disabled={busy||checking} type="button" onClick={onGoogleSignIn}>{t('Google-ээр үргэлжлүүлэх','Continue with Google')}</button>}
    </form>}
    {feedback&&<div ref={feedbackRef} className={'hustle-auth-feedback '+(error||resetError?'is-error':'is-success')} role={error||resetError?'alert':'status'}>
      {error||resetError?<Info size={18} aria-hidden="true"/>:<CheckCircle2 size={18} aria-hidden="true"/>}
