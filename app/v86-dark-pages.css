@@ -44,6 +44,7 @@
 .sp-page.night :is(.sp-link,.sp-progress,.sp-ring span,.sp-nav,.sp-checklist,.sp-card,.sp-card.hustle-v5.sp-v5,.sp-ghost-btn,.sp-skills,.sp-confirm button,.sp-slug,.sp-preview,.sp-leave,.v42-edit-panel,.v42-preview-column,.v42-cover-buttons button,.v42-cover-position button){background:#0b1636;color:#eef3ff;border-color:#1c2b55}
 .sp-page.night .sp .sp-card input:not([type=checkbox]):not([type=file]):not([type=range]),.sp-page.night .sp .sp-card textarea,.sp-page.night .v42-edit-fields :is(input:not([type=checkbox]),textarea){background:#0f1d45;border-color:#1c2b55;color:#eef3ff}
 .sp-page.night .sp .sp-card :is(input,textarea)::placeholder{color:#7083ad}
+.sp-page.night .sp :is(.v41-avatar-info p,.v42-cover-control p){color:#a9b9de}
 .sp-page.night .sp-skills{border-color:#1c2b55}
 .sp-page.night .sp-skills li,.sp-page.night .sp-nav button.selected{background:#16244f;color:#cfdcff}
 .sp-page.night .sp-drop{background:#0f1d45;border-color:#2a3d73}

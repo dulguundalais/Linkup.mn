@@ -61,7 +61,9 @@
 .sp-count.ok{color:var(--ok)}
 .sp-count.bad{color:#b23c46}
 .sp-subsection{display:grid;gap:12px;padding-top:18px;border-top:1px solid var(--line)}
-.sp-subsection h3{margin:0;font-size:15px;font-weight:800}
+.sp .sp-card .v41-avatar-editor{margin:0;padding:0;border:0}
+.sp-tools-disclosure summary{min-height:44px;padding:10px 0;font-size:15px;font-weight:800;cursor:pointer}
+.sp-tools-disclosure summary small{margin-left:6px;color:var(--muted);font-size:12px;font-weight:600}
 .sp .v42-save{min-height:44px;border-radius:11px;background:var(--navy);font-size:14px}
 .sp .v42-save:hover{background:#1d3a78}
 .sp .sp-ghost-btn{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font-size:14px;font-weight:700;cursor:pointer}

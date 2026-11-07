@@ -342,7 +342,7 @@ export default function SellerProfileManager(){
     {tab==='photos'&&<div className="sp-card v42-photo-panel hustle-v5 sp-v5">
      <header><h2 id="sp-editor-title">{t('Зураг ба нүүр зураг','Photo & cover')}</h2><p>{t('Зургаа сонгоход хадгалагдана. Та дараа нь ч зураг нэмж болно.','Photos save when selected. You can also add them later.')}</p></header>
      <div className="sp-subsection"><div className="v42-avatar-panel"><SellerAvatarEditor sellerId={uid} name={profile.display_name} avatarPath={profile.avatar_path} en={en} onChange={path=>updatePhotos(path,'avatar')}/></div></div>
-     <div className="sp-subsection"><h3>{t('Нүүр зураг','Cover photo')}</h3><SellerCoverEditor sellerId={uid} coverPath={profile.cover_path} focusY={profile.cover_focus_y} en={en} onChange={(path,y)=>updatePhotos(path,'cover',y)}/></div>
+     <div className="sp-subsection"><SellerCoverEditor sellerId={uid} coverPath={profile.cover_path} focusY={profile.cover_focus_y} en={en} onChange={(path,y)=>updatePhotos(path,'cover',y)}/></div>
     </div>}
     {tab==='skills'&&<div className="sp-card">
      <header><h2 id="sp-editor-title">{t('Ур чадвар ба програм','Skills & tools')}</h2><p>{t('Ур чадвараа бичээд Enter эсвэл таслал дарж нэмээрэй.','Buyers find you by these words. Press Enter or a comma to add one.')}</p></header>
@@ -354,7 +354,10 @@ export default function SellerProfileManager(){
        onBlur={()=>addSkill(skillInput)}/>
      </div>
      <small className={'sp-count'+(skills.length>=3?' ok':'')}>{t(skills.length+' ур чадвар · хийж чаддаг ажлаа тодорхой бичээрэй','{n} skills · 3 or more helps you show up in search').replace('{n}',String(skills.length))}</small>
-     <div className="sp-subsection v42-owner-tools"><h3>{t('Ашигладаг програм','Tools you use')}</h3><div className={'hustle-v5 sp-v5 sp-tools'+(dark?' night':'')}><SellerToolEditor sellerId={uid} en={en} onUpdated={()=>{void loadTools(uid)}}/></div></div>
+     <details className="sp-subsection sp-tools-disclosure v42-owner-tools">
+      <summary>{t('Ашигладаг програм','Tools you use')} <small>{t('Сонголтоор','Optional')}</small></summary>
+      <div className={'hustle-v5 sp-v5 sp-tools'+(dark?' night':'')}><SellerToolEditor sellerId={uid} en={en} onUpdated={()=>{void loadTools(uid)}}/></div>
+     </details>
     </div>}
     {tab==='projects'&&<section className="sp-card v42-project-editor">
      <header><h2 id="sp-editor-title">{t('Бүтээлүүд','Portfolio')}</h2><p>{t('Хамгийн сайн 3–6 ажлаа оруулаарай. Эхний зураг захиалагчид хамгийн түрүүнд харагдана.','Add your best 3–6 pieces. The first one is what buyers see first.')}</p></header>

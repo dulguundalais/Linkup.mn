@@ -47,6 +47,11 @@ test('saves an edited step before advancing and keeps the text on failure',async
  expect(state.profile.headline).toBe('Product designer');
  await footer.getByRole('button',{name:'Continue',exact:true}).click();
  await expect(page.getByRole('heading',{name:'Skills & tools'})).toBeVisible();
+ const tools=page.getByRole('region',{name:'My software and tools'});
+ await expect(tools).toBeHidden();
+ await page.getByText('Tools you use').click();
+ await expect(tools).toBeVisible();
+ await page.getByText('Tools you use').click();
  expect(state.updates).toHaveLength(2);
  await footer.getByRole('button',{name:'Back',exact:true}).click();
  await expect(page.getByRole('heading',{name:'Photo & cover'})).toBeVisible();
