@@ -54,7 +54,7 @@ test('tool icon selection is persisted on current seller account with RLS; publi
  assert.match(ui,/CREATIVE_TOOL_MAX/);
  assert.match(ui,/aria-pressed=\{choice.icon_key===option.key\}/);
  assert.match(ws,/<SellerToolEditor/);
- assert.match(ws,/skills:draft\.skills/);
+ assert.match(ws,/skills:skillsToSave\.trim\(\)/);
  assert.match(sql,/enable row level security/);
  assert.match(sql,/seller_id=\(select auth.uid\(\)\)/);
  assert.match(sql,/p.public_profile and p.is_seller and a.enabled/);
