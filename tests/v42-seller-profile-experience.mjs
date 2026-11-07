@@ -60,11 +60,11 @@ test('profile owner studio previews the live draft, not a stale iframe',()=>{
  assert.match(editor,/<SellerCoverEditor/);
  assert.match(editor,/db.from\('portfolio_items'\).insert/);
  assert.match(editor,/db.from\('portfolio_items'\).delete/);
- // Completeness checklist, unsaved-changes bar and a mobile edit/preview switch.
+ // The editor keeps its checklist, draft protection, and a separate preview mode.
  assert.match(editor,/const checks:/);
- assert.match(editor,/className="sp-savebar"/);
+ assert.match(editor,/className="sp-step-footer"/);
  assert.match(editor,/beforeunload/);
- assert.match(editor,/sp-mobile-switch/);
+ assert.match(editor,/sp-view-switch/);
  // Only published services are shown to buyers in the preview.
  assert.match(preview,/services.filter\(s=>s.status==='published'\)/);
  assert.doesNotMatch(preview,/dangerouslySetInnerHTML/);

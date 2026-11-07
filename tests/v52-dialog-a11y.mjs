@@ -36,5 +36,5 @@ test('signed-in header fits small phones and touch targets stay usable',()=>{
  assert.match(h,/@media\(max-width:400px\)\{\.hustle-v5\.hx-header \.hx-header-inner\{gap:8px\}/);
  assert.match(h,/\.hx-crumbs a\{display:inline-flex;align-items:center;min-height:28px\}/);
  assert.match(read('app/v51-home-system.css'),/\.hustle-premium-footer nav a\{display:inline-flex;align-items:center;min-height:32px\}/);
- assert.match(read('app/v50-profile-studio.css'),/\.sp-next\{display:inline-flex;align-items:center;min-height:28px\}/);
+ assert.match(read('app/v50-profile-studio.css'),/\.sp-step-forward \.v42-save\{[^}]*min-height:46px/);
 });

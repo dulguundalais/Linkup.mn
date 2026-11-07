@@ -41,9 +41,10 @@
 .sp-page.night .v42-owner.sp{--ink:#eef3ff;--muted:#a9b9de;--line:#1c2b55;--soft:#0f1d45;--navy:#2b5cde;--cyan:#6f9bff;--ok:#5fd3a0}
 .sp-page.night .v42-owner-empty{background:#050c22;color:#eef3ff}
 .sp-page.night .v42-owner-empty a{background:#2b5cde}
-.sp-page.night :is(.sp-link,.sp-progress,.sp-ring span,.sp-nav,.sp-checklist,.sp-card,.sp-card.hustle-v5.sp-v5,.sp-ghost-btn,.sp-skills,.sp-confirm button,.sp-slug,.sp-preview,.sp-full,.sp-leave,.v42-edit-panel,.v42-preview-column,.v42-cover-buttons button,.v42-cover-position button){background:#0b1636;color:#eef3ff;border-color:#1c2b55}
+.sp-page.night :is(.sp-link,.sp-progress,.sp-ring span,.sp-nav,.sp-checklist,.sp-card,.sp-card.hustle-v5.sp-v5,.sp-ghost-btn,.sp-skills,.sp-confirm button,.sp-slug,.sp-preview,.sp-leave,.v42-edit-panel,.v42-preview-column,.v42-cover-buttons button,.v42-cover-position button){background:#0b1636;color:#eef3ff;border-color:#1c2b55}
 .sp-page.night .sp .sp-card input:not([type=checkbox]):not([type=file]):not([type=range]),.sp-page.night .sp .sp-card textarea,.sp-page.night .v42-edit-fields :is(input:not([type=checkbox]),textarea){background:#0f1d45;border-color:#1c2b55;color:#eef3ff}
 .sp-page.night .sp .sp-card :is(input,textarea)::placeholder{color:#7083ad}
+.sp-page.night .sp :is(.v41-avatar-info p,.v42-cover-control p){color:#a9b9de}
 .sp-page.night .sp-skills{border-color:#1c2b55}
 .sp-page.night .sp-skills li,.sp-page.night .sp-nav button.selected{background:#16244f;color:#cfdcff}
 .sp-page.night .sp-drop{background:#0f1d45;border-color:#2a3d73}
@@ -59,14 +60,8 @@
 .sp-page.night .sp .v42-error.sp-alert,.sp-page.night .v42-editor-content .v42-error{background:#3a1512;color:#ffb4ab}
 .sp-page.night .sp .v42-success.sp-alert,.sp-page.night .v42-editor-content .v42-success{background:#0f3a2c;color:#9be8c3}
 .sp-page.night .sp .sp-icon-btn:hover{background:#3a1512;color:#ffb4ab}
-.sp-page.night .sp-savebar .v42-save{background:#eef3ff;color:#0a1430}
 .sp-page.night .v42-editor-nav button.selected{background:#16244f;border-color:#2a3d73;color:#cfdcff}
 .sp-page.night .v42-editor-nav button:not(.selected):hover{background:#0f1d45;color:#eef3ff}
-@media (max-width:900px){
- .sp-page.night .sp-mobile-switch{background:#050c22f2;border-color:#1c2b55}
- .sp-page.night .sp-mobile-switch button{background:#0b1636;color:#cfdcff;border-color:#1c2b55}
- .sp-page.night .sp-mobile-switch button[aria-selected=true]{background:#2b5cde;border-color:#2b5cde;color:#fff}
-}
 /* The buyer preview stays a light page on purpose: it shows the public profile. */
 
 /* «Самбар руу буцах» sat on the same line as the eyebrow — give it its own line (both themes). */
