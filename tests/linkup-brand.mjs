@@ -2,8 +2,9 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync,statSync} from 'node:fs';
 import {join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 
-const root=new URL('..',import.meta.url).pathname;
+const root=fileURLToPath(new URL('..',import.meta.url));
 const read=p=>readFileSync(join(root,p),'utf8');
 function sources(dir){
  return readdirSync(join(root,dir)).flatMap(name=>{
@@ -16,7 +17,7 @@ function sources(dir){
 test('no user-visible Hustle brand text remains in application source',()=>{
  const leftovers=[];
  for(const file of ['app','components','lib','functions'].flatMap(sources)){
-  if(file==='app/legacy-home.tsx')continue; // retired V1 preview, not routed
+  if(file===join('app','legacy-home.tsx'))continue; // retired V1 preview, not routed
   read(file).split('\n').forEach((line,i)=>{
    const code=line.trim();
    if(/^(\/\/|\/\*|\*)/.test(code))return; // comments are not shown to users

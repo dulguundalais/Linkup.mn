@@ -31,3 +31,147 @@
 .night .finder-hint{color:#ffb4a8}
 .finder-form textarea[aria-invalid=true]{outline-color:#b42318}
 .finder-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.finder-result-heading {
+  align-items: flex-start;
+}
+
+.finder-result-heading > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.finder-result-heading h2 {
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.finder-result-heading .finder-new-search {
+  flex-shrink: 0;
+}
+
+.finder-solution-grid .finder-solution-card {
+  min-height: 0;
+  padding: clamp(16px, 2.4vw, 24px);
+}
+
+.finder-solution-card > p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.finder-real-matches,
+.finder-no-match {
+  margin-top: 16px;
+}
+
+.finder-brief {
+  padding: clamp(16px, 3vw, 30px);
+}
+
+.finder-brief h3 {
+  margin: 8px 0;
+  font-weight: 750;
+}
+
+.finder-brief-intro,
+.finder-catalog-status,
+.finder-sign-in-note {
+  color: #c7d8ee;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.finder-catalog-status:not(:empty) {
+  padding: 12px 14px;
+  margin-top: 16px;
+  background: rgb(133 190 255 / 12%);
+  border-radius: 10px;
+}
+
+.finder-brief-fields {
+  margin-top: 18px;
+}
+
+.finder-brief-fields input {
+  min-height: 44px;
+  font-size: 16px;
+  background: rgb(133 190 255 / 12%);
+  border-color: #64829d;
+}
+
+.finder-brief-details {
+  margin-top: 16px;
+  border-top: 1px solid rgb(255 255 255 / 22%);
+}
+
+.finder-brief-details summary {
+  padding: 13px 0;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.finder-brief .finder-brief-preview {
+  margin: 0 0 12px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.65;
+  background: rgb(133 190 255 / 9%);
+}
+
+.finder-brief-footer {
+  border-top: 1px solid rgb(255 255 255 / 22%);
+  padding-top: 16px;
+}
+
+.finder-brief-actions :is(a, button) {
+  min-height: 44px;
+  justify-content: center;
+}
+
+.finder-brief .finder-brief-actions .finder-project-cta {
+  background: #fff;
+  color: #0a1430;
+  border-color: transparent;
+}
+
+.finder-brief .finder-project-cta:hover {
+  background: #e0edff;
+}
+
+.finder-brief :is(a, button, summary, input):focus-visible {
+  outline: 2px solid #8be6ff;
+  outline-offset: 3px;
+}
+
+.finder-brief .finder-brief-details button {
+  background: transparent;
+  color: #eef3ff;
+  border: 1px solid rgb(255 255 255 / 36%);
+}
+
+.finder-copy-status:not(:empty),
+.finder-sign-in-note {
+  margin: 8px 0 12px;
+  font-size: 13px;
+}
+
+.finder-results > .finder-disclosure {
+  margin-top: 12px;
+  color: var(--sub, #597386);
+  font-size: 12px;
+}
+
+@media (max-width: 560px) {
+  .finder-result-heading {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .finder-brief-footer .finder-brief-actions {
+    display: grid;
+  }
+}

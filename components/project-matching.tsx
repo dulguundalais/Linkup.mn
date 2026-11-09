@@ -95,14 +95,32 @@ export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
   setLoading(false);
  };
  useEffect(()=>{
-  try{setEn(localStorage.getItem('hustle-language')==='en');const a=localStorage.getItem('hustle-buyer-audience');if(a==='personal')setAudience('personal')}catch{}
+  let english=false;
+  try{english=localStorage.getItem('hustle-language')==='en';setEn(english);const a=localStorage.getItem('hustle-buyer-audience');if(a==='personal')setAudience('personal')}catch{}
   const q=new URLSearchParams(window.location.search);
   setSignInHref(signInWithReturn(location.pathname+location.search,mode));
   const prompt=(q.get('q')||'').slice(0,2000);
-  if(prompt){setBrief(prompt);setTitle(prompt.slice(0,100));setCategory(outcomeCategory[classifyNeed(prompt).key]||'ai')}
+  const budgetText=(q.get('budget')||'').trim().slice(0,80);
+  const timelineText=(q.get('timeline')||'').trim().slice(0,80);
+  const amount=budgetText.match(/^((?:\d{1,3}(?:[ ,]\d{3})+|\d+))\s*(?:₮|MNT)?$/i);
+  const budgetValue=amount?Number(amount[1].replace(/[ ,]/g,'')):0;
+  const validBudget=budgetValue>=1000&&budgetValue<=100000000;
+  if(validBudget)setBudget(String(budgetValue));
+  const duration=timelineText.match(/^(\d+)\s*(хоног|өдөр|долоо\s+хоног|days?|weeks?)?$/i);
+  const daysValue=duration?Number(duration[1])*(/week|долоо/i.test(duration[2]||'')?7:1):0;
+  const validDays=daysValue>=1&&daysValue<=365;
+  if(validDays)setDays(String(daysValue));
+  if(prompt){
+   const details=[
+    budgetText&&!validBudget&&(english?'Budget: ':'Төсөв: ')+budgetText,
+    timelineText&&!validDays&&(english?'Timeline: ':'Хугацаа: ')+timelineText,
+   ].filter(Boolean).join('\n');
+   setBrief(details?prompt.slice(0,2000-details.length-2)+'\n\n'+details:prompt);
+   setTitle(prompt.slice(0,100));
+   setCategory(outcomeCategory[classifyNeed(prompt).key]||'ai');
+  }
   const askedCategory=normalizeCategory(q.get('category'));if(askedCategory!=='all')setCategory(askedCategory);
   const suggested=q.get('audience');if(suggested==='personal'||suggested==='business')setAudience(suggested);
-  const budgetValue=Number((q.get('budget')||'').replace(/[^0-9]/g,''));if(budgetValue>=1000&&budgetValue<=100000000)setBudget(String(budgetValue));
   void refresh().catch(err=>{setError(reportError(err));setLoading(false)});
   const focus=()=>{void refresh().catch(()=>{})};
   window.addEventListener('focus',focus);

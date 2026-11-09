@@ -18,12 +18,19 @@ test('guest Explore login restores original search route',async({page})=>{
  await expect(page.locator('.hx-header .global-account-trigger')).toBeVisible();
 });
 
-test('guest project request login returns with guided-entry text',async({page})=>{
- await page.goto('/project-requests/?q=Need%20help%20building%20a%20brand%20identity%20for%20our%20company');
+test('guest project request login restores the brief, budget and timeline',async({page})=>{
+ const query=new URLSearchParams({
+  q:'Need help building a brand identity for our company',
+  budget:'500,000 ₮',
+  timeline:'2 долоо хоног',
+ });
+ await page.goto('/project-requests/?'+query);
  await page.getByRole('main').getByRole('link',{name:/Нэвтрэх|Sign in/}).click();
  await loginBuyer(page);
- await expect(page).toHaveURL(/\/project-requests\/\?q=/);
+ await expect(page).toHaveURL(/\/project-requests\/?\?q=/);
  await expect(page.locator('.project-request-form textarea')).toHaveValue(/Need help building a brand identity/);
+ await expect(page.getByRole('spinbutton',{name:/Төсвийн дээд хэмжээ/})).toHaveValue('500000');
+ await expect(page.getByRole('spinbutton',{name:/Хүсэж буй хугацаа/})).toHaveValue('14');
 });
 
 test('project draft survives route navigation and can be cleared',async({page})=>{
