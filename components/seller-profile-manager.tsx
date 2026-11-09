@@ -2,7 +2,7 @@
 import {trapTab} from '../lib/marketplace/focus-trap';
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import Link from 'next/link';
-import {ArrowUpRight,BriefcaseBusiness,Check,CheckCircle2,Eye,EyeOff,FileImage,Globe2,Layers3,LoaderCircle,Maximize2,Minimize2,Monitor,Pencil,Plus,RotateCcw,Save,Smartphone,Trash2,UploadCloud,UserRound,Wrench,X} from 'lucide-react';
+import {ArrowLeft,ArrowRight,ArrowUpRight,BriefcaseBusiness,Check,CheckCircle2,Eye,EyeOff,FileImage,Globe2,Layers3,LoaderCircle,Monitor,Pencil,Plus,RotateCcw,Save,Smartphone,Trash2,UploadCloud,UserRound,Wrench,X} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
 import {normalizeSellerSlug,isValidSellerSlug} from '../lib/marketplace/seller-slug';
 import type {Profile} from '../lib/marketplace/types';
@@ -27,6 +27,13 @@ const emptyDraft:ProfileDraft={display_name:'',headline:'',bio:'',skills:'',slug
 const BIO_MIN=80;
 const toDraft=(p:Profile):ProfileDraft=>({display_name:p.display_name||'',headline:p.headline||'',bio:p.bio||'',skills:p.skills||'',slug:p.slug||'',public_profile:!!p.public_profile});
 const sameDraft=(a:ProfileDraft,b:ProfileDraft)=>(Object.keys(a) as (keyof ProfileDraft)[]).every(k=>a[k]===b[k]);
+const mergeSkills=(value:string,raw:string)=>{
+ const merged=splitSkills(value);
+ for(const skill of raw.split(',').map(s=>s.trim().slice(0,40)).filter(Boolean)){
+  if(!merged.some(s=>s.toLocaleLowerCase()===skill.toLocaleLowerCase()))merged.push(skill);
+ }
+ return merged.join(', ').slice(0,400);
+};
 
 export default function SellerProfileManager(){
  const [uid,setUid]=useState('');
@@ -39,7 +46,6 @@ export default function SellerProfileManager(){
  const [status,setStatus]=useState<'loading'|'ready'|'error'|'guest'|'not-seller'>('loading');
  const [tab,setTab]=useState<Tab>('about');
  const [buyerView,setBuyerView]=useState(false);
- const [mobilePane,setMobilePane]=useState<'edit'|'preview'>('edit');
  const [device,setDevice]=useState<'desktop'|'mobile'>('desktop');
  const [busy,setBusy]=useState(false);
  const [message,setMessage]=useState('');
@@ -169,7 +175,6 @@ export default function SellerProfileManager(){
  ];
  const doneCount=checks.filter(c=>c.done).length;
  const percent=Math.round(doneCount/checks.length*100);
- const nextCheck=checks.find(c=>!c.done);
  const sectionDone=(s:Tab)=>checks.filter(c=>c.section===s).every(c=>c.done);
  const nav:[Tab,string,string,typeof UserRound][]=[
   ['about','Танилцуулга','About',UserRound],
@@ -179,27 +184,38 @@ export default function SellerProfileManager(){
   ['services','Үйлчилгээ','Services',BriefcaseBusiness],
   ['publish','Хаяг ба нийтлэх','URL & visibility',Globe2]
  ];
+ const step=nav.findIndex(([id])=>id===tab);
+ const previousStep=nav[step-1];
+ const nextStep=nav[step+1];
+ const willSaveText=draft.display_name!==saved.display_name||draft.headline!==saved.headline||draft.bio!==saved.bio||draft.skills!==saved.skills||!!skillInput.trim();
+ const willSaveOnContinue=willSaveText||(tab==='projects'&&!!projectFile);
  const go=(s:Tab)=>{
-  setTab(s);setBuyerView(false);setMobilePane('edit');setError('');setMessage('');setConfirmRemove('');
-  requestAnimationFrame(()=>editorTop.current?.scrollIntoView({block:'nearest',behavior:'smooth'}));
+  setTab(s);setBuyerView(false);setError('');setMessage('');setConfirmRemove('');
+  requestAnimationFrame(()=>{editorTop.current?.focus({preventScroll:true});editorTop.current?.scrollIntoView({block:'start'})});
  };
- const saveProfile=async(e?:React.FormEvent):Promise<boolean>=>{
+ const saveProfile=async(e?:React.FormEvent,next?:Tab):Promise<boolean>=>{
   e?.preventDefault();if(busy||!uid)return false;
   setError('');setMessage('');
-  if(draft.display_name.trim().length<2){setError(t('Нэрээ дор хаяж 2 тэмдэгтээр бичнэ үү.','Your name needs at least 2 characters.'));go('about');return false}
-  if(!slugOk){setError(draft.slug===''?t('Профайлаа нийтэд нээхийн тулд хаягаа сонгоно уу.','Choose your profile URL before making the profile public.'):t('Профайлын хаяг 3-60 тэмдэгт, жижиг латин үсэг, тоо, зураас байна.','Your profile URL must be 3–60 lowercase letters, numbers or dashes.'));go('publish');return false}
+  const displayName=draft.display_name.trim();
+  const skillsToSave=skillInput.trim()?mergeSkills(draft.skills,skillInput):draft.skills;
+  if(displayName.length<2){if(tab!=='about')go('about');setError(t('Нэрээ дор хаяж 2 тэмдэгтээр бичнэ үү.','Your name needs at least 2 characters.'));return false}
+  if(!next&&!slugOk){if(tab!=='publish')go('publish');setError(draft.slug===''?t('Профайлаа нийтэд нээхийн тулд хаягаа сонгоно уу.','Choose your profile URL before making the profile public.'):t('Профайлын хаяг 3-60 тэмдэгт, жижиг латин үсэг, тоо, зураас байна.','Your profile URL must be 3–60 lowercase letters, numbers or dashes.'));return false}
   setBusy(true);
   try{
    const db=await marketplaceClient();
    const {data:{user}}=await db.auth.getUser();
    if(user?.id!==uid)throw Error('Account changed');
-   const payload={display_name:draft.display_name.trim().slice(0,80),headline:draft.headline.trim().slice(0,150),bio:draft.bio.trim().slice(0,3000),skills:draft.skills.trim().slice(0,400),slug:draft.slug||null,public_profile:draft.public_profile};
+   const payload={display_name:displayName.slice(0,80),headline:draft.headline.trim().slice(0,150),bio:draft.bio.trim().slice(0,3000),skills:skillsToSave.trim().slice(0,400),...(next?{}:{slug:draft.slug||null,public_profile:draft.public_profile})};
    const response=await db.from('profiles').update(payload).eq('id',uid).eq('is_seller',true).select('*').single();
    if(response.error||!response.data)throw response.error||Error('No profile response');
-   syncProfile(response.data as Profile);
+   const updated=response.data as Profile;
+   setProfile(updated);
+   setDraft({...toDraft(updated),...(next&&draft.slug!==saved.slug?{slug:draft.slug}:{}),...(next&&draft.public_profile!==saved.public_profile?{public_profile:draft.public_profile}:{})});
+   setSkillInput('');
+   if(next)go(next);
    setMessage(t('Өөрчлөлт хадгалагдлаа.','Changes saved.'));
    return true;
-  }catch{setError(t('Хадгалж чадсангүй. Профайлын хаяг өөр хүнд бүртгэгдсэн эсэхийг шалгаарай.','Unable to save. That profile URL may already be taken.'))}
+  }catch{setError(next?t('Хадгалж чадсангүй. Дахин оролдоорой.','Unable to save. Please try again.'):t('Хадгалж чадсангүй. Профайлын хаяг өөр хүнд бүртгэгдсэн эсэхийг шалгаарай.','Unable to save. That profile URL may already be taken.'))}
   finally{setBusy(false)}
   return false;
  };
@@ -207,11 +223,8 @@ export default function SellerProfileManager(){
   setProfile(prev=>prev?{...prev,...(kind==='avatar'?{avatar_path:path}:{cover_path:path,cover_focus_y:focusY})}:prev);
  };
  const addSkill=(raw:string)=>{
-  const next=raw.split(',').map(s=>s.trim().slice(0,40)).filter(Boolean);
-  if(!next.length)return;
-  const merged=[...skills];
-  for(const s of next)if(!merged.some(x=>x.toLocaleLowerCase()===s.toLocaleLowerCase()))merged.push(s);
-  setDraft(v=>({...v,skills:merged.join(', ').slice(0,400)}));setSkillInput('');
+  if(!raw.trim())return;
+  setDraft(v=>({...v,skills:mergeSkills(v.skills,raw)}));setSkillInput('');
  };
  const removeSkill=(s:string)=>setDraft(v=>({...v,skills:splitSkills(v.skills).filter(x=>x!==s).join(', ')}));
  const pickProject=(file?:File|null)=>{
@@ -222,19 +235,19 @@ export default function SellerProfileManager(){
   if(!projectTitle)setProjectTitle(file.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').slice(0,140));
  };
  const clearProject=()=>{setProjectFile(null);setProjectTitle('');if(portfolioFile.current)portfolioFile.current.value=''};
- const addProject=async(e:React.FormEvent)=>{
-  e.preventDefault();if(!projectFile||busy||!uid)return;
+ const addProject=async(e?:React.FormEvent):Promise<boolean>=>{
+  e?.preventDefault();if(!projectFile||busy||!uid)return false;
   setMessage('');setError('');
   const file=projectFile,title=projectTitle.trim();
   if(!title||title.length>140||!fileExt[file.type]||file.size===0||file.size>5*1024*1024){
-   setError(t('Бүтээлийн нэр болон 5 MB хүртэл JPEG, PNG, WebP файлыг шалгана уу.','Provide a title and a JPEG, PNG or WebP file under 5 MB.'));return;
+   setError(t('Бүтээлийн нэр болон 5 MB хүртэл JPEG, PNG, WebP файлыг шалгана уу.','Provide a title and a JPEG, PNG or WebP file under 5 MB.'));return false;
   }
-  const b=new Uint8Array(await file.slice(0,12).arrayBuffer());
-  const valid=file.type==='image/jpeg'?b[0]===255&&b[1]===216&&b[2]===255:file.type==='image/png'?[137,80,78,71,13,10,26,10].every((v,i)=>b[i]===v):String.fromCharCode(...b.slice(0,4))==='RIFF'&&String.fromCharCode(...b.slice(8,12))==='WEBP';
-  if(!valid){setError(t('Зургийн файл буруу форматтай байна.','This file is not a valid image.'));return}
   setBusy(true);
   let path='';
   try{
+   const b=new Uint8Array(await file.slice(0,12).arrayBuffer());
+   const valid=file.type==='image/jpeg'?b[0]===255&&b[1]===216&&b[2]===255:file.type==='image/png'?[137,80,78,71,13,10,26,10].every((v,i)=>b[i]===v):String.fromCharCode(...b.slice(0,4))==='RIFF'&&String.fromCharCode(...b.slice(8,12))==='WEBP';
+   if(!valid){setError(t('Зургийн файл буруу форматтай байна.','This file is not a valid image.'));return false}
    const db=await marketplaceClient();
    const {data:{user}}=await db.auth.getUser();
    if(user?.id!==uid)throw Error('Account changed');
@@ -246,10 +259,19 @@ export default function SellerProfileManager(){
    path='';clearProject();
    await loadItems(uid);
    setMessage(t('Бүтээл нэмэгдлээ.','Project added.'));
+   return true;
   }catch{
    if(path){try{await (await marketplaceClient()).storage.from('portfolio').remove([path])}catch{}}
    setError(t('Бүтээл оруулахад алдаа гарлаа.','Could not upload this project.'));
   }finally{setBusy(false)}
+  return false;
+ };
+ const continueProfile=async()=>{
+  if(busy)return;
+  if(!nextStep){await saveProfile();return}
+  if(tab==='projects'&&projectFile&&!(await addProject()))return;
+  if(willSaveText){await saveProfile(undefined,nextStep[0]);return}
+  go(nextStep[0]);
  };
  const removeProject=async(item:Item)=>{
   if(busy||!uid)return;
@@ -273,7 +295,7 @@ export default function SellerProfileManager(){
  if(status==='error'||!profile)return shell(<main className="v42-owner-empty"><h1>{t('Профайл ачаалж чадсангүй','Cannot load profile')}</h1><Link href="/seller-studio/">{t('Мэргэжилтэн самбар руу буцах','Back to the freelancer dashboard')}</Link></main>);
  const statusChip=<span className={'sp-chip '+(isPublic?'is-public':'is-private')}>{isPublic?<Eye size={14} aria-hidden="true"/>:<EyeOff size={14} aria-hidden="true"/>}{isPublic?t('Нийтэд харагдаж байна','Public'):t('Хувийн горим','Private')}</span>;
  const ring=<div className="sp-ring" style={{'--p':percent} as React.CSSProperties} role="img" aria-label={t('Профайл '+percent+'% бүрдсэн','Profile '+percent+'% complete')}><span>{percent}<small>%</small></span></div>;
- return shell(<main className={'sp v42-owner'+(dirty?' has-savebar':'')}>
+ return shell(<main className="sp v42-owner">
   {/* V84: the way to the first published service, until it is live */}
   {(()=>{const steps=sellerStartSteps({isSeller:true,name:profile.display_name,headline:profile.headline,statuses:services.map(s=>s.status)});
    return sellerStartComplete(steps)?null:<SellerStartSteps en={en} steps={steps} onAction={key=>{if(key==='profile')go('about')}} hrefFor={key=>key==='service'?'/seller-studio/?add=service':key==='publish'?'/seller-studio/':undefined}/>})()}
@@ -287,52 +309,57 @@ export default function SellerProfileManager(){
     </div>
    </div>
   </div>
-  <div className="sp-mobile-switch" role="tablist" aria-label={t('Харагдац','View')}>
-   <button type="button" role="tab" aria-selected={mobilePane==='edit'} onClick={()=>setMobilePane('edit')}><Pencil size={15} aria-hidden="true"/>{t('Засах','Edit')}</button>
-   <button type="button" role="tab" aria-selected={mobilePane==='preview'} onClick={()=>setMobilePane('preview')}><Eye size={15} aria-hidden="true"/>{t('Урьдчилан харах','Preview')}</button>
+  <div className="sp-view-switch" role="group" aria-label={t('Профайлын горим','Profile view')}>
+   <button type="button" aria-pressed={!buyerView} disabled={busy} onClick={()=>setBuyerView(false)}><Pencil size={16} aria-hidden="true"/>{t('Профайл засах','Edit profile')}</button>
+   <button type="button" aria-pressed={buyerView} disabled={busy} onClick={()=>setBuyerView(true)}><Eye size={16} aria-hidden="true"/>{t('Урьдчилан харах','Preview')}</button>
   </div>
-  <div className={'sp-grid'+(buyerView?' is-full':'')+' pane-'+mobilePane}>
-   {!buyerView&&<aside className="sp-rail" aria-label={t('Профайлын хэсгүүд','Profile sections')}>
+  <div className={'sp-grid'+(buyerView?' is-full':'')}>
+   <aside className="sp-rail" hidden={buyerView} aria-label={t('Профайлын хэсгүүд','Profile sections')}>
     <div className="sp-progress">
      {ring}
      <div><b>{percent===100?t('Профайл бүрэн боллоо','Your profile is complete'):t('Профайлаа бүрдүүлэх','Complete your profile')}</b>
-      <small>{t(doneCount+'/'+checks.length+' алхам','Step '+doneCount+' of '+checks.length)}</small>
-      {nextCheck&&<button type="button" className="sp-next" onClick={()=>go(nextCheck.section)}>{t('Дараагийн алхам: ','Next: ')}{en?nextCheck.en:nextCheck.mn}</button>}
+      <small>{t(doneCount+'/'+checks.length+' мэдээлэл бүрдсэн',doneCount+' of '+checks.length+' items complete')}</small>
      </div>
     </div>
-    <nav className="sp-nav">{nav.map(([id,mn,english,Icon])=><button key={id} type="button" className={tab===id?'selected':''} aria-current={tab===id?'step':undefined} onClick={()=>go(id)}>
+    <nav className="sp-nav">{nav.map(([id,mn,english,Icon])=><button key={id} type="button" disabled={busy} className={tab===id?'selected':''} aria-current={tab===id?'step':undefined} onClick={()=>go(id)}>
      <Icon size={17} aria-hidden="true"/><span>{t(mn,english)}</span>{sectionDone(id)?<Check className="sp-done" size={15} aria-label={t('Бүрэн','Done')}/>:<i className="sp-todo" aria-hidden="true"/>}
     </button>)}</nav>
     <details className="sp-checklist">
      <summary>{t('Шалгах жагсаалт','Checklist')}</summary>
-     <ul>{checks.map(c=><li key={c.id} className={c.done?'done':''}><button type="button" onClick={()=>go(c.section)}>{c.done?<CheckCircle2 size={15} aria-hidden="true"/>:<i aria-hidden="true"/>}{en?c.en:c.mn}</button></li>)}</ul>
+     <ul>{checks.map(c=><li key={c.id} className={c.done?'done':''}><button type="button" disabled={busy} onClick={()=>go(c.section)}>{c.done?<CheckCircle2 size={15} aria-hidden="true"/>:<i aria-hidden="true"/>}{en?c.en:c.mn}</button></li>)}</ul>
     </details>
-   </aside>}
-   {!buyerView&&<section className="sp-editor" aria-labelledby="sp-editor-title">
-    <div ref={editorTop} className="sp-editor-scroll"/>
-    {tab==='about'&&<form className="sp-card v42-edit-fields" onSubmit={e=>{void saveProfile(e)}}>
+   </aside>
+   <section className="sp-editor" hidden={buyerView} aria-labelledby="sp-editor-title">
+    <div ref={editorTop} className="sp-step-marker" tabIndex={-1}>
+     <span className="sr-only">{t(nav[step][1],nav[step][2])} · </span>
+     {t('Алхам '+(step+1)+' / '+nav.length,'Step '+(step+1)+' of '+nav.length)}
+    </div>
+    {tab==='about'&&<form className="sp-card v42-edit-fields" onSubmit={e=>{e.preventDefault();void continueProfile()}}>
      <header><h2 id="sp-editor-title">{t('Танилцуулга','About you')}</h2><p>{t('Ямар ажил хийдэг, захиалагчид хэрхэн туслахаа товч, тодорхой бичээрэй.','Buyers should understand who you are and how you help within five seconds.')}</p></header>
-     <label>{t('Нэр','Display name')}<input required minLength={2} maxLength={80} value={draft.display_name} onChange={e=>setDraft(v=>({...v,display_name:e.target.value}))} placeholder={t('Жишээ: Б. Анударь','e.g. Anudari B.')}/></label>
-     <label>{t('Мэргэжил','Headline')}<input maxLength={150} value={draft.headline} onChange={e=>setDraft(v=>({...v,headline:e.target.value}))} placeholder={t('Жишээ: Брэнд дизайнер · 6 жил туршлагатай','e.g. Brand designer · 6 years of experience')}/><small className="sp-count">{draft.headline.length}/150</small></label>
-     <label>{t('Миний тухай','About')}<textarea rows={7} maxLength={3000} value={draft.bio} onChange={e=>setDraft(v=>({...v,bio:e.target.value}))} placeholder={t('Юу хийдэг, хэнтэй ажилладаг, ямар үр дүн гаргадаг вэ?','What you do, who you work with and the results you deliver.')}/>
-      <small className={'sp-count'+(draft.bio.trim().length>=BIO_MIN?' ok':'')}>{draft.bio.trim().length<BIO_MIN?t('Дор хаяж '+BIO_MIN+' тэмдэгт · '+draft.bio.trim().length+'/'+BIO_MIN,'At least '+BIO_MIN+' characters · '+draft.bio.trim().length+'/'+BIO_MIN):draft.bio.length+'/3000'}</small></label>
+     <label>{t('Нэр','Display name')}<input disabled={busy} required minLength={2} maxLength={80} value={draft.display_name} onChange={e=>setDraft(v=>({...v,display_name:e.target.value}))} placeholder={t('Жишээ: Б. Анударь','e.g. Anudari B.')}/></label>
+     <label>{t('Мэргэжил','Headline')}<input disabled={busy} maxLength={150} value={draft.headline} onChange={e=>setDraft(v=>({...v,headline:e.target.value}))} placeholder={t('Жишээ: Брэнд дизайнер · 6 жил туршлагатай','e.g. Brand designer · 6 years of experience')}/><small className="sp-count">{draft.headline.length}/150</small></label>
+     <label>{t('Миний тухай','About')}<textarea disabled={busy} rows={5} maxLength={3000} value={draft.bio} onChange={e=>setDraft(v=>({...v,bio:e.target.value}))} placeholder={t('Юу хийдэг, хэнтэй ажилладаг, ямар үр дүн гаргадаг вэ?','What you do, who you work with and the results you deliver.')}/>
+      <small className={'sp-count'+(draft.bio.trim().length>=BIO_MIN?' ok':'')}>{draft.bio.trim().length<BIO_MIN?t('Зөвлөмж · '+BIO_MIN+' ба түүнээс дээш тэмдэгт','Suggested · '+BIO_MIN+' or more characters'):draft.bio.length+'/3000'}</small></label>
     </form>}
     {tab==='photos'&&<div className="sp-card v42-photo-panel hustle-v5 sp-v5">
-     <header><h2 id="sp-editor-title">{t('Зураг ба нүүр зураг','Photo & cover')}</h2><p>{t('Нүүр тань тод харагдах зураг сонгоорой. Нүүр зурагтаа ажлынхаа онцлогийг харуулж болно.','A clear face builds trust. A cover that shows your kind of work helps buyers decide.')}</p></header>
+     <header><h2 id="sp-editor-title">{t('Зураг ба нүүр зураг','Photo & cover')}</h2><p>{t('Зургаа сонгоход хадгалагдана. Та дараа нь ч зураг нэмж болно.','Photos save when selected. You can also add them later.')}</p></header>
      <div className="sp-subsection"><div className="v42-avatar-panel"><SellerAvatarEditor sellerId={uid} name={profile.display_name} avatarPath={profile.avatar_path} en={en} onChange={path=>updatePhotos(path,'avatar')}/></div></div>
-     <div className="sp-subsection"><h3>{t('Нүүр зураг','Cover photo')}</h3><SellerCoverEditor sellerId={uid} coverPath={profile.cover_path} focusY={profile.cover_focus_y} en={en} onChange={(path,y)=>updatePhotos(path,'cover',y)}/></div>
+     <div className="sp-subsection"><SellerCoverEditor sellerId={uid} coverPath={profile.cover_path} focusY={profile.cover_focus_y} en={en} onChange={(path,y)=>updatePhotos(path,'cover',y)}/></div>
     </div>}
     {tab==='skills'&&<div className="sp-card">
      <header><h2 id="sp-editor-title">{t('Ур чадвар ба програм','Skills & tools')}</h2><p>{t('Ур чадвараа бичээд Enter эсвэл таслал дарж нэмээрэй.','Buyers find you by these words. Press Enter or a comma to add one.')}</p></header>
      <div className="sp-skills">
-      <ul>{skills.map(s=><li key={s}>{s}<button type="button" onClick={()=>removeSkill(s)} aria-label={t('Хасах: ','Remove: ')+s}><X size={13}/></button></li>)}</ul>
-      <input value={skillInput} maxLength={80} aria-label={t('Ур чадвар нэмэх','Add a skill')} placeholder={skills.length?t('Дахин нэмэх…','Add another…'):t('Жишээ: Брэндинг, Figma, SMM','e.g. Branding, Figma, SMM')}
+      <ul>{skills.map(s=><li key={s}>{s}<button type="button" disabled={busy} onClick={()=>removeSkill(s)} aria-label={t('Хасах: ','Remove: ')+s}><X size={13}/></button></li>)}</ul>
+      <input value={skillInput} disabled={busy} maxLength={80} aria-label={t('Ур чадвар нэмэх','Add a skill')} placeholder={skills.length?t('Дахин нэмэх…','Add another…'):t('Жишээ: Брэндинг, Figma, SMM','e.g. Branding, Figma, SMM')}
        onChange={e=>{const v=e.target.value;if(v.includes(','))addSkill(v);else setSkillInput(v)}}
        onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();addSkill(skillInput)}else if(e.key==='Backspace'&&!skillInput&&skills.length)removeSkill(skills[skills.length-1])}}
        onBlur={()=>addSkill(skillInput)}/>
      </div>
      <small className={'sp-count'+(skills.length>=3?' ok':'')}>{t(skills.length+' ур чадвар · хийж чаддаг ажлаа тодорхой бичээрэй','{n} skills · 3 or more helps you show up in search').replace('{n}',String(skills.length))}</small>
-     <div className="sp-subsection v42-owner-tools"><h3>{t('Ашигладаг програм','Tools you use')}</h3><div className={'hustle-v5 sp-v5 sp-tools'+(dark?' night':'')}><SellerToolEditor sellerId={uid} en={en} onUpdated={()=>{void loadTools(uid)}}/></div></div>
+     <details className="sp-subsection sp-tools-disclosure v42-owner-tools">
+      <summary>{t('Ашигладаг програм','Tools you use')} <small>{t('Сонголтоор','Optional')}</small></summary>
+      <div className={'hustle-v5 sp-v5 sp-tools'+(dark?' night':'')}><SellerToolEditor sellerId={uid} en={en} onUpdated={()=>{void loadTools(uid)}}/></div>
+     </details>
     </div>}
     {tab==='projects'&&<section className="sp-card v42-project-editor">
      <header><h2 id="sp-editor-title">{t('Бүтээлүүд','Portfolio')}</h2><p>{t('Хамгийн сайн 3–6 ажлаа оруулаарай. Эхний зураг захиалагчид хамгийн түрүүнд харагдана.','Add your best 3–6 pieces. The first one is what buyers see first.')}</p></header>
@@ -359,38 +386,48 @@ export default function SellerProfileManager(){
     {tab==='services'&&<div className="sp-card">
      <header><h2 id="sp-editor-title">{t('Үйлчилгээ','Services')}</h2><p>{t('Нийтлэгдсэн үйлчилгээ профайл дээр харагдана. Шинэ үйлчилгээ админ хянасны дараа нийтлэгдэнэ.','Published services appear on your profile. New services go live after an admin review.')}</p></header>
      {services.length?<ul className="sp-services">{services.map(s=><li key={s.id}><b>{en&&s.title_en?s.title_en:s.title}</b><span className={'sp-status st-'+s.status}>{s.status==='published'?t('Нийтлэгдсэн','Published'):s.status==='pending'?t('Хянагдаж байна','In review'):s.status==='rejected'?t('Засвар шаардлагатай','Needs changes'):s.status==='draft'?t('Ноорог','Draft'):t('Түр зогссон','Paused')}</span></li>)}</ul>:<p className="sp-empty">{t('Одоогоор үйлчилгээ алга.','No services yet.')}</p>}
-     <Link className="v42-save" href="/seller-studio/?tab=seller"><Plus size={16} aria-hidden="true"/>{t('Үйлчилгээ нэмэх, засах','Add or edit services')}</Link>
+     <Link className="sp-ghost-btn sp-service-link" href="/seller-studio/?tab=seller"><Plus size={16} aria-hidden="true"/>{t('Үйлчилгээ нэмэх, засах','Add or edit services')}</Link>
     </div>}
     {tab==='publish'&&<form className="sp-card v42-edit-fields" onSubmit={e=>{void saveProfile(e)}}>
      <header><h2 id="sp-editor-title">{t('Хаяг ба нийтлэх','URL & visibility')}</h2><p>{t('Профайлын холбоосоо бусадтай хуваалцах, намтартаа оруулахад ашиглаарай.','Pick your address once and share it on social media or your CV.')}</p></header>
-     <label>{t('Профайлын хаяг','Profile URL')}<span className="sp-slug"><span>linkup.mn/p/</span><input value={draft.slug} onChange={e=>setDraft(v=>({...v,slug:normalizeSellerSlug(e.target.value)}))} minLength={3} maxLength={60} required={draft.public_profile} pattern="[a-z0-9][a-z0-9-]{2,59}" aria-invalid={!slugOk}/></span>
+     <label>{t('Профайлын хаяг','Profile URL')}<span className="sp-slug"><span>linkup.mn/p/</span><input disabled={busy} value={draft.slug} onChange={e=>setDraft(v=>({...v,slug:normalizeSellerSlug(e.target.value)}))} minLength={3} maxLength={60} required={draft.public_profile} pattern="[a-z0-9][a-z0-9\-]{2,59}" aria-invalid={!slugOk}/></span>
       <small className={draft.slug===''?'sp-count':validSlug?'sp-count ok':'sp-count bad'}>{draft.slug===''?t('Заавал биш — нийтэд нээхэд л хэрэгтэй','Optional — only needed to go public'):validSlug?t('Зөв хаяг','Looks good'):t('3-60 тэмдэгт: жижиг латин үсэг, тоо, зураас','3–60 characters: lowercase letters, numbers, dashes')}</small></label>
-     <label className="sp-switch"><input type="checkbox" role="switch" checked={draft.public_profile} onChange={e=>setDraft(v=>({...v,public_profile:e.target.checked}))}/><span className="sp-switch-ui" aria-hidden="true"/><span><b>{t('Профайлаа нийтэд нээх','Make my profile public')}</b><small>{t('Унтраасан үед зөвхөн та харна.','When off, only you can see it.')}</small></span></label>
+     <label className="sp-switch"><input type="checkbox" role="switch" disabled={busy} checked={draft.public_profile} onChange={e=>setDraft(v=>({...v,public_profile:e.target.checked}))}/><span className="sp-switch-ui" aria-hidden="true"/><span><b>{t('Профайлаа нийтэд нээх','Make my profile public')}</b><small>{t('Унтраасан үед зөвхөн та харна.','When off, only you can see it.')}</small></span></label>
     </form>}
     {error&&<p className="v42-error sp-alert" role="alert">{error}</p>}
-    {message&&!dirty&&<p className="v42-success sp-alert" role="status"><CheckCircle2 size={16}/>{message}</p>}
-   </section>}
-   <section className="sp-preview" aria-label={t('Захиалагчийн харах профайл','Buyer-facing profile preview')}>
+    {message&&<p className="v42-success sp-alert" role="status"><CheckCircle2 size={16} aria-hidden="true"/>{message}</p>}
+    <footer className="sp-step-footer">
+     {dirty&&<div className="sp-draft-status">
+      <span>{t('Хадгалаагүй өөрчлөлт байна','You have unsaved changes')}</span>
+      <button type="button" className="sp-ghost-btn" disabled={busy} onClick={()=>{setDraft(saved);setSkillInput('');setError('');setMessage('')}}><RotateCcw size={15} aria-hidden="true"/>{t('Буцаах','Discard')}</button>
+     </div>}
+     <div className="sp-step-actions">
+      {previousStep&&<button type="button" className="sp-ghost-btn" disabled={busy} onClick={()=>go(previousStep[0])}><ArrowLeft size={16} aria-hidden="true"/>{t('Өмнөх','Back')}</button>}
+      <div className="sp-step-forward">
+       {nextStep&&<small>{t('Дараагийн хэсэг','Next section')} · {t(nextStep[1],nextStep[2])}</small>}
+       {nextStep||dirty?<button type="button" className="v42-save" disabled={busy} onClick={()=>{void continueProfile()}}>
+        {busy?t('Хадгалж байна…','Saving…'):nextStep?willSaveOnContinue?t('Хадгалаад үргэлжлүүлэх','Save and continue'):t('Үргэлжлүүлэх','Continue'):draft.public_profile&&!isPublic?t('Профайл нийтлэх','Publish profile'):t('Өөрчлөлт хадгалах','Save changes')}
+        {busy?<LoaderCircle className="spin" size={16} aria-hidden="true"/>:nextStep?<ArrowRight size={16} aria-hidden="true"/>:<Save size={16} aria-hidden="true"/>}
+       </button>:<Link className="v42-save" href="/seller-studio/">{t('Самбар руу буцах','Back to dashboard')}<ArrowRight size={16} aria-hidden="true"/></Link>}
+      </div>
+     </div>
+    </footer>
+   </section>
+   {buyerView&&<section className="sp-preview" aria-label={t('Захиалагчийн харах профайл','Buyer-facing profile preview')}>
     <div className="sp-preview-bar">
-     <div><span className="v42-live-dot" aria-hidden="true"/><strong>{t('Шууд харагдац','Live preview')}</strong><small>{dirty?t('Хадгалаагүй өөрчлөлт харагдаж байна','Showing unsaved changes'):t('Захиалагчид харагдах загвар','Exactly what buyers see')}</small></div>
+     <div><span className="v42-live-dot" aria-hidden="true"/><strong>{t('Урьдчилсан харагдац','Profile preview')}</strong><small>{dirty?t('Хадгалаагүй өөрчлөлт харагдаж байна','Showing unsaved changes'):t('Захиалагчид харагдах загвар','Buyer-facing layout')}</small></div>
      <div className="sp-preview-tools">
       <div className="sp-device" role="group" aria-label={t('Төхөөрөмж','Device')}>
        <button type="button" aria-pressed={device==='desktop'} onClick={()=>setDevice('desktop')} aria-label={t('Компьютер','Desktop')}><Monitor size={15}/></button>
        <button type="button" aria-pressed={device==='mobile'} onClick={()=>setDevice('mobile')} aria-label={t('Утас','Phone')}><Smartphone size={15}/></button>
       </div>
-      <button type="button" className="sp-full" aria-pressed={buyerView} onClick={()=>setBuyerView(v=>!v)}>{buyerView?<Minimize2 size={15} aria-hidden="true"/>:<Maximize2 size={15} aria-hidden="true"/>}<span>{buyerView?t('Засах горим','Back to editing'):t('Томоор харах','Expand')}</span></button>
      </div>
     </div>
     <div className="sp-stage">
      <SellerProfilePreview draft={draft} avatarUrl={photoUrls.avatar} coverUrl={photoUrls.cover} coverFocusY={Math.max(0,Math.min(100,Number(profile.cover_focus_y??50)))} items={items} tools={tools} services={services} en={en} device={device} onJump={go}/>
     </div>
-   </section>
+   </section>}
   </div>
-  {dirty&&<div className="sp-savebar" role="region" aria-label={t('Хадгалаагүй өөрчлөлт','Unsaved changes')}>
-   <span><i aria-hidden="true"/>{t('Хадгалаагүй өөрчлөлт байна','You have unsaved changes')}</span>
-   <div><button type="button" className="sp-ghost-btn" disabled={busy} onClick={()=>{setDraft(saved);setError('')}}><RotateCcw size={15} aria-hidden="true"/>{t('Өөрчлөлтийг буцаах','Discard')}</button>
-    <button type="button" className="v42-save" disabled={busy} onClick={()=>{void saveProfile()}}>{busy?<LoaderCircle className="spin" size={16}/>:<Save size={16} aria-hidden="true"/>}{busy?t('Хадгалж байна…','Saving…'):t('Хадгалах','Save changes')}</button></div>
-  </div>}
   {leaveTo&&<div className="sp-leave-backdrop" onPointerDown={e=>{if(e.target===e.currentTarget)setLeaveTo(null)}}>
    <div ref={leaveRef} className="sp-leave" role="alertdialog" aria-modal="true" aria-labelledby="sp-leave-title" aria-describedby="sp-leave-text"
     onKeyDown={e=>{if(e.key==='Escape')setLeaveTo(null);trapTab(e,leaveRef.current)}}>

@@ -1,6 +1,6 @@
 'use client';
-import {useState,type FormEvent} from 'react';
-import {Check,Clock3,RotateCcw} from 'lucide-react';
+import {useState} from 'react';
+import {ArrowLeft,Check,Clock3,RotateCcw} from 'lucide-react';
 import type {Listing} from '../lib/marketplace/types';
 import {serviceTypeById} from '../lib/marketplace/taxonomy';
 import '../app/service-packages.css';
@@ -21,34 +21,88 @@ export function initialPackages(service:Listing|null,stored:ServicePackage[],en=
 export function tierLabel(tier:string,en:boolean):string{
  return en?tier:({Basic:'Суурь',Standard:'Стандарт',Premium:'Дээд'} as Record<string,string>)[tier]||tier;
 }
+function checkPackage(p:ServicePackage,en:boolean):string|null{
+ const t=(mn:string,english:string)=>en?english:mn;
+ if(!Number.isInteger(p.price)||p.price<1000||p.price>100000000)return t(tierLabel(p.tier,false)+': үнэ 1,000–100,000,000 ₮-ийн хооронд бүхэл тоо байна.',p.tier+': price must be 1,000–100,000,000 ₮.');
+ if(!Number.isInteger(p.delivery_days)||p.delivery_days<1||p.delivery_days>365)return t(tierLabel(p.tier,false)+': гүйцэтгэх хугацаа 1–365 хоног байна.',p.tier+': delivery must be 1–365 days.');
+ if(!p.includes.length||p.includes.length>12||p.includes.some(x=>!x.trim()||x.length>120))return t(tierLabel(p.tier,false)+': хийх 1–12 ажлыг бичнэ үү. Тус бүр 120 тэмдэгтээс ихгүй байна.',p.tier+': enter 1–12 included items (max 120 characters each).');
+ if(!Number.isInteger(p.revisions)||p.revisions<0||p.revisions>20)return t(tierLabel(p.tier,false)+': засварын тоо 0–20 байна.',p.tier+': revisions must be 0–20.');
+ if(p.name.trim().length<2||p.name.trim().length>60||p.summary.length>300)return t(tierLabel(p.tier,false)+': нэр 2–60, тайлбар 300 хүртэл тэмдэгттэй байна.',p.tier+': package name or summary is invalid.');
+ return null;
+}
 export function checkPackages(items:ServicePackage[],en=true):string|null{
  const t=(mn:string,english:string)=>en?english:mn;
  if(items.length!==3||tiers.some(t=>items.filter(p=>p.tier===t).length!==1))return t('Суурь, Стандарт, Дээд гурван багцыг бүгдийг бөглөнө үү.','All three packages are required.');
- for(const p of items){
-  if(p.name.trim().length<2||p.name.trim().length>60||p.summary.length>300)return t(tierLabel(p.tier,false)+': нэр 2–60, тайлбар 300 хүртэл тэмдэгттэй байна.',p.tier+': package name or summary is invalid.');
-  if(!Number.isInteger(p.price)||p.price<1000||p.price>100000000)return t(tierLabel(p.tier,false)+': үнэ 1,000–100,000,000 ₮-ийн хооронд бүхэл тоо байна.',p.tier+': price must be 1,000–100,000,000 ₮.');
-  if(!Number.isInteger(p.delivery_days)||p.delivery_days<1||p.delivery_days>365)return t(tierLabel(p.tier,false)+': гүйцэтгэх хугацаа 1–365 хоног байна.',p.tier+': delivery must be 1–365 days.');
-  if(!Number.isInteger(p.revisions)||p.revisions<0||p.revisions>20)return t(tierLabel(p.tier,false)+': засварын тоо 0–20 байна.',p.tier+': revisions must be 0–20.');
-  if(!p.includes.length||p.includes.length>12||p.includes.some(x=>!x.trim()||x.length>120))return t(tierLabel(p.tier,false)+': хийх 1–12 ажлыг бичнэ үү. Тус бүр 120 тэмдэгтээс ихгүй байна.',p.tier+': enter 1–12 included items (max 120 characters each).');
- }
+ for(const p of items){const error=checkPackage(p,en);if(error)return error}
  if(items[0].price>items[1].price||items[1].price>items[2].price)return t('Суурь багцын үнэ Стандартаас, Стандартын үнэ Дээд багцаас их байж болохгүй.','Prices must follow Basic ≤ Standard ≤ Premium.');
  return null;
 }
 const money=(n:number)=>new Intl.NumberFormat('mn-MN').format(n)+' ₮';
 
-export function PackageEditor({en,service,stored,onSave,disabled,serviceType}:{en:boolean;service:Listing|null;stored:ServicePackage[];onSave:(p:ServicePackage[])=>void;disabled:boolean;serviceType?:string|null}){
- const [items,setItems]=useState<ServicePackage[]>(()=>initialPackages(service,stored,en));
+export function PackageEditor({en,service,stored,onSave,onBack,disabled,serviceType}:{en:boolean;service:Listing|null;stored:ServicePackage[];onSave:(p:ServicePackage[],status:'draft'|'pending')=>void;onBack:()=>void;disabled:boolean;serviceType?:string|null}){
+ const [items,setItems]=useState(()=>initialPackages(service,stored,en).map(p=>({...p,deliverables:p.includes.join('\n')})));
+ const [tier,setTier]=useState<Tier>('Basic');
  const [message,setMessage]=useState('');
  const t=(mn:string,eng:string)=>en?eng:mn;
  // V52: labels follow how the service is sold (fixed, hourly, monthly, session or custom quote).
  const kind=serviceTypeById(serviceType||(service as {service_type?:string|null}|null)?.service_type);
  const quote=kind.id==='custom',unit=kind.id!=='fixed'&&!quote?(en?kind.priceEn:kind.priceMn):'';
  const priceLabel=quote?t('Жишиг эхлэх үнэ (₮)','Example starting price (MNT)'):unit?t('Үнэ (₮) ','Price (MNT) ')+unit:t('Үнэ (₮)','Price (MNT)');
- const set=(tier:Tier,patch:Partial<ServicePackage>)=>setItems(prev=>prev.map(p=>p.tier===tier?{...p,...patch}:p));
- function submit(e:FormEvent){e.preventDefault();const err=checkPackages(items,en);if(err){setMessage(err);return;}setMessage('');onSave(items)}
- return <section className="package-editor"><div className="package-editor-header"><div><h3>{quote?t('Жишиг гурван багц','Three example packages'):t('Үйлчилгээний гурван багц','Your three service packages')}</h3><p>{quote?t('Захиалагч үнийн санал хүснэ. Багцуудад жишиг ажлын хүрээ, эхлэх үнээ бичиж, эцсийн үнийг чатаар тохиролцоорой.','Clients request a quote and you agree the final price in chat. Packages show example scope and starting prices.'):unit?t('Үнэ нь ','Prices are shown ')+unit+t(' гэж харагдана. Багц бүрт хугацаа, багтах зүйлсийг тодорхой бичнэ үү.',' . Describe the time and what is included in every tier.'):t('Багц бүрийн үнэ, гүйцэтгэх хугацаа, засвар, багтах ажлыг тодорхой оруулна уу.','Set a price, delivery time, revisions and clearly defined deliverables for every tier.')}</p></div></div>
- <div className="package-editor-grid">{items.map((p,i)=><div className={'package-edit-card tier-'+p.tier.toLowerCase()} key={p.tier}><div className="package-tier-label">{tierLabel(p.tier,en)}{i===1&&<span>{t('Түгээмэл','Popular')}</span>}</div><label>{t('Багцын нэр','Package title')}<input value={p.name} maxLength={60} required onChange={e=>set(p.tier,{name:e.target.value})}/></label><label>{t('Товч тайлбар','Short description')}<textarea value={p.summary} maxLength={300} rows={2} onChange={e=>set(p.tier,{summary:e.target.value})}/></label><label>{priceLabel}<input type="number" min={1000} max={100000000} required value={p.price||''} onChange={e=>set(p.tier,{price:Number(e.target.value)})}/></label><div className="package-mini-fields"><label>{t('Хоног','Days')}<input type="number" min={1} max={365} value={p.delivery_days} onChange={e=>set(p.tier,{delivery_days:Number(e.target.value)})}/></label><label>{t('Засварын тоо','Revisions')}<input type="number" min={0} max={20} value={p.revisions} onChange={e=>set(p.tier,{revisions:Number(e.target.value)})}/></label></div><label>{t('Багтсан ажлууд (мөр бүрт нэг)','Included deliverables (one per line)')}<textarea rows={6} value={p.includes.join('\n')} onChange={e=>set(p.tier,{includes:e.target.value.split('\n').map(v=>v.trim()).filter(Boolean)})} placeholder={t('Эх файл\n2 хувилбар\nБэлэн файл','Source file\n2 concepts\nFinal export')}/></label><small>{p.includes.length}/12 {t('ажил','items')}</small></div>)}</div>
- {message&&<p className="package-error" role="alert">{message}</p>}<button type="button" className="button" disabled={disabled} onClick={submit}>{t('Үйлчилгээ болон 3 багцыг хадгалах','Save service and all three packages')}</button></section>;
+ const packages=items.map(({deliverables,...p})=>({...p,name:p.name.trim()||p.tier,includes:deliverables.split('\n').map(v=>v.trim()).filter(Boolean)}));
+ const p=items[tiers.indexOf(tier)];
+ const set=(patch:Partial<typeof p>)=>{
+  setItems(prev=>prev.map(item=>item.tier===tier?{...item,...patch}:item));
+  setMessage('');
+ };
+ function submit(status:'draft'|'pending'){
+  const error=checkPackages(packages,en);
+  if(error){
+   const invalid=packages.find(item=>checkPackage(item,en));
+   if(invalid)setTier(invalid.tier);
+   setMessage(error);
+   return;
+  }
+  setMessage('');
+  onSave(packages,status);
+ }
+ return <section className="package-editor" aria-label={t('Үйлчилгээний багцууд','Service packages')}>
+  <div className="package-editor-header">
+   <h3>{quote?t('Жишиг багцууд','Example packages'):t('Үйлчилгээний багцууд','Service packages')}</h3>
+   <p>{quote?t('Багц бүрт эхлэх үнэ, ажлын хүрээг бичнэ. Эцсийн үнийг захиалагчтай тохирно.','Give each package a starting price and scope. Agree the final price with your client.'):t('Гурван багцаа нэг нэгээр нь тохируулна уу.','Set up your three packages one at a time.')}</p>
+  </div>
+  <div className="package-editor-switch" role="group" aria-label={t('Засах багц','Package to edit')}>
+   {packages.map(item=>{
+    const ready=!checkPackage(item,en);
+    return <button key={item.tier} type="button" aria-pressed={tier===item.tier} disabled={disabled} onClick={()=>{setTier(item.tier);setMessage('')}}>
+     <strong>{tierLabel(item.tier,en)}</strong><small>{ready?t('Бэлэн','Ready'):t('Бөглөх','To fill')}</small>
+    </button>;
+   })}
+  </div>
+  <fieldset className="package-edit-card" key={tier} disabled={disabled}>
+   <legend className="sr-only">{tierLabel(tier,en)}</legend>
+   <div className="package-mini-fields">
+    <label>{priceLabel}<input type="number" min={1000} max={100000000} required value={p.price||''} onChange={e=>set({price:Number(e.target.value)})}/></label>
+    <label>{t('Хугацаа (хоног)','Delivery (days)')}<input type="number" min={1} max={365} required value={p.delivery_days||''} onChange={e=>set({delivery_days:Number(e.target.value)})}/></label>
+    <label>{t('Засварын тоо','Revisions')}<input type="number" min={0} max={20} value={p.revisions} onChange={e=>set({revisions:Number(e.target.value)})}/></label>
+   </div>
+   <label>{t('Багтах ажлууд','What’s included')}<textarea rows={3} required value={p.deliverables} onChange={e=>set({deliverables:e.target.value})} placeholder={t('Жишээ нь: 2 логоны хувилбар\nХэвлэхэд бэлэн файл','e.g. 2 logo concepts\nPrint-ready file')}/><small>{t('Ажил бүрийг тусдаа мөрөнд бичээрэй.','Put each deliverable on its own line.')}</small></label>
+   <details className="v71-optional">
+    <summary>{t('Багцын нэр ба тайлбар','Package name and description')} <small>{t('Алгасаж болно','Optional · can skip')}</small></summary>
+    <div className="package-mini-fields">
+     <label>{t('Багцын нэр','Package title')}<input value={p.name} maxLength={60} onChange={e=>set({name:e.target.value})}/></label>
+     <label>{t('Товч тайлбар','Short description')}<textarea value={p.summary} maxLength={300} rows={2} onChange={e=>set({summary:e.target.value})}/></label>
+    </div>
+   </details>
+  </fieldset>
+  {message&&<p className="package-error" role="alert">{message}</p>}
+  <div className="v50-step-nav package-editor-actions">
+   <button type="button" className="button outline small" disabled={disabled} onClick={onBack}><ArrowLeft size={15} aria-hidden="true"/>{t('Өмнөх','Back')}</button>
+   <div>
+    <button type="button" className="button outline small" disabled={disabled} onClick={()=>submit('draft')}>{t('Ноорог хадгалах','Save draft')}</button>
+    <button type="button" className="button small" disabled={disabled} onClick={()=>submit('pending')}>{t('Хянуулахаар илгээх','Submit for review')}</button>
+   </div>
+  </div>
+ </section>;
 }
 
 export function PackagePicker({en,items,chosen,onChange}:{en:boolean;items:ServicePackage[];chosen:Tier;onChange:(tier:Tier)=>void}){
