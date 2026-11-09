@@ -5,7 +5,7 @@ import {projectStatusLabel} from '../lib/marketplace/ui-labels';
 import {tierLabel} from './service-packages';
 import {useEffect,useMemo,useRef,useState,type FormEvent} from 'react';
 import Link from 'next/link';
-import {ArrowLeft,ArrowRight,BriefcaseBusiness,CheckCircle2,Clock3,FileText,LoaderCircle,RefreshCw,Send,ShieldCheck,Sparkles,UserRound,Users,XCircle} from 'lucide-react';
+import {ArrowLeft,ArrowRight,ArrowUpRight,BriefcaseBusiness,CheckCircle2,Clock3,FileText,LoaderCircle,RefreshCw,Send,ShieldCheck,Sparkles,UserRound,Users,XCircle} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
 import {categoryLabel,CATEGORIES,normalizeCategory} from '../lib/marketplace/taxonomy';
 import {projectDraftKey,proposalDraftKey,signInWithReturn} from '../lib/marketplace/ux-flows';
@@ -229,11 +229,13 @@ export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
  const sortedOffers=(offers:Proposal[])=>[...offers].sort((a,b)=>offerSort==='price'?a.quoted_price-b.quoted_price:offerSort==='delivery'?a.delivery_days-b.delivery_days:b.created_at.localeCompare(a.created_at));
  return <div className={'v86-page'+(dark?' night':'')}><SiteHeader en={en} dark={dark} onToggleTheme={toggleTheme} onToggleLanguage={()=>{const next=!en;setEn(next);try{localStorage.setItem('hustle-language',next?'en':'mn')}catch{}}} active="solutions" session={siteSession}/><main className="project-marketplace">
   <div className="project-layout">
-   <header className="project-header"><div><Link href={mode==='seller'?'/seller-studio/':'/buyer/'} className="project-back"><ArrowLeft size={16}/>{t('Самбар руу буцах','Back to dashboard')}</Link>
-     <span className="project-eyebrow"><Sparkles size={14}/> {t('LINKUP · Төслийн хүсэлт','LINKUP / PROJECT MATCHING · BETA')}</span>
-     <h1>{mode==='seller'?t('Шинэ төслийн саналууд','Project opportunities'):t('Хэрэгцээгээ бичээд мэргэжилтнээ олоорой.','Describe it. Find the right freelancer.')}</h1>
-     <p>{mode==='seller'?t('Таны мэргэжил, нийтлэгдсэн үйлчилгээтэй тохирох төслүүдийг эндээс хүлээн авна.','Receive projects that match your published services and availability.'):t('Мэргэжилтнийг өөрөө сонгох эсвэл асуудлаа илгээж тохирох мэргэжилтнүүдээс санал авах хоёр боломжтой.','Browse and hire directly, or send your challenge to matching specialists for proposals.')}</p>
-    </div><Link href="/explore/" className="project-outline"><BriefcaseBusiness size={17}/>{t('Үйлчилгээ үзэх','Browse services')}</Link>
+   <header className={mode==='buyer'?'project-header project-header-buyer':'project-header'}><div><Link href={mode==='seller'?'/seller-studio/':'/buyer/'} className="project-back"><ArrowLeft size={16} aria-hidden="true"/>{t('Самбар руу буцах','Back to dashboard')}</Link>
+     {mode==='seller'&&<span className="project-eyebrow"><Sparkles size={14} aria-hidden="true"/> {t('LINKUP · Төслийн хүсэлт','LINKUP / PROJECT MATCHING · BETA')}</span>}
+     <h1>{mode==='seller'?t('Шинэ төслийн саналууд','Project opportunities'):t('Төслийн хүсэлт','Project requests')}</h1>
+     <p>{mode==='seller'?t('Таны мэргэжил, нийтлэгдсэн үйлчилгээтэй тохирох төслүүдийг эндээс хүлээн авна.','Receive projects that match your published services and availability.'):t('Хийлгэх ажлаа бичээд тохирох мэргэжилтнүүдээс санал аваарай.','Describe your project to get proposals from matching freelancers.')}</p>
+    </div>{mode==='buyer'
+     ?<Link href="/explore/" className="project-browse-link">{t('Үйлчилгээ үзэх','Browse services')}<ArrowUpRight size={16} aria-hidden="true"/></Link>
+     :<Link href="/explore/" className="project-outline"><BriefcaseBusiness size={17} aria-hidden="true"/>{t('Үйлчилгээ үзэх','Browse services')}</Link>}
    </header>
    {error&&<div className="project-alert" role="alert"><span>{error}</span><button type="button" onClick={()=>setError('')} aria-label={t('Алдааны мэдэгдэл хаах','Dismiss error')}><XCircle size={17}/></button></div>}
    {notice&&<div className="project-ok" role="status"><CheckCircle2 size={18}/><span>{notice}</span><button type="button" onClick={()=>setNotice('')} aria-label={t('Мэдэгдэл хаах','Dismiss message')}><XCircle size={17}/></button></div>}
