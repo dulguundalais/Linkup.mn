@@ -9,6 +9,7 @@ import type {Profile} from '../lib/marketplace/types';
 import SellerAvatarEditor from './seller-avatar-editor';
 import SellerCoverEditor from './seller-cover-editor';
 import SellerToolEditor from './seller-tool-editor';
+import SellerShare from './seller-share';
 import SellerProfilePreview,{splitSkills,type PreviewSection,type PreviewService} from './seller-profile-preview';
 import SiteHeader,{Breadcrumbs,useSiteAccount} from './site-header';
 import SellerStartSteps from './seller-start-steps';
@@ -303,6 +304,7 @@ export default function SellerProfileManager(){
    <div className="sp-title">
     <div><h1>{t('Миний профайл','My profile')}</h1>{statusChip}</div>
     <div className="sp-title-actions">
+     {isPublic&&<SellerShare key={url} path={url} title={profile.display_name} en={en} label={t('Профайл хуваалцах','Share profile')}/>}
      {isPublic&&<a className="sp-link" target="_blank" rel="noopener noreferrer" href={url}>{t('Нийтийн хуудсыг нээх','Open public page')}<ArrowUpRight size={15} aria-hidden="true"/></a>}
     </div>
    </div>
