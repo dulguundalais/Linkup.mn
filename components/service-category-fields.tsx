@@ -1,27 +1,21 @@
 'use client';
-import {useEffect,useState} from 'react';
+import {useState} from 'react';
 import {Check,ShieldCheck,X} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
-import {CATEGORIES,SERVICE_TYPES,categoryById,normalizeCategory,legacyCategory,type ServiceType} from '../lib/marketplace/taxonomy';
+import {CATEGORIES,SERVICE_TYPES,categoryById,normalizeCategory,legacyCategory,serviceTypeById,type ServiceType} from '../lib/marketplace/taxonomy';
 import '../app/v50-categories.css';
 import '../app/v71-service-editor.css';
 
-type Editing={category?:string;subcategory?:string|null;service_type?:string|null;tags?:string[]|null}|null;
+type Editing={category?:string;subcategory?:string|null}|null;
 
-/* V50: sellers choose from the fixed taxonomy (main category → subcategory),
-   pick how the service is sold, add a few tags, and can suggest a missing
-   category for admin review. Suggestions never become public on their own. */
-export default function ServiceCategoryFields({en,uid,editing,onError,onNotice,onTypeChange}:{
- en:boolean;uid:string;editing:Editing;onError:(e:unknown)=>void;onNotice:(m:string)=>void;onTypeChange?:(type:ServiceType)=>void
+export default function ServiceCategoryFields({en,uid,editing,onError,onNotice}:{
+ en:boolean;uid:string;editing:Editing;onError:(e:unknown)=>void;onNotice:(m:string)=>void
 }){
  const t=(mn:string,eng:string)=>en?eng:mn;
  const legacy=editing?.category?legacyCategory(editing.category):undefined;
  const startCategory=normalizeCategory(editing?.category)==='all'?'':normalizeCategory(editing?.category) as string;
  const [category,setCategory]=useState<string>(startCategory);
  const [subcategory,setSubcategory]=useState<string>(editing?.subcategory||legacy?.subcategory||'');
- const [type,setType]=useState<ServiceType>((SERVICE_TYPES.find(x=>x.id===editing?.service_type)?.id)||'fixed');
- // V52: the package editor relabels its fields for the chosen pricing model.
- useEffect(()=>{onTypeChange?.(type)},[type]);
  const [suggesting,setSuggesting]=useState(false);
  const [suggestion,setSuggestion]=useState({name:'',nameEn:'',note:''});
  const [sending,setSending]=useState(false);
@@ -46,12 +40,12 @@ export default function ServiceCategoryFields({en,uid,editing,onError,onNotice,o
      {CATEGORIES.map(c=><option key={c.id} value={c.id}>{en?c.en:c.mn}</option>)}
     </select>
    </label>
-   <label>{t('Дэд ангилал','Subcategory')}
-    <select name="subcategory" required value={subcategory} onChange={e=>setSubcategory(e.target.value)} disabled={!current}>
-     <option value="" disabled>{current?t('Сонгох','Choose'):t('Эхлээд үндсэн ангиллаа сонгоно уу','Choose a main category first')}</option>
-     {current?.subcategories.map(s=><option key={s.id} value={s.id}>{en?s.en:s.mn}</option>)}
+   {current&&<label>{t('Дэд ангилал (сонголтоор)','Subcategory (optional)')}
+    <select name="subcategory" value={subcategory} onChange={e=>setSubcategory(e.target.value)}>
+     <option value="">{t('Алгасах','Skip subcategory')}</option>
+     {current.subcategories.map(s=><option key={s.id} value={s.id}>{en?s.en:s.mn}</option>)}
     </select>
-   </label>
+   </label>}
   </div>
   {current?.regulated&&<p className="v50-regulated" role="note"><ShieldCheck size={17} aria-hidden="true"/>{t('Мэргэжлийн үнэмлэх, зөвшөөрлийг тань админ шалгасны дараа нийтлэгдэнэ.','Published after an admin verifies your licence.')}</p>}
   <button type="button" className="v71-suggest-link" onClick={()=>setSuggesting(v=>!v)} aria-expanded={suggesting}>{t('Ангилал олдсонгүй юу?','Category missing?')}</button>
@@ -64,19 +58,23 @@ export default function ServiceCategoryFields({en,uid,editing,onError,onNotice,o
    <label>{t('Яагаад хэрэгтэй вэ?','Why is it needed?')}<textarea value={suggestion.note} maxLength={500} onChange={e=>setSuggestion(s=>({...s,note:e.target.value}))}/></label>
    <button type="button" className="button small" disabled={sending} onClick={()=>void sendSuggestion()}>{sending?t('Илгээж байна…','Sending…'):t('Санал илгээх','Send suggestion')}</button>
   </div>}
-  {/* V71 (owner): one short title per choice; the chosen one is filled and ticked. */}
+ </div>;
+}
+
+export function ServicePricingFields({en,type,onTypeChange}:{en:boolean;type:ServiceType;onTypeChange:(type:ServiceType)=>void}){
+ const t=(mn:string,eng:string)=>en?eng:mn;
+ const choice=serviceTypeById(type);
+ return <details className="v71-optional">
+  <summary>{t('Үнийн хэлбэр','Pricing model')} <small>{en?choice.en:choice.mn}</small></summary>
   <fieldset className="v71-types">
-   <legend>{t('Үйлчилгээний хэлбэр','Pricing model')}</legend>
+   <legend className="sr-only">{t('Үнийн хэлбэр','Pricing model')}</legend>
    <div className="v71-type-grid">{SERVICE_TYPES.map(s=><label key={s.id} className={'v71-type'+(type===s.id?' is-selected':'')}>
-    <input type="radio" name="service_type" value={s.id} checked={type===s.id} onChange={()=>setType(s.id)}/>
+    <input type="radio" name="service_type" value={s.id} checked={type===s.id} onChange={()=>onTypeChange(s.id)}/>
     <span className="v71-type-name">{en?s.en:s.mn}</span>
     <span className="v71-type-tick" aria-hidden="true">{type===s.id&&<Check size={14} strokeWidth={3}/>}</span>
    </label>)}</div>
   </fieldset>
-  <label>{t('Ур чадвар','Skills')}
-   <input name="tags" defaultValue={(editing?.tags||[]).join(', ')} maxLength={240} placeholder="Figma, n8n, CRM"/>
-  </label>
- </div>;
+ </details>;
 }
 export function parseTags(value:string):string[]{
  return [...new Set(value.split(',').map(x=>x.trim()).filter(x=>x.length>=1&&x.length<=30))].slice(0,8);

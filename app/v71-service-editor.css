@@ -1,9 +1,20 @@
 /* ==========================================================================
-   LINKUP V71 — service editor, step 1 (owner request 2026-11-02)
-   Less text; the pricing model is four short cards, and the chosen one is
-   clearly filled and ticked. Colours follow the workspace tokens (light/dark).
+   Linkup service editor. Colours follow the workspace tokens (light/dark).
    ========================================================================== */
 .v71-fields{display:grid;gap:18px}
+.v71-service-editor{scroll-margin-top:110px}
+.v71-service-editor .v71-step-heading{display:grid;gap:4px;margin:0 0 14px;font-size:19px}
+.v71-step-heading:focus{outline:none}
+.v71-step-heading small{color:var(--sub);font-size:12px;font-weight:700}
+.v71-service-editor .v71-step-next{margin-inline-start:auto}
+.hustle-v5.workspace .v71-service-editor .v50-step-nav .button{min-height:44px;text-align:center;white-space:normal}
+.v71-optional{min-width:0;padding:0 12px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.v71-optional summary{min-height:44px;padding:12px 0;color:var(--text);font-weight:700;font-size:13px;cursor:pointer;overflow-wrap:anywhere}
+.v71-optional summary small{margin-inline-start:6px;color:var(--sub);font-size:12px;font-weight:550}
+.v71-optional[open]>summary{margin-bottom:6px;border-bottom:1px solid var(--border)}
+.v71-optional[open]{padding-bottom:12px}
+.v71-optional summary:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
+.v71-service-editor textarea[name=description]{min-height:92px}
 .v71-suggest-link{justify-self:start;margin-top:-8px;padding:4px 0;border:0;background:none;color:var(--purple);font:inherit;font-size:13px;font-weight:650;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .v71-suggest-link:focus-visible{outline:3px solid #4fd7ff;outline-offset:2px;border-radius:4px}
 
