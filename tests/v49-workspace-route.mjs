@@ -38,7 +38,7 @@ test('only allowed dashboards are remembered',()=>{
 });
 test('workspace routes sign-in through one function and navigates between dashboards',()=>{
   const w=readFileSync('components/workspace.tsx','utf8');
-  assert.match(w,/await load\(\);\n await routeSignedIn\(\);/);
+  assert.match(w,/await load\(\);\r?\n await routeSignedIn\(\);/);
   assert.match(w,/load\(\)\.then\(\(\)=>login\?routeSignedIn\(\):undefined\)/);
   assert.match(w,/const mode=chooseWorkspace\(\{entry,login,asked:current\.get\('mode'\)/);
   assert.match(w,/if\(mode!==entry\)\{window\.location\.replace\(target\);return\}/);
