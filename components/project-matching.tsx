@@ -267,19 +267,34 @@ export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
      </aside>
     </div>
     {sent&&<div className="project-ok" role="status"><CheckCircle2 size={20}/><span>{sent.invited>0?t('Хүсэлт '+sent.invited+' мэргэжилтэнд хүрлээ.','Request sent to '+sent.invited+' freelancers.'):t('Хүсэлт хадгалагдлаа. Одоогоор тохирох, төсөл авахыг зөвшөөрсөн мэргэжилтэн байхгүй.','Request saved, but no opted-in matching sellers are currently available.')}</span></div>}
-    <section className="project-panel project-list"><div className="project-inbox-heading"><h2>{t('Миний төслийн хүсэлтүүд','My project requests')}</h2><div className="project-filters"><label>{t('Төлөв','Status')} <select value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option value="all">{t('Бүгд','All')}</option><option value="open">{t('Нээлттэй','Open')}</option><option value="awarded">{t('Захиалга үүссэн','Awarded')}</option><option value="cancelled">{t('Цуцлагдсан','Cancelled')}</option></select></label><label>{t('Саналыг эрэмбэлэх','Sort proposals')} <select value={offerSort} onChange={e=>setOfferSort(e.target.value)}><option value="newest">{t('Шинэ нь эхэнд','Newest')}</option><option value="price">{t('Үнэ: багаас их рүү','Lowest price')}</option><option value="delivery">{t('Хугацаа: богиноос урт руу','Fastest delivery')}</option></select></label></div></div>
-     {visibleRequests.length===0?<p className="project-muted">{t('Одоогоор хүсэлт алга.','No requests yet.')}</p>:visibleRequests.map(req=>{
+    <section className="project-panel project-list project-request-list" aria-labelledby="buyer-project-requests"><div className="project-inbox-heading"><h2 id="buyer-project-requests">{t('Миний төслийн хүсэлтүүд','My project requests')}</h2><div className="project-filters"><label>{t('Төлөв','Status')} <select value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option value="all">{t('Бүгд','All')}</option><option value="open">{t('Нээлттэй','Open')}</option><option value="awarded">{t('Захиалга үүссэн','Awarded')}</option><option value="cancelled">{t('Цуцлагдсан','Cancelled')}</option></select></label><label>{t('Саналыг эрэмбэлэх','Sort proposals')} <select value={offerSort} onChange={e=>setOfferSort(e.target.value)}><option value="newest">{t('Шинэ нь эхэнд','Newest')}</option><option value="price">{t('Үнэ: багаас их рүү','Lowest price')}</option><option value="delivery">{t('Хугацаа: богиноос урт руу','Fastest delivery')}</option></select></label></div></div>
+     {visibleRequests.length===0?<p className="project-muted">{requests.length?t('Энэ төлөвтэй хүсэлт алга.','No requests with this status.'):t('Одоогоор хүсэлт алга.','No requests yet.')}</p>:visibleRequests.map(req=>{
       const offers=proposals.filter(p=>p.request_id===req.id);
       const sentCount=invites.filter(i=>i.request_id===req.id).length;
-      return <article className={'project-item'+(focusRequest===req.id?' is-focus':'')} key={req.id} id={'request-'+req.id}>
-       <div className="project-item-heading"><div><span className="project-chip">{categoryLabel(req.category,en)} · {req.audience==='business'?t('Байгууллага','organization'):t('Хувь хүн','personal')}</span><h3>{req.title}</h3></div><span className="project-chip">{projectStatusLabel(req.status,en)}</span></div>
-       <p>{req.brief}</p><small>{t('Хүргэсэн','Invited')}: {sentCount} · {t('Ирсэн санал','Proposals')}: {offers.length}</small>
+      return <article className={'project-item project-request-card'+(focusRequest===req.id?' is-focus':'')} key={req.id} id={'request-'+req.id} aria-labelledby={'request-title-'+req.id}>
+       <div className="project-item-heading">
+        <div className="project-request-heading">
+         <span className="project-request-category">{categoryLabel(req.category,en)} · {req.audience==='business'?t('Байгууллага','Organization'):t('Хувь хүн','Personal')}</span>
+         <h3 id={'request-title-'+req.id}>{req.title}</h3>
+        </div>
+        <div className="project-request-controls">
+         <span className="project-chip project-request-status" data-status={req.status}>{projectStatusLabel(req.status,en)}</span>
+         {req.status==='open'&&<button type="button" className="project-cancel-request" disabled={busy} onClick={()=>{if(!window.confirm(t('Хүсэлтийг цуцалбал урилгууд хаагдаж, шинэ санал авахгүй. Цуцлах уу?','Cancelling closes the invitations and stops new proposals. Cancel this request?')))return;void action(async()=>{const db=await marketplaceClient();const r=await db.rpc('cancel_project_request',{p_request_id:req.id});if(r.error)throw r.error},t('Хүсэлт цуцлагдлаа.','Project request cancelled.'))}}><XCircle size={16} aria-hidden="true"/>{t('Хүсэлт цуцлах','Cancel request')}</button>}
+         {req.order_id&&<Link className="project-outline project-view-order" href="/buyer/">{t('Захиалгаа харах','View your order')}<ArrowRight size={15} aria-hidden="true"/></Link>}
+        </div>
+       </div>
+       <dl className="project-request-counts">
+        <div><dt>{t('Илгээсэн урилга','Invitations sent')}</dt><dd>{sentCount}</dd></div>
+        <div><dt>{t('Ирсэн санал','Proposals')}</dt><dd>{offers.length}</dd></div>
+       </dl>
+       {req.brief.trim()!==req.title.trim()&&<details className="project-request-brief">
+        <summary>{t('Хүсэлтийн тайлбар','Request details')}</summary>
+        <p>{req.brief}</p>
+       </details>}
        {sortedOffers(offers).map(offer=>{
         const freelancer=people.find(p=>p.id===offer.seller_id);
         return <div key={offer.id} className="project-offer"><div><strong>{freelancer?.display_name||t('Мэргэжилтэн','Freelancer')}</strong><p>{offer.message}</p><small>{tierLabel(offer.tier,en)} · {currency(offer.quoted_price)} · {offer.delivery_days} {t('хоног','days')}</small>{freelancer?.public_profile&&freelancer.slug&&offer.status==='pending'&&<Link className="project-outline project-proposal-chat" href={'/buyer/?seller='+encodeURIComponent(freelancer.slug)+'&mode=buyer'}><UserRound size={14}/>{t('Саналын талаар чатлах','Discuss proposal in chat')}</Link>}</div>{req.status==='open'&&offer.status==='pending'?<button disabled={busy} onClick={()=>void action(async()=>{const db=await marketplaceClient();const response=await db.rpc('award_project_proposal',{p_proposal_id:offer.id});if(response.error)throw response.error},t('Саналыг зөвшөөрлөө. Захиалга үүслээ.','Proposal accepted; an order was created.'))}>{t('Сонгож захиалах','Accept & order')}</button>:<span className="project-chip">{projectStatusLabel(offer.status,en)}</span>}</div>;
        })}
-       {req.order_id&&<Link className="project-outline" href="/buyer/">{t('Захиалгаа харах','View your order')}<ArrowRight size={15}/></Link>}
-       {req.status==='open'&&<button className="project-quiet" disabled={busy} onClick={()=>{if(!window.confirm(t('Энэ хүсэлтийг цуцлах уу?','Cancel this project request?')))return;void action(async()=>{const db=await marketplaceClient();const r=await db.rpc('cancel_project_request',{p_request_id:req.id});if(r.error)throw r.error},t('Хүсэлт цуцлагдлаа.','Project request cancelled.'))}}><XCircle size={15}/>{t('Хүсэлт цуцлах','Cancel request')}</button>}
       </article>;
      })}
     </section>
