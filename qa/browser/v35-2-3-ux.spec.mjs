@@ -33,6 +33,47 @@ test('guest project request login restores the brief, budget and timeline',async
  await expect(page.getByRole('spinbutton',{name:/Хүсэж буй хугацаа/})).toHaveValue('14');
 });
 
+test('buyer can find and cancel an open request above its details on mobile',async({page},testInfo)=>{
+ const id='50000000-0000-4000-8000-000000000001';
+ const title='Marketing material for a new campaign';
+ const brief='We need a complete visual brief for the campaign.';
+ let status='open';
+ await page.addInitScript(()=>localStorage.setItem('hustle-theme','dark'));
+ await page.route('https://mock-messenger.invalid/rest/v1/project_requests?*',route=>route.fulfill({json:[
+  {id,title,brief,status,category:'design',audience:'personal'},
+  {id:'50000000-0000-4000-8000-000000000002',title:'Logo design',brief:'Logo design',status:'awarded',category:'design',audience:'personal',order_id:'40000000-0000-4000-8000-000000000001'},
+ ]}));
+ await page.route('https://mock-messenger.invalid/rest/v1/rpc/cancel_project_request',route=>{
+  expect(route.request().postDataJSON()).toEqual({p_request_id:id});
+  status='cancelled';
+  return route.fulfill({json:null});
+ });
+ await page.goto('/project-requests/');
+ await page.getByRole('main').getByRole('link',{name:'Нэвтрэх',exact:true}).click();
+ await loginBuyer(page);
+ const list=page.getByRole('region',{name:'Миний төслийн хүсэлтүүд'});
+ const request=list.getByRole('article',{name:title});
+ const cancel=request.getByRole('button',{name:'Хүсэлт цуцлах'});
+ await expect(cancel).toBeVisible();
+ await expect(list.getByRole('article',{name:'Logo design'}).getByText('Хүсэлтийн тайлбар')).toHaveCount(0);
+ await expect(list.getByRole('button',{name:'Хүсэлт цуцлах'})).toHaveCount(1);
+ await list.screenshot({path:testInfo.outputPath('requests-desktop.png')});
+ await page.setViewportSize({width:390,height:850});
+ await expect(request.getByText(brief)).toBeHidden();
+ await request.getByText('Хүсэлтийн тайлбар',{exact:true}).click();
+ await expect(request.getByText(brief)).toBeVisible();
+ expect((await cancel.boundingBox()).y).toBeLessThan((await request.getByText(brief).boundingBox()).y);
+ page.once('dialog',dialog=>dialog.dismiss());
+ await cancel.click();
+ await expect(cancel).toBeVisible();
+ page.once('dialog',dialog=>dialog.accept());
+ await cancel.click();
+ await expect(request.getByText('Цуцлагдсан',{exact:true})).toBeVisible();
+ await expect(cancel).toHaveCount(0);
+ await list.getByRole('combobox',{name:/^Төлөв/}).selectOption('open');
+ await expect(list.getByText('Энэ төлөвтэй хүсэлт алга.')).toBeVisible();
+});
+
 test('project draft survives route navigation and can be cleared',async({page})=>{
  await page.goto('/buyer/');
  await loginBuyer(page);

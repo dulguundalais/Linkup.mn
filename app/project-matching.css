@@ -36,3 +36,173 @@
 .project-proposal-management .project-actions{margin-top:0;flex-wrap:wrap}
 .project-proposal-management .project-actions>button:first-child{background:#003366;color:#fff;border:0;border-radius:10px;padding:11px 15px;cursor:pointer;font-weight:800}
 .project-item.is-focus{box-shadow:0 0 0 2px #2b5cde,0 18px 40px rgb(28 62 168/.15)}
+
+.project-request-list {
+  --request-surface: #fbfcff;
+  --request-line: #dce5ef;
+  --request-muted: #526580;
+  --request-ink: #18294a;
+  --request-danger: #a32e38;
+  --request-danger-line: #e7b5bb;
+  --request-danger-hover: #fff0f1;
+  --request-open-bg: #e6f5ee;
+  --request-open-ink: #176346;
+  --request-awarded-bg: #eaf0ff;
+  --request-awarded-ink: #264e9d;
+  --request-closed-bg: #edf0f6;
+}
+
+.night .project-request-list {
+  --request-surface: #101c3e;
+  --request-line: #2b3b61;
+  --request-muted: #a9b9de;
+  --request-ink: #eef3ff;
+  --request-danger: #ffb9bf;
+  --request-danger-line: #79505f;
+  --request-danger-hover: #352039;
+  --request-open-bg: #133e36;
+  --request-open-ink: #a2e8ca;
+  --request-awarded-bg: #203666;
+  --request-awarded-ink: #c5d7ff;
+  --request-closed-bg: #253253;
+}
+
+.project-request-list > .project-inbox-heading {
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.project-request-list .project-filters label {
+  color: var(--request-muted);
+  font-size: 12px;
+}
+
+.project-request-list .project-filters select {
+  min-height: 44px;
+  color: var(--request-ink);
+  background: var(--request-surface);
+  border-color: var(--request-line);
+}
+
+.project-request-list .project-request-card {
+  padding: clamp(14px, 2vw, 22px);
+  margin: 0 0 12px;
+  border: 1px solid var(--request-line);
+  border-radius: 14px;
+  background: var(--request-surface);
+}
+
+.project-request-list .project-request-card:last-child {
+  margin-bottom: 0;
+}
+
+.project-request-heading {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.project-request-category {
+  color: var(--request-muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.project-request-card .project-request-heading h3 {
+  margin: 4px 0 0;
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.project-request-controls {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-request-card .project-request-status {
+  padding: 6px 10px;
+  font-size: 12px;
+  background: var(--request-closed-bg);
+  color: var(--request-muted);
+}
+
+.project-request-card .project-request-status[data-status="open"] {
+  background: var(--request-open-bg);
+  color: var(--request-open-ink);
+}
+
+.project-request-card .project-request-status[data-status="awarded"] {
+  background: var(--request-awarded-bg);
+  color: var(--request-awarded-ink);
+}
+
+.project-cancel-request {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--request-danger-line);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--request-danger);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.project-cancel-request:hover:not(:disabled) { background: var(--request-danger-hover); }
+.project-cancel-request:disabled { opacity: .55; cursor: not-allowed; }
+.project-request-controls .project-view-order { min-height: 44px; }
+
+.project-request-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 12px 0 0;
+  color: var(--request-muted);
+  font-size: 13px;
+}
+
+.project-request-counts div { display: flex; gap: 6px; }
+.project-request-counts dd { margin: 0; color: var(--request-ink); font-weight: 750; }
+
+.project-request-brief {
+  margin-top: 12px;
+  border-top: 1px solid var(--request-line);
+  color: var(--request-muted);
+  font-size: 13px;
+}
+
+.project-request-brief summary {
+  min-height: 44px;
+  padding: 12px 0;
+  box-sizing: border-box;
+  color: var(--request-ink);
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.project-request-brief p {
+  margin: 0 0 8px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.project-request-list :is(button, a, select, summary):focus-visible {
+  outline: 2px solid #4f8bff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+  .project-request-card .project-item-heading {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
