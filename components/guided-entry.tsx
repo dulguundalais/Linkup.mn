@@ -1,4 +1,5 @@
 'use client';
+import MoneyInput,{groupMoney} from './money-input';
 import {useEffect,useRef,useState,type KeyboardEvent} from 'react';
 import {createPortal} from 'react-dom';
 import Link from 'next/link';
@@ -29,7 +30,7 @@ export default function GuidedEntry({en}:{en:boolean}){
  const t=(mn:string,english:string)=>en?english:mn;
  const problem=guidedProblem(goal,notes,en);
  const outcome=classifyNeed(problem);
- const brief=buildProjectBrief(problem,audience,en?'en':'mn',budget,timeline);
+ const brief=buildProjectBrief(problem,audience,en?'en':'mn',budget?budget+' ₮':'',timeline);
  const allMatches=outcome.solutions.flatMap(solution=>matchingPublished(catalog,solution,2));
  const countUnique=new Set(allMatches.map(m=>m.id)).size;
  const close=()=>setOpen(false);
@@ -137,7 +138,7 @@ export default function GuidedEntry({en}:{en:boolean}){
       <div className="guided-optional">
        <button type="button" className="guided-optional-toggle" aria-expanded={detailsOpen} onClick={()=>setDetailsOpen(v=>!v)}><ClipboardCopy size={16}/>{t('Төслийн хүсэлт бэлдэх (заавал биш)','Prepare a project brief (optional)')}<ChevronDown size={17}/></button>
        {detailsOpen&&<div className="guided-optional-content">
-        <div className="guided-field-grid"><label className="guided-label">{t('Төсөв','Budget')}<input value={budget} onChange={e=>setBudget(e.target.value.slice(0,80))} placeholder={t('Жишээ: 500,000 ₮','e.g. 500,000 MNT')}/></label><label className="guided-label">{t('Хугацаа','Timeline')}<input value={timeline} onChange={e=>setTimeline(e.target.value.slice(0,80))} placeholder={t('Жишээ: 2 долоо хоног','e.g. 2 weeks')}/></label></div>
+        <div className="guided-field-grid"><label className="guided-label">{t('Төсөв','Budget')}<MoneyInput value={budget} onChange={d=>setBudget(groupMoney(d))} placeholder={t('Жишээ: 500,000 ₮','e.g. 500,000 MNT')}/></label><label className="guided-label">{t('Хугацаа','Timeline')}<input value={timeline} onChange={e=>setTimeline(e.target.value.slice(0,80))} placeholder={t('Жишээ: 2 долоо хоног','e.g. 2 weeks')}/></label></div>
         <pre className="guided-brief-preview">{brief}</pre>
         <button className="guided-copy" type="button" onClick={()=>void copy()}><ClipboardCopy size={15}/>{copied?t('Хуулсан ✓','Copied ✓'):t('Хүсэлт хуулах','Copy brief')}</button>
        </div>}

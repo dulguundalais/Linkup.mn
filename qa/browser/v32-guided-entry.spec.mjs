@@ -14,7 +14,8 @@ test('business buyer sees inline solutions immediately after one goal click',asy
  await expect(d.locator('.guided-match-status')).toContainText('Одоогоор тохирох үйлчилгээ алга');
  await d.locator('.guided-optional-toggle').click();
  await expect(d.locator('.guided-optional-content')).toBeVisible();
- await d.locator('.guided-optional-content input').first().fill('500,000 ₮');
+ await d.locator('.guided-optional-content input').first().fill('500000');
+ await expect(d.locator('.guided-optional-content input').first()).toHaveValue('500,000');
  await d.locator('.guided-optional-content input').nth(1).fill('2 долоо хоног');
  await expect(d.locator('.guided-brief-preview')).toContainText('500,000 ₮');
  await d.locator('a.guided-next').click();

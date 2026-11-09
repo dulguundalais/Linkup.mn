@@ -1,4 +1,5 @@
 'use client';
+import MoneyInput from './money-input';
 import {useState} from 'react';
 import {ArrowLeft,Check,Clock3,RotateCcw} from 'lucide-react';
 import type {Listing} from '../lib/marketplace/types';
@@ -81,7 +82,7 @@ export function PackageEditor({en,service,stored,onSave,onBack,disabled,serviceT
   <fieldset className="package-edit-card" key={tier} disabled={disabled}>
    <legend className="sr-only">{tierLabel(tier,en)}</legend>
    <div className="package-mini-fields">
-    <label>{priceLabel}<input type="number" min={1000} max={100000000} required value={p.price||''} onChange={e=>set({price:Number(e.target.value)})}/></label>
+    <label>{priceLabel}<MoneyInput required value={p.price||''} placeholder="50,000" onChange={d=>set({price:d?Number(d):0})}/></label>
     <label>{t('Хугацаа (хоног)','Delivery (days)')}<input type="number" min={1} max={365} required value={p.delivery_days||''} onChange={e=>set({delivery_days:Number(e.target.value)})}/></label>
     <label>{t('Засварын тоо','Revisions')}<input type="number" min={0} max={20} value={p.revisions} onChange={e=>set({revisions:Number(e.target.value)})}/></label>
    </div>

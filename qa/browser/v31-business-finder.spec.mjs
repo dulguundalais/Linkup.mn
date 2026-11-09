@@ -24,10 +24,11 @@ test('buyer can find a real published logo service, not invented matches',async(
 test('project brief adapts to business, budget and optional timeline',async({page})=>{
  await page.goto('/solutions/?audience=business&q='+encodeURIComponent('We need a website'));
  await expect(page.locator('.finder-audience button[aria-pressed=true]')).toContainText('Байгууллага');
- await page.locator('.finder-brief-fields input').nth(0).fill('500,000 MNT');
+ await page.locator('.finder-brief-fields input').nth(0).fill('500000');
+ await expect(page.locator('.finder-brief-fields input').nth(0)).toHaveValue('500,000');
  await page.locator('.finder-brief-fields input').nth(1).fill('2 weeks');
  await page.getByText('Хүсэлтийн ноорог харах',{exact:true}).click();
- await expect(page.locator('.finder-brief-preview')).toContainText('500,000 MNT');
+ await expect(page.locator('.finder-brief-preview')).toContainText('500,000 ₮');
  await expect(page.locator('.finder-brief-preview')).toContainText('2 weeks');
  await page.locator('.finder-audience button').filter({hasText:'Хувь хүн'}).click();
  await expect(page.locator('.finder-brief-preview')).toContainText('Хувь хүн');
@@ -35,7 +36,7 @@ test('project brief adapts to business, budget and optional timeline',async({pag
  await expect(page).toHaveURL(/\/project-requests\/?\?q=/);
  const params=new URL(page.url()).searchParams;
  expect(params.get('audience')).toBe('personal');
- expect(params.get('budget')).toBe('500,000 MNT');
+ expect(params.get('budget')).toBe('500,000');
  expect(params.get('timeline')).toBe('2 weeks');
  await page.getByRole('link',{name:'Нэвтрэх',exact:true}).last().click();
  await expect(page).toHaveURL(/\/login\/?\?/);
