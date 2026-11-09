@@ -29,7 +29,7 @@ test('guest project request login restores the brief, budget and timeline',async
  await loginBuyer(page);
  await expect(page).toHaveURL(/\/project-requests\/?\?q=/);
  await expect(page.locator('.project-request-form textarea')).toHaveValue(/Need help building a brand identity/);
- await expect(page.getByRole('spinbutton',{name:/Төсвийн дээд хэмжээ/})).toHaveValue('500000');
+ await expect(page.getByRole('textbox',{name:/Төсвийн дээд хэмжээ/})).toHaveValue('500,000');
  await expect(page.getByRole('spinbutton',{name:/Хүсэж буй хугацаа/})).toHaveValue('14');
 });
 

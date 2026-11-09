@@ -66,7 +66,7 @@ test('package editor labels follow the pricing model the freelancer picked',()=>
  const pk=read('components/service-packages.tsx');
  assert.match(pk,/serviceTypeById\(serviceType\|\|/);
  assert.match(pk,/t\('Жишиг эхлэх үнэ \(₮\)','Example starting price \(MNT\)'\)/);
- assert.match(pk,/<label>\{priceLabel\}<input type="number"/);
+ assert.match(pk,/<label>\{priceLabel\}<MoneyInput required/);
  assert.match(read('components/service-category-fields.tsx'),/onChange=\{\(\)=>onTypeChange\(s\.id\)\}/);
  const w=read('components/workspace.tsx');
  assert.match(w,/onTypeChange=\{setServiceKind\}/);

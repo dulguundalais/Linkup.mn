@@ -1,4 +1,5 @@
 'use client';
+import MoneyInput,{groupMoney} from './money-input';
 import {useEffect,useMemo,useRef,useState,type FormEvent} from 'react';
 import Link from 'next/link';
 import LinkupWordmark from './linkup-wordmark';
@@ -33,7 +34,7 @@ export default function SolutionFinder({compact=false,embedded=false,en:language
   setEn(localStorage.getItem('hustle-language')==='en'||language);
   try{const saved=localStorage.getItem('hustle-buyer-audience');if(saved==='personal'||saved==='business')setAudience(saved)}catch{}
   const params=new URLSearchParams(location.search);
-  setBudget((params.get('budget')||'').slice(0,80));
+  setBudget(groupMoney((params.get('budget')||'').slice(0,80)));
   setTimeline((params.get('timeline')||'').slice(0,80));
   if(params.get('audience')==='business'||params.get('audience')==='personal')setAudience(params.get('audience') as Audience);
   const need=params.get('q')||'';
@@ -49,7 +50,7 @@ export default function SolutionFinder({compact=false,embedded=false,en:language
  const outcome=useMemo(()=>classifyNeed(submitted),[submitted]);
  const matchesByIdea=useMemo(()=>outcome.solutions.map(idea=>matchingPublished(catalog,idea)),[catalog,outcome]);
  const hasMatches=matchesByIdea.some(matches=>matches.length>0);
- const brief=useMemo(()=>buildProjectBrief(submitted,audience,en?'en':'mn',budget,timeline),[submitted,audience,en,budget,timeline]);
+ const brief=useMemo(()=>buildProjectBrief(submitted,audience,en?'en':'mn',budget?budget+' ₮':'',timeline),[submitted,audience,en,budget,timeline]);
  const requestParams=new URLSearchParams({q:submitted,audience});
  if(budget.trim())requestParams.set('budget',budget.trim());
  if(timeline.trim())requestParams.set('timeline',timeline.trim());
@@ -123,7 +124,7 @@ export default function SolutionFinder({compact=false,embedded=false,en:language
        ?t('Үйлчилгээний жагсаалтыг ачаалж чадсангүй. Та хүсэлтээ үргэлжлүүлэн бэлдэж болно.','We could not load the service catalog. You can still prepare a request.')
        :!hasMatches&&t('Одоогоор тохирох үйлчилгээ алга. Хүсэлт илгээж, мэргэжилтнүүдээс санал авах боломжтой.','No matching services yet. You can post a request to get proposals from freelancers.')}</p>
      <div className="finder-brief-fields">
-      <label>{t('Төсвийн дээд хэмжээ (₮, заавал биш)','Maximum budget (MNT, optional)')}<input inputMode="numeric" value={budget} onChange={e=>{setBudget(e.target.value);setCopyStatus('idle')}} maxLength={80} placeholder={t('Жишээ: 500,000','e.g. 500,000')}/></label>
+      <label>{t('Төсвийн дээд хэмжээ (₮, заавал биш)','Maximum budget (MNT, optional)')}<MoneyInput value={budget} onChange={d=>{setBudget(groupMoney(d));setCopyStatus('idle')}} placeholder={t('Жишээ: 500,000','e.g. 500,000')}/></label>
       <label>{t('Хугацаа (заавал биш)','Timeline (optional)')}<input value={timeline} onChange={e=>{setTimeline(e.target.value);setCopyStatus('idle')}} maxLength={80} placeholder={t('Жишээ: 2 долоо хоног','e.g. 2 weeks')}/></label>
      </div>
      <details className="finder-brief-details">

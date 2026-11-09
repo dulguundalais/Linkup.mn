@@ -1,4 +1,5 @@
 'use client';
+import MoneyInput from './money-input';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {X} from 'lucide-react';
 import {CATEGORIES,categoryById} from '../lib/marketplace/taxonomy';
@@ -54,7 +55,6 @@ export default function ExploreFilterDrawer({en,open,onClose,services,base,value
  const lo=ex.priceMin??0,hi=ex.priceMax??ceiling;
  const setLo=(n:number)=>setExtra({priceMin:n<=0?null:Math.min(n,hi)});
  const setHi=(n:number)=>setExtra({priceMax:n>=ceiling?null:Math.max(n,lo)});
- const typed=(v:string)=>{const n=Number(v.replace(/\D/g,''));return Number.isFinite(n)?n:0};
  const subs=draft.cat!=='all'?categoryById(draft.cat)?.subcategories||[]:[];
  const chosen=new Set(ex.skills.map(s=>s.toLocaleLowerCase()));
  const reset=(label:string,on:boolean,fn:()=>void)=>on?<button type="button" className="v69-reset" onClick={fn} aria-label={t('Цэвэрлэх: ','Reset: ')+label}>{t('Цэвэрлэх','Reset')}</button>:null;
@@ -89,8 +89,8 @@ export default function ExploreFilterDrawer({en,open,onClose,services,base,value
       <input type="range" min={0} max={ceiling} step={step} value={hi} onChange={e=>setHi(Number(e.target.value))} aria-label={t('Дээд үнэ','Maximum price')} aria-valuetext={money(hi)}/>
      </div>
      <div className="v69-price-inputs">
-      <label><span>{t('Доод ₮','From ₮')}</span><input inputMode="numeric" value={ex.priceMin===null?'':String(ex.priceMin)} placeholder="0" onChange={e=>{const n=typed(e.target.value);setExtra({priceMin:e.target.value.trim()===''||n<=0?null:n})}}/></label>
-      <label><span>{t('Дээд ₮','To ₮')}</span><input inputMode="numeric" value={ex.priceMax===null?'':String(ex.priceMax)} placeholder={new Intl.NumberFormat('mn-MN').format(ceiling)} onChange={e=>{const n=typed(e.target.value);setExtra({priceMax:e.target.value.trim()===''?null:n})}}/></label>
+      <label><span>{t('Доод ₮','From ₮')}</span><MoneyInput value={ex.priceMin===null?'':ex.priceMin} placeholder="0" onChange={d=>{const n=Number(d);setExtra({priceMin:d===''||n<=0?null:n})}}/></label>
+      <label><span>{t('Дээд ₮','To ₮')}</span><MoneyInput value={ex.priceMax===null?'':ex.priceMax} placeholder={new Intl.NumberFormat('mn-MN').format(ceiling)} onChange={d=>setExtra({priceMax:d===''?null:Number(d)})}/></label>
      </div>
     </section>
 

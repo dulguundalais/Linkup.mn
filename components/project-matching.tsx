@@ -1,4 +1,5 @@
 'use client';
+import MoneyInput from './money-input';
 import {friendlyError} from '../lib/marketplace/friendly-errors';
 import {projectStatusLabel} from '../lib/marketplace/ui-labels';
 import {tierLabel} from './service-packages';
@@ -174,6 +175,7 @@ export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
  };
  const submitRequest=(event:FormEvent)=>{
   event.preventDefault();
+  if(budget&&(Number(budget)<1000||Number(budget)>100000000)){setNotice('');setError(t('Төсөв 1,000–100,000,000 ₮-ийн хооронд байна.','Budget must be 1,000–100,000,000 ₮.'));return}
   void action(async()=>{
    const db=await marketplaceClient();
    const result=await db.rpc('create_project_request',{p_title:title.trim(),p_brief:brief.trim(),p_category:category,
@@ -257,7 +259,7 @@ export default function ProjectMatching({mode}:{mode:'buyer'|'seller'}){
        <label>{t('Төслийн нэр','Project title')}<input value={title} onChange={e=>setTitle(e.target.value)} minLength={8} maxLength={120} required placeholder={t('Жишээ: Facebook захиалгын автоматжуулалт','e.g., Facebook order automation')}/></label>
        <label>{t('Тайлбар / хийх ажил','Describe the challenge')}<textarea value={brief} onChange={e=>setBrief(e.target.value)} rows={5} minLength={20} maxLength={2000} required placeholder={t('Одоогийн асуудал, хүсэж буй үр дүнгээ бичнэ үү…','Describe the current problem and desired outcome…')}/></label>
        <div className="project-field-row"><label>{t('Чиглэл','Category')}<select value={category} onChange={e=>setCategory(e.target.value)}>{categoryOptions.map(([value,mn,english])=><option key={value} value={value}>{en?english:mn}</option>)}</select></label><label>{t('Хэрэглээ','Project context')}<select value={audience} onChange={e=>setAudience(e.target.value as Audience)}><option value="business">{t('Байгууллага','Organization')}</option><option value="personal">{t('Хувь хүн','Personal')}</option></select></label></div>
-       <div className="project-field-row"><label>{t('Төсвийн дээд хэмжээ (₮, заавал биш)','Maximum budget (MNT, optional)')}<input type="number" min={1000} max={100000000} value={budget} onChange={e=>setBudget(e.target.value)} placeholder={t('Тохиролцоно','Negotiable')}/></label><label>{t('Хүсэж буй хугацаа (хоног)','Preferred days (optional)')}<input type="number" min={1} max={365} value={days} onChange={e=>setDays(e.target.value)}/></label></div>
+       <div className="project-field-row"><label>{t('Төсвийн дээд хэмжээ (₮, заавал биш)','Maximum budget (MNT, optional)')}<MoneyInput value={budget} onChange={setBudget} placeholder={t('Тохиролцоно','Negotiable')}/></label><label>{t('Хүсэж буй хугацаа (хоног)','Preferred days (optional)')}<input type="number" min={1} max={365} value={days} onChange={e=>setDays(e.target.value)}/></label></div>
        <p className="project-consent"><ShieldCheck size={17}/>{t('Илгээснээр та төслийн дэлгэрэнгүйг тохирох 5 хүртэлх мэргэжилтэнд харуулахыг зөвшөөрнө. Зөвхөн шинэ төсөл авах тохиргоогоо идэвхжүүлсэн мэргэжилтнүүдэд очно. Төлбөр авахгүй.','By sending, you agree to show this brief to up to five eligible opt-in sellers. No payment is taken.')}</p>
        <button className="project-primary" disabled={busy} type="submit"><Send size={17}/>{busy?t('Илгээж байна…','Sending…'):t('Төслийн хүсэлт илгээх','Send project request')}</button>
       </form>
