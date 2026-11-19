@@ -72,7 +72,7 @@ export default function PremiumAuth({
  const [resetError,setResetError]=useState('');
  const t=(mn:string,english:string)=>en?english:mn;
  const feedbackRef=useRef<HTMLDivElement>(null);
- const verifying=Boolean(sentTo&&register&&entry!=='admin');
+ const verifying=Boolean(sentTo&&register&&entry!=='admin'&&!resetMode);
  const previousSentTo=useRef(sentTo);
  useEffect(()=>{if(previousSentTo.current&&!sentTo)document.getElementById('hustle-auth-email')?.focus();previousSentTo.current=sentTo},[sentTo]);
  const feedback=verifying?'':error||resetError||notice||resetMessage;
@@ -150,10 +150,9 @@ export default function PremiumAuth({
   onSubmit(event);
  }
  const useSuggestion=()=>{if(suggestion){onEmailChange(suggestion);setSuggestion(null);setEmailIssue('');setInsisted('')}};
- function renderSent(){return <SignupVerification en={en} email={sentTo} busy={busy} cooldown={emailCooldown} error={error} notice={notice} onVerify={onVerifyCode} onResend={onResend} onChangeEmail={()=>onChangeEmail?.()} onSignIn={()=>changeMode(false)}/>}
  return <main className="hustle-auth-scene">
-  <div className={'hustle-auth-card'+(isAdmin?' is-solo':'')}>
-   {!isAdmin&&<aside className="hustle-auth-aside">
+  <div className={'hustle-auth-card'+(verifying?' is-solo is-verifying':isAdmin?' is-solo':'')}>
+   {!isAdmin&&!verifying&&<aside className="hustle-auth-aside">
      <Link href="/" className="hustle-auth-wordmark" aria-label="Linkup"><LinkupWordmark decorative/></Link>
      <div className="hustle-auth-aside-body">
        <h2>{forSeller?t('Ур чадвараа орлого болго','Turn your skills into income'):t('Төслөө зөв хүнд даатга','Find the right person for the job')}</h2>
@@ -163,7 +162,11 @@ export default function PremiumAuth({
    </aside>}
    <section className="hustle-auth-panel" aria-labelledby="hustle-auth-title">
    {isAdmin&&<Link href="/" className="hustle-auth-wordmark" aria-label="Linkup"><LinkupWordmark decorative/></Link>}
-   <div className="hustle-auth-intro"><h1 id="hustle-auth-title">{verifying?t('Имэйлээ баталгаажуулна уу','Verify your email'):title}</h1>{!verifying&&lead&&<p>{lead}</p>}</div>
+   <div className="hustle-auth-intro">
+    {verifying&&<span className="hustle-verification-icon" aria-hidden="true"><Mail size={22}/></span>}
+    <h1 id="hustle-auth-title">{verifying?t('Имэйлээ баталгаажуулна уу','Verify your email'):title}</h1>
+    {!verifying&&lead&&<p>{lead}</p>}
+   </div>
    {reason&&!resetMode&&!isAdmin&&!verifying&&<p className="hustle-auth-reason" role="note"><Info size={16} aria-hidden="true"/><span>{reasonText[reason]}{!register&&t(' Бүртгэлгүй бол «Бүртгэл үүсгэх»-ийг сонгоорой — нэг минут болно.',' New here? Choose “Create account” — it takes a minute.')}</span></p>}
    {!resetMode&&!isAdmin&&!verifying&&<div className="hustle-auth-tabs" role="group" aria-label={t('Бүртгэлийн горим','Authentication mode')}>
      <button type="button" className={!register?'active':''} aria-pressed={!register} onClick={()=>changeMode(false)}>{t('Нэвтрэх','Sign in')}</button>
@@ -173,7 +176,7 @@ export default function PremiumAuth({
      <label htmlFor="hustle-recovery-email">{t('Имэйл хаяг','Email address')}</label>
      <div className="hustle-auth-input"><Mail size={18} aria-hidden="true"/><input id="hustle-recovery-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required value={email} onChange={e=>onEmailChange(e.target.value)}/></div>
      <button className="hustle-auth-submit" disabled={resetBusy||busy} type="submit">{resetBusy?t('Илгээж байна…','Requesting…'):t('Сэргээх холбоос хүсэх','Request reset link')}</button>
-   </form>:sentTo&&register&&!isAdmin?renderSent():<form className="hustle-auth-form" onSubmit={e=>void submit(e)} noValidate={register&&!isAdmin}>
+   </form>:verifying?<SignupVerification en={en} email={sentTo} busy={busy} cooldown={emailCooldown} error={error} notice={notice} onVerify={onVerifyCode} onResend={onResend} onChangeEmail={()=>onChangeEmail?.()}/>:<form className="hustle-auth-form" onSubmit={e=>void submit(e)} noValidate={register&&!isAdmin}>
      {register&&!forSeller&&!isAdmin&&<fieldset className="hustle-buyer-context"><legend>{t('Linkup-ыг юунд ашиглах вэ?','What will you use Linkup for?')}</legend>
       <div role="group" aria-label={t('Хэрэглээний чиглэл','Buyer experience')}>
        <button type="button" aria-pressed={buyerAudience==='personal'} onClick={()=>chooseBuyerAudience('personal')}><span className="hustle-choice-icon"><UserRound size={18} aria-hidden="true"/></span><span className="hustle-choice-text"><b>{t('Хувь хүн','Personal')}</b><small>{t('Өөртөө зориулсан ажил','Work for yourself')}</small></span></button>
@@ -214,7 +217,13 @@ export default function PremiumAuth({
    {resetMode?<div className="hustle-auth-support"><button type="button" onClick={()=>{setResetMode(false);setResetError('');setResetMessage('')}}><ArrowLeft size={15} aria-hidden="true"/>{t('Нэвтрэх рүү буцах','Back to sign in')}</button></div>:
     !isAdmin?<div className="hustle-auth-support">
       {register&&!sentTo&&<p>{t('Баталгаажуулах имэйл ирээгүй юу?','Didn’t get the confirmation email?')} <button type="button" className="hustle-auth-resend" disabled={busy||emailCooldown>0} onClick={onResend}>{emailCooldown>0?t('Дахин илгээх','Resend')+' · '+cooldown:t('Дахин илгээх','Resend')}</button></p>}
-      <p className="hustle-auth-legal">{register&&t('Бүртгүүлснээр та ','By creating an account you agree to the ')}<Link href="/terms/">{t('Үйлчилгээний нөхцөл','Terms of Service')}</Link>{register?t(' болон ',' and '):' · '}<Link href="/privacy/">{t(register?'Нууцлалын бодлогыг':'Нууцлалын бодлого','Privacy Policy')}</Link>{register&&t(' зөвшөөрч байна.','.')}</p>
+      {verifying?<div className="hustle-verification-footer">
+       <button type="button" disabled={busy} onClick={()=>changeMode(false)}>{t('Нэвтрэх','Sign in')}</button>
+       <div className="hustle-verification-policies">
+        <Link href="/terms/">{t('Нөхцөл','Terms')}</Link>
+        <Link href="/privacy/">{t('Нууцлал','Privacy')}</Link>
+       </div>
+      </div>:<p className="hustle-auth-legal">{register&&t('Бүртгүүлснээр та ','By creating an account you agree to the ')}<Link href="/terms/">{t('Үйлчилгээний нөхцөл','Terms of Service')}</Link>{register?t(' болон ',' and '):' · '}<Link href="/privacy/">{t(register?'Нууцлалын бодлогыг':'Нууцлалын бодлого','Privacy Policy')}</Link>{register&&t(' зөвшөөрч байна.','.')}</p>}
     </div>:null}
    </section>
   </div>

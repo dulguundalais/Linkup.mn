@@ -56,14 +56,14 @@ test('real signup, unconfirmed denial, resend, confirmation and member-only admi
  await page.locator('.hustle-auth-tabs').getByRole('button',{name:'Create account',exact:true}).click();
  await form(page,email,fixture.password);
  await expect(page.locator('.v85-sent')).toContainText(email);
- await expect(page.locator('.v85-sent')).toContainText('no admin approval needed');
+ await expect(page.getByLabel('Verification code')).toBeVisible();
  const first=await emailLink(email,'signup');
  const unconfirmed=await db.auth.signInWithPassword({email,password:fixture.password});
  expect(unconfirmed.error?.code).toBe('email_not_confirmed');
  expect(unconfirmed.data.session).toBeNull();
- await page.locator('.hustle-auth-tabs').getByRole('button',{name:'Sign in',exact:true}).click();
+ await page.locator('.hustle-verification-footer').getByRole('button',{name:'Sign in',exact:true}).click();
  await form(page,email,fixture.password);
- await expect(page.locator('.hustle-auth-feedback')).toContainText('Your email is not confirmed');
+ await expect(page.locator('.hustle-signup-verification').getByRole('status')).toContainText('Your email is not confirmed');
  // Exercise real GoTrue resend; UI's 60-second cooldown is intentionally retained.
  await new Promise(resolve=>setTimeout(resolve,1100));
  ok(await db.auth.resend({type:'signup',email,options:{emailRedirectTo:localAppURL+'/login/'}}));

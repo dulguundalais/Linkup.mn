@@ -32,7 +32,7 @@ test('email code creates a session and resumes the original request with its dra
  await expect(page.locator('#hustle-signup-code')).toBeFocused();
  await expect(page.getByRole('group',{name:'Authentication mode'})).toHaveCount(0);
  await page.locator('#hustle-signup-code').fill('123 456');
- await page.getByRole('button',{name:'Verify and continue'}).click();
+ await page.getByRole('button',{name:'Verify',exact:true}).click();
  await expect(page).toHaveURL(u=>u.pathname+u.search===destination);
  expect(verification).toMatchObject({email:'buyer@example.test',token:'123456',type:'email'});
  expect(created).toMatchObject({id:buyer,is_seller:false,public_profile:false});
@@ -58,7 +58,7 @@ test('reload restores the code step and resend cooldown without storing a passwo
  await expect(page.getByRole('button',{name:/Resend in/})).toBeDisabled();
  const pending=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('hustle-signup-pending')));
  expect(Object.keys(pending).sort()).toEqual(['at','email','seller']);
- await page.getByRole('button',{name:'Wrong email? Change it'}).click();
+ await page.getByRole('button',{name:'Edit email',exact:true}).click();
  await expect(page.locator('#hustle-auth-email')).toHaveValue('buyer@example.test');
  await expect(page.locator('#hustle-auth-password')).toHaveValue('');
  expect(await page.evaluate(()=>sessionStorage.getItem('hustle-signup-pending'))).toBeNull();
@@ -83,6 +83,6 @@ for(const theme of ['light','dark'])for(const width of [320,1440])test(`verifica
 test('seller signup keeps the seller destination after verification',async({page})=>{
  await setup(page);await page.route(host+'/auth/v1/verify',r=>r.fulfill({json:verifiedSession()}));
  await signup(page,'/join/seller/');await page.locator('#hustle-signup-code').fill('12345678');
- await page.getByRole('button',{name:'Verify and continue'}).click();
+ await page.getByRole('button',{name:'Verify',exact:true}).click();
  await expect(page).toHaveURL(/\/seller-studio\//);
 });
