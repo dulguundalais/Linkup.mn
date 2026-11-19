@@ -37,9 +37,9 @@ test('the Linkup wordmark replaces every text logo and follows the theme colour'
  assert.match(read('components/site-header.tsx'),/className="hx-brand" href="\/" aria-label="Linkup"/);
 });
 
-test('favicon and share card use the Linkup brand',()=>{
+test('favicon, share card and tab title use the Linkup brand',()=>{
  assert.match(read('app/icon.svg'),/^<svg[^>]+viewBox="0 0 512 512"/);
  assert.ok(statSync(join(root,'public/og/linkup.png')).size>10000);
  assert.match(read('lib/marketplace/public-portfolio-render.ts'),/\/og\/linkup\.png/);
- assert.match(read('app/layout.tsx'),/title: 'Linkup — /);
+ assert.match(read('app/layout.tsx'),/title: 'Linkup \| Every problem has a solution\.'/);
 });

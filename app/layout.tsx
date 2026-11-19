@@ -4,7 +4,7 @@ import './v57-motion.css';
 import './v58-mobile-touch.css';
 import './v78-fonts.css';
 import PartnerReferralCapture from '../components/partner-referral-capture';
-export const metadata: Metadata = { title: 'Linkup — Ур чадвар, боломжийг холбох газар', description: 'Монголын мэргэжилтнүүдийг захиалагчидтай холбох үйлчилгээний платформ.' };
+export const metadata: Metadata = { title: 'Linkup | Every problem has a solution.', description: 'Монголын мэргэжилтнүүдийг захиалагчидтай холбох үйлчилгээний платформ.' };
 // V65: before the page paints, use the saved theme for the page background and
 // hold back colour transitions for a moment, so dark-mode visitors do not see a
 // white page fade to dark on every load.
