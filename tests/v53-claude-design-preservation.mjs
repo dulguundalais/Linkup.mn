@@ -12,7 +12,7 @@ const protectedFiles={
  'app/globals.css':'5f3bc376e8c064a2a357f635c952a4d8845acd55',
  // The requested home introduction and benefits panel extend the existing layout.
  'components/premium-marketplace.tsx':'ba45a1cc91d37f2bb200adeb12747308929a3ecd',
- 'components/signature-home.tsx':'480f43bc5659805b985c67ea0567877915688433',
+ 'components/signature-home.tsx':'0b4a71d22b409c70c61b2720ff729ce6a96c1b23',
  'components/site-header.tsx':'ced42869764f517b6ec1f435e305b11cad1129dd',
  'components/premium-footer.tsx':'cb558eb754fbe0c5500e32daf6271d873db9d2ac',
  'app/v45-art-direction.css':'f65228e41baed92deb82b3038abb58a3566a823a',

@@ -8,7 +8,7 @@ test('hero introduces both audiences before search and the guided choices',()=>{
  for(const gone of ['hx-hero-eyebrow','Шийдэл хайх','Хэрэгцээгээ бичээд шийдлээ олоорой','hx-hero-sub"','Хийлгэх ажил байгаа ч','Кирилл, латин галиг','hx-hero-subline'])assert.ok(!heroBlock.includes(gone),gone);
  const order=['hx-hero-title','hx-hero-lead','hx-hero-search','<GuidedEntry'].map(x=>heroBlock.indexOf(x));
  assert.ok(order.every((index,i)=>index>0&&(i===0||order[i-1]<index)),'title → introduction → search → choices');
- assert.match(heroBlock,/<Link href="\/join\/seller\/">/,'service publishing links to freelancer signup');
+ assert.ok(heroBlock.includes('Төслөө гүйцэтгүүлэх найдвартай хүн хайж байна уу, эсвэл ур чадвараа орлого болгохыг хүсэж байна уу?'));
  assert.match(heroBlock,/action="\/solutions\/" method="get"/,'search still submits to the finder');
  assert.match(heroBlock,/suggestLiveServices/,'live suggestions kept');
  assert.doesNotMatch(heroBlock,/chip/i,'no suggestion chips under the search');

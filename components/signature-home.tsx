@@ -44,8 +44,7 @@ export function SignatureHero({en}:{en:boolean}){
     <div className="shell signature-hero-inner hx-hero-inner">
        <h1 id="signature-hero-title" className="hx-hero-title"><span>{t('Асуудал бүрт','Every problem')}</span> <span>{t('шийдэл бий.','has a solution.')}</span></h1>
        <p className="hx-hero-lead">
-        {t('Төслөө даатгах мэргэжилтнээ олоорой. Ур чадвараараа орлого олмоор байвал','Find a freelancer for your project. Want to earn from your skills?')}{' '}
-        <Link href="/join/seller/">{t('үйлчилгээгээ нийтлээрэй','List your services')}</Link>.
+        {t('Төслөө гүйцэтгүүлэх найдвартай хүн хайж байна уу, эсвэл ур чадвараа орлого болгохыг хүсэж байна уу?','Looking for someone you can trust to deliver your project, or want to earn from your skills?')}
        </p>
        <div className="signature-search-shell hx-hero-search" onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node|null))setShowSuggestions(false)}}>
         <form action="/solutions/" method="get" className="signature-search hx-searchbar" role="search">

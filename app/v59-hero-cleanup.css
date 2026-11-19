@@ -4,23 +4,23 @@
    ========================================================================== */
 .signature-hero.hx-hero .hx-hero-frame{min-height:clamp(390px,49svh,470px)}
 .signature-hero.hx-hero .signature-hero-inner.hx-hero-inner{padding:60px 24px 56px}
-.signature-hero.hx-hero .hx-hero-inner h1.hx-hero-title{margin:0;text-wrap:balance}
-.signature-hero.hx-hero .hx-hero-lead{
- max-width:38em;
- margin:18px 0 0;
- color:#dbe5fb;
- font-size:clamp(15px,1rem + .2vw,19px);
- line-height:1.6;
+.signature-hero.hx-hero .hx-hero-inner h1.hx-hero-title{
+ margin:0;
+ font-family:inherit;
+ font-weight:800;
+ letter-spacing:-.045em;
+ line-height:1.08;
  text-wrap:balance;
 }
-.signature-hero.hx-hero .hx-hero-lead a{
- color:#fff;
- font-weight:650;
- text-decoration:underline;
- text-decoration-color:#9db6ff;
- text-underline-offset:4px;
+.signature-hero.hx-hero .hx-hero-lead{
+ max-width:42rem;
+ margin:12px 0 0;
+ color:#dfe8fb;
+ font-size:clamp(15px,.88rem + .28vw,18px);
+ font-weight:500;
+ line-height:1.55;
+ text-wrap:balance;
 }
-.signature-hero.hx-hero .hx-hero-lead a:hover{color:#c2d3ff;text-decoration-color:currentColor}
 .signature-hero.hx-hero .hx-hero-search{margin-top:28px}
 .signature-hero.hx-hero .hx-hero-meta{margin-top:24px;gap:0}
 
@@ -38,7 +38,7 @@
 @media (max-width:760px){
  .signature-hero.hx-hero .hx-hero-frame{min-height:0}
  .signature-hero.hx-hero .signature-hero-inner.hx-hero-inner{padding:42px 18px 36px}
- .signature-hero.hx-hero .hx-hero-lead{margin-top:14px;max-width:34em}
+ .signature-hero.hx-hero .hx-hero-lead{margin-top:10px;max-width:34em}
  .signature-hero.hx-hero .hx-hero-search{margin-top:22px}
  .signature-hero.hx-hero .hx-hero-meta{margin-top:16px}
  .signature-hero.hx-hero .guided-entry-choice,.signature-hero.hx-hero .guided-entry-choice.guided-entry-business{min-width:0}
