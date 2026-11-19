@@ -3,11 +3,12 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const hero=read('components/signature-home.tsx'),guided=read('components/guided-entry.tsx'),css=read('app/v59-hero-cleanup.css');
-const heroBlock=hero.slice(hero.indexOf('export function SignatureHero'),hero.indexOf('const buyerSteps'));
-test('hero shows only the title, the search and the two audience choices',()=>{
+const heroBlock=hero.slice(hero.indexOf('export function SignatureHero'),hero.indexOf('const marketplaceBenefits'));
+test('hero introduces both audiences before search and the guided choices',()=>{
  for(const gone of ['hx-hero-eyebrow','Шийдэл хайх','Хэрэгцээгээ бичээд шийдлээ олоорой','hx-hero-sub"','Хийлгэх ажил байгаа ч','Кирилл, латин галиг','hx-hero-subline'])assert.ok(!heroBlock.includes(gone),gone);
- const order=['hx-hero-title','hx-hero-search','<GuidedEntry'].map(x=>heroBlock.indexOf(x));
- assert.ok(order.every(i=>i>0)&&order[0]<order[1]&&order[1]<order[2],'title → search → choices');
+ const order=['hx-hero-title','hx-hero-lead','hx-hero-search','<GuidedEntry'].map(x=>heroBlock.indexOf(x));
+ assert.ok(order.every((index,i)=>index>0&&(i===0||order[i-1]<index)),'title → introduction → search → choices');
+ assert.match(heroBlock,/<Link href="\/join\/seller\/">/,'service publishing links to freelancer signup');
  assert.match(heroBlock,/action="\/solutions\/" method="get"/,'search still submits to the finder');
  assert.match(heroBlock,/suggestLiveServices/,'live suggestions kept');
  assert.doesNotMatch(heroBlock,/chip/i,'no suggestion chips under the search');
@@ -21,6 +22,6 @@ test('choices read Хувь хүн / Байгууллага, keep their behaviou
 });
 test('hero is shorter and centred on every width',()=>{
  assert.match(hero,/import '\.\.\/app\/v59-hero-cleanup\.css'/);
- assert.match(css,/\.hx-hero-frame\{min-height:clamp\(480px,68svh,640px\)\}/);
+ assert.match(css,/\.hx-hero-frame\{min-height:clamp\(390px,49svh,470px\)\}/);
  assert.match(css,/\.hx-hero-guided\{display:flex;justify-content:center\}/);
 });

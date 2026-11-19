@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const home=read('components/premium-marketplace.tsx'),sig=read('components/signature-home.tsx'),cats=read('components/category-showcase.tsx'),biz=read('components/business-solutions.tsx'),css=read('app/v60-home-sections.css');
 test('homepage sections follow the owner order',()=>{
- const order=["<SignatureHero en={en}/>","<SignatureProcess en={en}/>","<CategoryShowcase en={en}/>","&&<LiveCatalog","<BusinessSolutions en={en}/>","<SignatureSellerBand en={en}/>","<SignaturePartner en={en}/>","<PremiumFooter en={en}/>"].map(n=>home.indexOf(n));
+ const order=["<SignatureHero en={en}/>","<SignatureBenefits en={en}/>","<SignatureProcess en={en}/>","<CategoryShowcase en={en}/>","&&<LiveCatalog","<BusinessSolutions en={en}/>","<SignatureSellerBand en={en}/>","<SignaturePartner en={en}/>","<PremiumFooter en={en}/>"].map(n=>home.indexOf(n));
  assert.ok(order.every(i=>i>0),JSON.stringify(order));
  for(let i=1;i<order.length;i++)assert.ok(order[i-1]<order[i],'section '+i+' out of order');
  assert.equal(home.match(/<BusinessSolutions /g).length,1,'each section once');

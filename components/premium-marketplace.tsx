@@ -15,7 +15,7 @@ import ExploreFilterDrawer from './explore-filter-drawer';
 import LiveCatalog from './live-catalog';
 import {marketplaceClient} from '../lib/marketplace/client';
 import {PARTNER_PROGRAM_PUBLIC} from '../lib/features';
-import {SignatureHero,SignatureProcess,SignatureSellerBand,SignaturePartner} from './signature-home';
+import {SignatureHero,SignatureBenefits,SignatureProcess,SignatureSellerBand,SignaturePartner} from './signature-home';
 import BusinessSolutions from './business-solutions';
 import {V19FeaturedIntro} from './v19-discovery';
 import CategoryShowcase from './category-showcase';
@@ -114,6 +114,7 @@ async function share(){try{await navigator.clipboard.writeText(location.href);se
 const card=(s:Service)=><article className="service-card-v5" key={s.id}><div className="card-art"><Link href={'/services/'+s.id} aria-label={en?s.en:s.mn}><Artwork item={s}/></Link><button className={'save '+(sampleSaved.includes(s.id)?'active':'')} aria-pressed={sampleSaved.includes(s.id)} aria-label={t('Үйлчилгээ хадгалах','Save service')} onClick={()=>saveSample(s.id)}><Heart size={17} fill={sampleSaved.includes(s.id)?'currentColor':'none'}/></button></div><div className="card-body"><div className="service-kicker">{categories.find(c=>c[0]===s.category)?.[en?2:1]}</div><Link className="seller-line" href={'/sellers/'+s.id}><span className={'avatar avatar-'+s.category}>{s.seller.split(' ').map(x=>x[0]).join('')}</span>{s.seller}<span className="sample-label">{t('Жишиг','Sample')}</span></Link><Link href={'/services/'+s.id}><h3>{en?s.en:s.mn}</h3></Link><div className="card-bottom"><span>{t('Эхлэх үнэ','From')} <strong>{money(s.price)}</strong></span><ArrowUpRight size={18}/></div></div></article>;
 return <div className={'hustle-v5 '+(dark?'night':'')}><a className="skip-link" href="#main">{t('Үндсэн хэсэг рүү','Skip to content')}</a><SiteHeader en={en} onToggleLanguage={()=>setEn(!en)} dark={dark} onToggleTheme={()=>setDark(!dark)} active={view==='explore'||view==='service'||view==='seller'?'services':view==='categories'?'categories':view==='solutions'?'solutions':null} session={session} onSignedOut={ok=>setNotice(ok?t('Амжилттай гарлаа.','You have signed out.'):t('Гарах үйлдэл амжилтгүй. Дахин оролдоно уу.','Could not sign out. Please try again.'))}/><main id="main">
 {view==='home'&&<SignatureHero en={en}/>}
+{view==='home'&&<SignatureBenefits en={en}/>}
 {view==='home'&&<SignatureProcess en={en}/>}
 {view==='home'&&<CategoryShowcase en={en}/>}
 {view==='categories'&&<CategoryDirectory en={en}/>}

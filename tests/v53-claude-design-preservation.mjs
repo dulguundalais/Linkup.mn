@@ -10,8 +10,9 @@ const protectedFiles={
  'app/v51-home-system.css':'d614e398889fa3a1912b4ffe57443194ee86f2ea',
  'app/marketplace.css':'bc5e705e9960d5f48c117b1ff5f373fc89710ebc',
  'app/globals.css':'5f3bc376e8c064a2a357f635c952a4d8845acd55',
- 'components/premium-marketplace.tsx':'3b20d446268aca7323abf154b5bf7e4b40c62687',
- 'components/signature-home.tsx':'ccb98d379bfcf5a5026f76f7e949a5a741ae8080',
+ // The requested home introduction and benefits panel extend the existing layout.
+ 'components/premium-marketplace.tsx':'ba45a1cc91d37f2bb200adeb12747308929a3ecd',
+ 'components/signature-home.tsx':'480f43bc5659805b985c67ea0567877915688433',
  'components/site-header.tsx':'ced42869764f517b6ec1f435e305b11cad1129dd',
  'components/premium-footer.tsx':'cb558eb754fbe0c5500e32daf6271d873db9d2ac',
  'app/v45-art-direction.css':'f65228e41baed92deb82b3038abb58a3566a823a',

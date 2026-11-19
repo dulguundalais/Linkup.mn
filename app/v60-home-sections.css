@@ -1,11 +1,52 @@
 /* ==========================================================================
    LINKUP V60 — homepage order and section refresh (owner spec 2026-10-31)
-   Order: Hero → How it works → Categories → Featured services → Business
-   solutions → For freelancers → Partners → Footer.
-   How it works now sits right under the dark hero, so it uses the light tint
-   (as Business solutions did in that spot) to keep dark and light alternating.
+   Order: Hero → Why Linkup → How it works → Categories → Featured services →
+   Business solutions → For freelancers → Partners → Footer.
    Categories keep their V50 carousel (owner decision). Uses the V51 tokens; works in light and night mode.
    ========================================================================== */
+.signature-benefits{padding-block:clamp(26px,3.2vw,46px);color:var(--text)}
+.signature-benefits h2{
+ margin:0 0 18px;
+ font-size:clamp(24px,2.4vw,34px);
+ font-weight:750;
+ line-height:1.2;
+ letter-spacing:-.035em;
+}
+.signature-benefits-list{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ margin:0;
+ padding:0;
+ list-style:none;
+ border:1px solid var(--hx-card-border);
+ border-radius:var(--hx-radius-card);
+ background:var(--hx-card);
+}
+.signature-benefits-list li{
+ display:grid;
+ grid-template-columns:auto minmax(0,1fr);
+ align-items:start;
+ gap:14px;
+ padding:clamp(18px,2.1vw,30px);
+}
+.signature-benefits-list li + li{border-inline-start:1px solid var(--hx-card-border)}
+.signature-benefit-icon{
+ display:grid;
+ place-items:center;
+ width:42px;
+ height:42px;
+ border-radius:12px;
+ background:var(--hx-icon-bg);
+ color:var(--hx-icon-fg);
+}
+.signature-benefits-list h3{margin:0 0 6px;font-size:17px;line-height:1.3;font-weight:700}
+.signature-benefits-list p{margin:0;color:var(--sub);font-size:14px;line-height:1.55}
+
+@media (max-width:800px){
+ .signature-benefits-list{grid-template-columns:minmax(0,1fr)}
+ .signature-benefits-list li + li{border-inline-start:0;border-block-start:1px solid var(--hx-card-border)}
+}
+
 html body .hustle-v5:not(.workspace) .v60-process{background:var(--hx-tint);color:var(--text)}
 html body .hustle-v5:not(.workspace) .v60-process .signature-section-eyebrow{color:var(--hx-eyebrow)}
 html body .hustle-v5:not(.workspace) .v60-process .signature-section-heading h2{color:var(--text)}
