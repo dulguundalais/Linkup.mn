@@ -40,12 +40,12 @@ test('password strength and ticks; only 8+ characters is required',()=>{
 });
 
 test('after sign-up: «check your e-mail» with the address, open inbox, change e-mail, resend',()=>{
- const c=read('components/premium-auth.tsx'),w=read('components/workspace.tsx');
- assert.match(w,/if\(register&&!response\.data\.session\)\{setSentTo\(email\.trim\(\)\.toLowerCase\(\)\);setEmailCooldown\(60\)\}/);
- assert.match(c,/sentTo&&register&&!isAdmin\?renderSent\(\)/);
- assert.match(c,/<b>\{sentTo\}<\/b>/);
- assert.match(c,/Имэйл буруу байна уу\? Засах/);
- assert.match(c,/inboxUrl\(sentTo\)/);
+ const c=read('components/premium-auth.tsx'),w=read('components/workspace.tsx'),v=read('components/signup-verification.tsx');
+ assert.match(w,/if\(register&&!response\.data\.session\)\{setSentTo\(email\.trim\(\)\.toLowerCase\(\)\);savePendingSignup/);
+ assert.match(c,/verifying\?<SignupVerification/);
+ assert.match(v,/<b>\{email\}<\/b>/);
+ assert.match(v,/Имэйл засах/);
+ assert.match(v,/inboxUrl\(email\)/);
  assert.equal(m.inboxUrl('b@gmail.com').startsWith('https://mail.google.com/'),true);
  assert.equal(m.inboxUrl('b@company.mn'),null);
 });

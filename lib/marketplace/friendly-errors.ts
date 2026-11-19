@@ -38,6 +38,8 @@ const KNOWN:Record<string,Pair>={
  'You have started many new conversations today. Please try again tomorrow.':['Өнөөдөр олон шинэ яриа эхлүүлсэн байна. Маргааш дахин оролдоно уу.','You have started many new conversations today. Please try again tomorrow.']
 };
 const BY_CODE:Record<string,Pair>={
+ 'otp_expired':['Код буруу эсвэл хугацаа нь дууссан байна. Шалгаад дахин оруулах эсвэл шинэ код авна уу.','The code is incorrect or has expired. Check it or request a new code.'],
+ 'otp_disabled':['Кодоор баталгаажуулах боломж одоогоор идэвхгүй байна. Түр хүлээгээд дахин оролдоно уу.','Code verification is currently unavailable. Please try again later.'],
  'provider_disabled':['Google-ээр нэвтрэх боломж одоогоор идэвхгүй байна. Имэйлээр нэвтэрнэ үү.','Google sign-in is currently unavailable. Please sign in with email.'],
  'google_oauth_cancelled':['Google-ээр нэвтрэх үйлдлийг цуцаллаа. Дахин оролдох боломжтой.','Google sign-in was cancelled. You can try again.'],
  'google_oauth_failed':['Google-ээр нэвтэрч чадсангүй. Дахин оролдоно уу.','Google sign-in could not be completed. Please try again.'],

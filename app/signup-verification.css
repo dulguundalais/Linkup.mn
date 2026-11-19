@@ -1,0 +1,191 @@
+.hustle-auth-card.is-verifying .hustle-auth-intro {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.hustle-auth-scene .is-verifying .hustle-auth-intro h1 {
+  margin: 0;
+  font-size: clamp(22px, 5vw, 28px);
+  letter-spacing: -.035em;
+}
+
+.hustle-verification-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--auth-line);
+  border-radius: 14px;
+  background: var(--auth-field);
+  color: var(--auth-accent-soft);
+}
+
+.v85-sent.hustle-signup-verification {
+  justify-items: stretch;
+  gap: 16px;
+  padding: 0;
+  text-align: left;
+}
+
+.hustle-verification-address {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  min-width: 0;
+  padding: 4px 12px 10px;
+  border: 1px solid var(--auth-line);
+  border-radius: 12px;
+  background: var(--auth-field);
+}
+
+.hustle-auth-scene .hustle-verification-address p {
+  font-size: 12px;
+  color: var(--auth-muted);
+}
+
+.hustle-verification-address b {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--auth-text);
+  overflow-wrap: anywhere;
+}
+
+.hustle-auth-scene :is(.hustle-verification-address,.hustle-verification-help,.hustle-verification-footer) :is(button,a) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: none;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--auth-accent-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.hustle-auth-scene .hustle-verification-address button {
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 32px;
+}
+
+.hustle-auth-scene :is(.hustle-verification-address,.hustle-verification-help,.hustle-verification-footer) :is(button:not(:disabled),a):hover {
+  text-decoration: underline;
+}
+
+.hustle-auth-scene :is(.hustle-verification-address,.hustle-verification-help,.hustle-verification-footer) button:disabled {
+  color: var(--auth-muted);
+  cursor: default;
+  opacity: 1;
+}
+
+.hustle-auth-scene .hustle-verification-form {
+  gap: 8px;
+}
+
+.hustle-auth-scene .hustle-verification-form > label {
+  margin: 0;
+}
+
+.hustle-auth-scene .hustle-verification-form > input {
+  width: 100%;
+  min-width: 0;
+  min-height: 54px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border: 1px solid var(--auth-line-strong);
+  border-radius: 10px;
+  background: var(--auth-surface);
+  color: var(--auth-text);
+  font: inherit;
+  font-size: 24px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .13em;
+  text-align: center;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.hustle-auth-scene .hustle-verification-form > input::placeholder {
+  color: var(--auth-faint);
+}
+
+.hustle-auth-scene .hustle-verification-form > input:focus {
+  outline: 0;
+  border-color: var(--auth-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--auth-accent) 16%, transparent);
+}
+
+.hustle-auth-scene .hustle-verification-form > input[aria-invalid=true] {
+  border-color: var(--auth-error);
+}
+
+.hustle-auth-scene .hustle-verification-form .hustle-code-error {
+  font-size: 13px;
+  color: var(--auth-error);
+}
+
+.hustle-verification-form .hustle-auth-submit {
+  width: 100%;
+  margin-top: 6px;
+  min-height: 48px;
+  box-shadow: none;
+}
+
+.hustle-v5 .hustle-auth-scene .is-verifying .hustle-auth-submit:disabled {
+  border: 1px solid var(--auth-line);
+  background: var(--auth-field);
+  color: var(--auth-muted);
+  opacity: 1;
+}
+
+.hustle-verification-help {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 20px;
+  margin-top: -8px;
+}
+
+.hustle-auth-scene .hustle-code-notice {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--auth-field);
+  color: var(--auth-text);
+  font-size: 13px;
+}
+
+.hustle-auth-scene .is-verifying .hustle-auth-support {
+  margin-top: 10px;
+}
+
+.hustle-verification-footer,
+.hustle-verification-policies {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0 14px;
+}
+
+.hustle-verification-footer {
+  justify-content: space-between;
+  padding-top: 3px;
+  border-top: 1px solid var(--auth-line);
+}
+
+.hustle-auth-scene .hustle-verification-footer .hustle-verification-policies a {
+  color: var(--auth-muted);
+  font-size: 12px;
+}
