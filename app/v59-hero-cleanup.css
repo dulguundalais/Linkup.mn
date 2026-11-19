@@ -31,7 +31,7 @@
 .signature-hero.hx-hero .guided-entry-choice,.signature-hero.hx-hero .guided-entry-choice.guided-entry-business{justify-content:center;min-width:150px}
 
 @media (min-width:761px){
- .signature-hero.hx-hero .hx-hero-inner h1.hx-hero-title{font-size:clamp(42px,5.25vw,80px)}
+ .signature-hero.hx-hero .hx-hero-inner h1.hx-hero-title{width:100%;max-width:none;font-size:clamp(38px,4.65vw,70px)}
  .signature-hero.hx-hero .hx-hero-inner h1.hx-hero-title span{display:inline}
 }
 
