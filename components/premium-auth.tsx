@@ -3,13 +3,14 @@ import {useEffect,useId,useRef,useState,type FormEvent} from 'react';
 import {friendlyError} from '../lib/marketplace/friendly-errors';
 import Link from 'next/link';
 import LinkupWordmark from './linkup-wordmark';
+import SignupVerification from './signup-verification';
 import {ArrowLeft,ArrowRight,BadgeCheck,Building2,Check,CheckCircle2,Eye,EyeOff,Inbox,Info,LoaderCircle,LockKeyhole,Mail,MessageCircle,Package,ShieldCheck,UserRound} from 'lucide-react';
 import {marketplaceClient} from '../lib/marketplace/client';
 import '../app/premium-auth.css';
 import '../app/v54-page-unification.css';
 import '../app/v65-small-fixes.css';
 import {signInReason,type SignInReason} from '../lib/marketplace/ux-flows';
-import {emailFormatProblem,suggestEmail,domainMail,passwordChecks,passwordStrength,inboxUrl} from '../lib/marketplace/signup-checks';
+import {emailFormatProblem,suggestEmail,domainMail,passwordChecks,passwordStrength} from '../lib/marketplace/signup-checks';
 import '../app/v85-signup.css';
 
 function GoogleLogo(){
@@ -44,12 +45,12 @@ type Props={
   busy:boolean;emailCooldown:number;onSubmit:(event:FormEvent<HTMLFormElement>)=>void;
   onGoogleSignIn:()=>void;googleBusy:boolean;
   onResend:()=>void;notice:string;error:string;onDismiss:()=>void;
-  sentTo?:string;onChangeEmail?:()=>void;
+  sentTo?:string;onChangeEmail?:()=>void;onVerifyCode:(code:string)=>Promise<void>;
 };
 
 export default function PremiumAuth({
  en,entry,entryMode,register,onRegisterChange,email,onEmailChange,password,onPasswordChange,
- busy,emailCooldown,onSubmit,onGoogleSignIn,googleBusy,onResend,notice,error,onDismiss,sentTo='',onChangeEmail
+ busy,emailCooldown,onSubmit,onGoogleSignIn,googleBusy,onResend,notice,error,onDismiss,sentTo='',onChangeEmail,onVerifyCode
 }:Props){
  // V85: catch a mistyped e-mail before sign-up; show password strength as it is typed.
  const [emailIssue,setEmailIssue]=useState<string>('');
@@ -71,7 +72,8 @@ export default function PremiumAuth({
  const [resetError,setResetError]=useState('');
  const t=(mn:string,english:string)=>en?english:mn;
  const feedbackRef=useRef<HTMLDivElement>(null);
- const feedback=error||resetError||notice||resetMessage;
+ const verifying=Boolean(sentTo&&register&&entry!=='admin');
+ const feedback=verifying?'':error||resetError||notice||resetMessage;
  // On small screens the result can land below the fold; bring it into view.
  useEffect(()=>{if(feedback)feedbackRef.current?.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})},[feedback]);
  const changeMode=(next:boolean)=>{
@@ -146,23 +148,7 @@ export default function PremiumAuth({
   onSubmit(event);
  }
  const useSuggestion=()=>{if(suggestion){onEmailChange(suggestion);setSuggestion(null);setEmailIssue('');setInsisted('')}};
- function renderSent(){
-  const inbox=inboxUrl(sentTo);
-  return <div className="v85-sent" role="status">
-   <span className="v85-sent-icon" aria-hidden="true"><Inbox size={28}/></span>
-   <h2>{t('Имэйлээ шалгана уу','Check your e-mail')}</h2>
-   <p>{t('Баталгаажуулах холбоосыг ','We sent a confirmation link to ')}<b>{sentTo}</b>{t(' хаяг руу илгээлээ. Холбоос дээр дарснаар бүртгэл тань шууд идэвхжинэ — админы зөвшөөрөл хэрэггүй.','. Open it to activate your account — no admin approval needed.')}</p>
-   {inbox&&<a className="hustle-auth-submit v85-open-inbox" href={inbox} target="_blank" rel="noopener noreferrer">{t('Имэйл нээх','Open e-mail')}<ArrowRight size={18} aria-hidden="true"/></a>}
-   <ul className="v85-sent-tips">
-    <li>{t('Ирэхгүй бол Спам, Promotions хавтсаа шалгаарай.','Not there? Check Spam and Promotions.')}</li>
-    <li>{t('Өмнө нь энэ имэйлээр бүртгүүлсэн бол шууд «Нэвтрэх»-ээр орно уу.','Already registered with this e-mail? Just sign in.')}</li>
-   </ul>
-   <div className="v85-sent-actions">
-    <button type="button" className="v85-link" onClick={()=>onChangeEmail?.()}>{t('Имэйл буруу байна уу? Засах','Wrong e-mail? Change it')}</button>
-    <button type="button" className="v85-link" disabled={busy||emailCooldown>0} onClick={onResend}>{emailCooldown>0?t('Дахин илгээх','Resend')+' · '+cooldown:t('Дахин илгээх','Resend')}</button>
-   </div>
-  </div>;
- }
+ function renderSent(){return <SignupVerification en={en} email={sentTo} busy={busy} cooldown={emailCooldown} error={error} notice={notice} onVerify={onVerifyCode} onResend={onResend} onChangeEmail={()=>onChangeEmail?.()} onSignIn={()=>changeMode(false)}/>}
  return <main className="hustle-auth-scene">
   <div className={'hustle-auth-card'+(isAdmin?' is-solo':'')}>
    {!isAdmin&&<aside className="hustle-auth-aside">
@@ -175,9 +161,9 @@ export default function PremiumAuth({
    </aside>}
    <section className="hustle-auth-panel" aria-labelledby="hustle-auth-title">
    {isAdmin&&<Link href="/" className="hustle-auth-wordmark" aria-label="Linkup"><LinkupWordmark decorative/></Link>}
-   <div className="hustle-auth-intro"><h1 id="hustle-auth-title">{title}</h1>{lead&&<p>{lead}</p>}</div>
-   {reason&&!resetMode&&!isAdmin&&<p className="hustle-auth-reason" role="note"><Info size={16} aria-hidden="true"/><span>{reasonText[reason]}{!register&&t(' Бүртгэлгүй бол «Бүртгэл үүсгэх»-ийг сонгоорой — нэг минут болно.',' New here? Choose “Create account” — it takes a minute.')}</span></p>}
-   {!resetMode&&!isAdmin&&<div className="hustle-auth-tabs" role="group" aria-label={t('Бүртгэлийн горим','Authentication mode')}>
+   <div className="hustle-auth-intro"><h1 id="hustle-auth-title">{verifying?t('Имэйлээ баталгаажуулна уу','Verify your email'):title}</h1>{!verifying&&lead&&<p>{lead}</p>}</div>
+   {reason&&!resetMode&&!isAdmin&&!verifying&&<p className="hustle-auth-reason" role="note"><Info size={16} aria-hidden="true"/><span>{reasonText[reason]}{!register&&t(' Бүртгэлгүй бол «Бүртгэл үүсгэх»-ийг сонгоорой — нэг минут болно.',' New here? Choose “Create account” — it takes a minute.')}</span></p>}
+   {!resetMode&&!isAdmin&&!verifying&&<div className="hustle-auth-tabs" role="group" aria-label={t('Бүртгэлийн горим','Authentication mode')}>
      <button type="button" className={!register?'active':''} aria-pressed={!register} onClick={()=>changeMode(false)}>{t('Нэвтрэх','Sign in')}</button>
      <button type="button" className={register?'active':''} aria-pressed={register} onClick={()=>changeMode(true)}>{t('Бүртгэл үүсгэх','Create account')}</button>
    </div>}
@@ -221,7 +207,7 @@ export default function PremiumAuth({
    </form>}
    {feedback&&<div ref={feedbackRef} className={'hustle-auth-feedback '+(error||resetError?'is-error':'is-success')} role={error||resetError?'alert':'status'}>
      {error||resetError?<Info size={18} aria-hidden="true"/>:<CheckCircle2 size={18} aria-hidden="true"/>}
-     <div><p>{resetError||error||resetMessage||notice}</p>{error&&!resetMode&&!isAdmin&&<div className="hustle-auth-feedback-actions">{register&&<button type="button" onClick={()=>changeMode(false)}>{t('Нэвтрэх','Sign in')}</button>}<button type="button" onClick={openRecovery}>{t('Нууц үг сэргээх','Reset password')}</button></div>}</div>
+     <div><p>{resetError||error||resetMessage||notice}</p>{error&&!resetMode&&!isAdmin&&!verifying&&<div className="hustle-auth-feedback-actions">{register&&<button type="button" onClick={()=>changeMode(false)}>{t('Нэвтрэх','Sign in')}</button>}<button type="button" onClick={openRecovery}>{t('Нууц үг сэргээх','Reset password')}</button></div>}</div>
    </div>}
    {resetMode?<div className="hustle-auth-support"><button type="button" onClick={()=>{setResetMode(false);setResetError('');setResetMessage('')}}><ArrowLeft size={15} aria-hidden="true"/>{t('Нэвтрэх рүү буцах','Back to sign in')}</button></div>:
     !isAdmin?<div className="hustle-auth-support">
