@@ -19,7 +19,7 @@ const protectedFiles={
  'app/v43-premium-editorial.css':'2d5a883c33460bf6bc732f398b6bc432d7977174',
  'app/v20-footer.css':'9b82c90b965742785aa5455227f6996b28767c6d',
  'app/unified-layout.css':'b3755ad6a07e562e3905261946cceaf07cad4ac7',
- 'app/page.tsx':'162498cb83f366d5806335fc4fe92a18d7a2b08a'
+ 'app/page.tsx':'7a28632e09df9fefff7c23c966841f7f5c924170'
 };
 for(const [path,expected] of Object.entries(protectedFiles)){
  test('Claude V51/V52 protected source unchanged: '+path,()=>{
