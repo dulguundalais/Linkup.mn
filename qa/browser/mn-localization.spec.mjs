@@ -34,7 +34,7 @@ for(const lang of ['mn','en'])for(const width of [320,390,768,1440]){
   await noOverflow(page);
   await page.goto('/login/');
   await page.locator('#hustle-auth-email').fill('qa@example.test');await page.locator('#hustle-auth-password').fill('TestPassword123!');await page.locator('.hustle-auth-submit').click();
-  await expect(page.locator('[role="alert"]').first()).toContainText(lang==='mn'?'Имэйл':'email');await noOverflow(page);
+  await expect(page.locator('.hustle-signup-verification').getByRole('status')).toContainText(lang==='mn'?'Имэйлээ баталгаажуулаагүй байна':'Your email is not confirmed');await noOverflow(page);
   await page.goto('/faq/');await expect(page.locator('html')).toHaveAttribute('lang',lang);await noOverflow(page);
   await expect(page.locator('.info-footer, footer').last()).toContainText(lang==='mn'?'Нууцлал':'Privacy');
  });
