@@ -31,12 +31,12 @@
 }
 
 .hustle-verification-address {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  column-gap: 12px;
   min-width: 0;
-  padding: 6px 12px;
+  padding: 4px 12px 10px;
   border: 1px solid var(--auth-line);
   border-radius: 12px;
   background: var(--auth-field);
@@ -48,7 +48,8 @@
 }
 
 .hustle-verification-address b {
-  display: block;
+  grid-column: 1 / -1;
+  grid-row: 2;
   font-size: 14px;
   line-height: 1.4;
   color: var(--auth-text);
@@ -74,6 +75,12 @@
   cursor: pointer;
 }
 
+.hustle-auth-scene .hustle-verification-address button {
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 32px;
+}
+
 .hustle-auth-scene :is(.hustle-verification-address,.hustle-verification-help,.hustle-verification-footer) :is(button:not(:disabled),a):hover {
   text-decoration: underline;
 }
@@ -81,6 +88,7 @@
 .hustle-auth-scene :is(.hustle-verification-address,.hustle-verification-help,.hustle-verification-footer) button:disabled {
   color: var(--auth-muted);
   cursor: default;
+  opacity: 1;
 }
 
 .hustle-auth-scene .hustle-verification-form {

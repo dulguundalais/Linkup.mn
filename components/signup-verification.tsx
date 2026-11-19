@@ -21,10 +21,8 @@ export default function SignupVerification({en,email,busy,cooldown,error,notice,
  }
  return <div className="v85-sent hustle-signup-verification">
   <div className="hustle-verification-address">
-   <div>
-    <p>{t('Код илгээсэн хаяг','Code sent to')}</p>
-    <b>{email}</b>
-   </div>
+   <p>{t('Код илгээсэн хаяг','Code sent to')}</p>
+   <b>{email}</b>
    <button type="button" disabled={busy} onClick={onChangeEmail}>
     {t('Имэйл засах','Edit email')}
    </button>
