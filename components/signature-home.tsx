@@ -42,8 +42,10 @@ export function SignatureHero({en}:{en:boolean}){
     <span className="hx-hero-light" aria-hidden="true"/>
     <span className="hx-hero-grain" aria-hidden="true"/>
     <div className="shell signature-hero-inner hx-hero-inner">
-       {/* V59: owner cleanup — title, search, then Хувь хүн / Байгууллага; no eyebrow, intro or helper lines. */}
        <h1 id="signature-hero-title" className="hx-hero-title"><span>{t('Асуудал бүрт','Every problem')}</span> <span>{t('шийдэл бий.','has a solution.')}</span></h1>
+       <p className="hx-hero-lead">
+        {t('Бизнес болон хувийн зорилгод тохирсон мэргэжилтэн, шийдлийг хурдан ол.','Quickly find the right specialists and solutions for business or personal projects.')}
+       </p>
        <div className="signature-search-shell hx-hero-search" onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node|null))setShowSuggestions(false)}}>
         <form action="/solutions/" method="get" className="signature-search hx-searchbar" role="search">
          <Search size={22} aria-hidden="true" className="hx-searchbar-icon"/>
@@ -79,6 +81,30 @@ export function SignatureHero({en}:{en:boolean}){
  </section>;
 }
 
+const marketplaceBenefits=[
+ {Icon:BriefcaseBusiness,title:{mn:'Шалгарсан гүйцэтгэгчид',en:'Selected freelancers'},description:{mn:'Бодит портфолио, үнэлгээтэй мэргэжилтнүүд',en:'Real portfolios and client reviews'}},
+ {Icon:Layers3,title:{mn:'Тодорхой нөхцөл',en:'Clear terms'},description:{mn:'Үнэ, хугацаа, ажлын хүрээ эхнээсээ ил тод',en:'See the price, timeline and scope upfront'}},
+ {Icon:MessageCircle,title:{mn:'Нэг цэгийн удирдлага',en:'Manage work in one place'},description:{mn:'Тохиролцоо, хяналт, хүлээн авалт нэг дор.',en:'Agree on the work, track progress and accept delivery.'}}
+];
+
+export function SignatureBenefits({en}:{en:boolean}){
+ const language=en?'en':'mn';
+ return <section className="signature-benefits" aria-labelledby="signature-benefits-title">
+  <div className="shell">
+   <h2 id="signature-benefits-title">{en?'Why choose Linkup?':'Яагаад Linkup-ыг сонгох вэ?'}</h2>
+   <ul className="signature-benefits-list">
+    {marketplaceBenefits.map(({Icon,title,description})=><li key={title.en}>
+     <span className="signature-benefit-icon" aria-hidden="true"><Icon size={22} strokeWidth={1.8}/></span>
+     <div>
+      <h3>{title[language]}</h3>
+      <p>{description[language]}</p>
+     </div>
+    </li>)}
+   </ul>
+  </div>
+ </section>;
+}
+
 const buyerSteps=[
  {index:'01',mn:'Мэргэжилтнээ олох',en:'Discover the right expert',descMn:'Ур чадвар, багц, үнийг харьцуулаарай.',descEn:'Compare services, packages and prices.',Icon:Search},
  {index:'02',mn:'Ярилцаж, захиалах',en:'Connect and request',descMn:'Мэргэжилтэнтэйгээ ажлын нөхцөлөө тохиролцоорой.',descEn:'Message a freelancer and agree on scope.',Icon:MessageCircle},
@@ -89,9 +115,6 @@ const sellerSteps=[
  {index:'02',mn:'Гурван багцаа бэлдэх',en:'Define your packages',descMn:'Суурь, Стандарт, Дээд багцын үнэ, хугацаа, багтах ажлыг тодорхойлоорой.',descEn:'Price Basic, Standard and Premium with clear deliverables.',Icon:Layers3},
  {index:'03',mn:'Ажлаа хүлээлгэн өгөх',en:'Connect and deliver',descMn:'Захиалгаа авч, чатаар харилцан, бэлэн болсон ажлаа илгээгээрэй.',descEn:'Respond to requests, collaborate and deliver your work.',Icon:CheckCircle2}
 ];
-/* V60 homepage order (owner spec): Hero → How it works → Categories → Featured
-   services → Business solutions → For freelancers → Partners → Footer. The three
-   parts below are separate so premium-marketplace can place each one. */
 export function SignatureProcess({en}:{en:boolean}){
  const [mode,setMode]=useState<'buyer'|'seller'>('buyer');
  const t:T=(mn,english)=>en?english:mn;
