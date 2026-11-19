@@ -4,32 +4,37 @@
    Business solutions → For freelancers → Partners → Footer.
    Categories keep their V50 carousel (owner decision). Uses the V51 tokens; works in light and night mode.
    ========================================================================== */
-.signature-benefits{padding-block:clamp(26px,3.2vw,46px);color:var(--text)}
+.signature-benefits{padding-block:clamp(22px,3vw,34px) clamp(28px,3.6vw,44px);color:var(--text)}
 .signature-benefits h2{
  margin:0 0 18px;
  font-size:clamp(24px,2.4vw,34px);
  font-weight:750;
  line-height:1.2;
  letter-spacing:-.035em;
+ text-align:center;
+ text-wrap:balance;
 }
 .signature-benefits-list{
  display:grid;
  grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:clamp(12px,1.6vw,22px);
  margin:0;
  padding:0;
  list-style:none;
+}
+.signature-benefits-list > li{
+ display:grid;
+ align-content:start;
+ justify-items:center;
+ gap:10px;
+ min-width:0;
+ padding:clamp(16px,1.75vw,24px) 16px;
  border:1px solid var(--hx-card-border);
  border-radius:var(--hx-radius-card);
  background:var(--hx-card);
+ box-shadow:var(--hx-card-shadow);
+ text-align:center;
 }
-.signature-benefits-list li{
- display:grid;
- grid-template-columns:auto minmax(0,1fr);
- align-items:start;
- gap:14px;
- padding:clamp(18px,2.1vw,30px);
-}
-.signature-benefits-list li + li{border-inline-start:1px solid var(--hx-card-border)}
 .signature-benefit-icon{
  display:grid;
  place-items:center;
@@ -40,11 +45,10 @@
  color:var(--hx-icon-fg);
 }
 .signature-benefits-list h3{margin:0 0 6px;font-size:17px;line-height:1.3;font-weight:700}
-.signature-benefits-list p{margin:0;color:var(--sub);font-size:14px;line-height:1.55}
+.signature-benefits-list p{margin:0;color:var(--sub);font-size:14px;line-height:1.55;text-wrap:balance}
 
-@media (max-width:800px){
+@media (max-width:720px){
  .signature-benefits-list{grid-template-columns:minmax(0,1fr)}
- .signature-benefits-list li + li{border-inline-start:0;border-block-start:1px solid var(--hx-card-border)}
 }
 
 html body .hustle-v5:not(.workspace) .v60-process{background:var(--hx-tint);color:var(--text)}

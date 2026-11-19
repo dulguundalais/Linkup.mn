@@ -44,7 +44,7 @@ export function SignatureHero({en}:{en:boolean}){
     <div className="shell signature-hero-inner hx-hero-inner">
        <h1 id="signature-hero-title" className="hx-hero-title"><span>{t('Асуудал бүрт','Every problem')}</span> <span>{t('шийдэл бий.','has a solution.')}</span></h1>
        <p className="hx-hero-lead">
-        {t('Төслөө гүйцэтгүүлэх найдвартай хүн хайж байна уу, эсвэл ур чадвараа орлого болгохыг хүсэж байна уу?','Looking for someone you can trust to deliver your project, or want to earn from your skills?')}
+        {t('Бизнес болон хувийн зорилгод тохирсон мэргэжилтэн, шийдлийг хурдан ол.','Quickly find the right specialists and solutions for business or personal projects.')}
        </p>
        <div className="signature-search-shell hx-hero-search" onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node|null))setShowSuggestions(false)}}>
         <form action="/solutions/" method="get" className="signature-search hx-searchbar" role="search">
@@ -82,9 +82,9 @@ export function SignatureHero({en}:{en:boolean}){
 }
 
 const marketplaceBenefits=[
- {Icon:BriefcaseBusiness,title:{mn:'Ажлын жишээ, үнэлгээ',en:'Portfolios and reviews'},description:{mn:'Хийсэн ажлын жишээ, захиалагчдын үнэлгээг харж хүнээ сонгоорой.',en:'See past work and read client reviews before you choose a freelancer.'}},
- {Icon:Layers3,title:{mn:'Ойлгомжтой багц',en:'Clear service packages'},description:{mn:'Багцын үнэ, хугацаа, багтсан ажлыг харьцуулаарай.',en:'Compare what each package includes, how much it costs and when it will be ready.'}},
- {Icon:MessageCircle,title:{mn:'Ажлын явц нэг дор',en:'Everything in one place'},description:{mn:'Чатаар тохиролцож, захиалгаа хянаж, бэлэн болсон ажлаа хүлээж аваарай.',en:'Discuss the work, track your order and receive the finished files on Linkup.'}}
+ {Icon:BriefcaseBusiness,title:{mn:'Шалгарсан гүйцэтгэгчид',en:'Selected freelancers'},description:{mn:'Бодит портфолио, үнэлгээтэй мэргэжилтнүүд',en:'Real portfolios and client reviews'}},
+ {Icon:Layers3,title:{mn:'Тодорхой нөхцөл',en:'Clear terms'},description:{mn:'Үнэ, хугацаа, ажлын хүрээ эхнээсээ ил тод',en:'See the price, timeline and scope upfront'}},
+ {Icon:MessageCircle,title:{mn:'Нэг цэгийн удирдлага',en:'Manage work in one place'},description:{mn:'Тохиролцоо, хяналт, хүлээн авалт нэг дор.',en:'Agree on the work, track progress and accept delivery.'}}
 ];
 
 export function SignatureBenefits({en}:{en:boolean}){

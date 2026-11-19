@@ -2,8 +2,8 @@
    LINKUP V59 — hero cleanup (owner request 2026-10-31)
    Keep the title, bilingual introduction, search and audience choices centered.
    ========================================================================== */
-.signature-hero.hx-hero .hx-hero-frame{min-height:clamp(390px,49svh,470px)}
-.signature-hero.hx-hero .signature-hero-inner.hx-hero-inner{padding:60px 24px 56px}
+.signature-hero.hx-hero .hx-hero-frame{min-height:clamp(360px,47svh,430px)}
+.signature-hero.hx-hero .signature-hero-inner.hx-hero-inner{padding:52px 24px 48px}
 .signature-hero.hx-hero .hx-hero-inner h1.hx-hero-title{
  margin:0;
  font-family:inherit;
@@ -22,7 +22,7 @@
  text-wrap:balance;
 }
 .signature-hero.hx-hero .hx-hero-search{margin-top:28px}
-.signature-hero.hx-hero .hx-hero-meta{margin-top:24px;gap:0}
+.signature-hero.hx-hero .hx-hero-meta{margin-top:20px;gap:0}
 
 /* Хувь хүн / Байгууллага: one centred pair, equal widths */
 .signature-hero.hx-hero .hx-hero-guided{display:flex;justify-content:center}
@@ -37,7 +37,7 @@
 
 @media (max-width:760px){
  .signature-hero.hx-hero .hx-hero-frame{min-height:0}
- .signature-hero.hx-hero .signature-hero-inner.hx-hero-inner{padding:42px 18px 36px}
+ .signature-hero.hx-hero .signature-hero-inner.hx-hero-inner{padding:38px 18px 32px}
  .signature-hero.hx-hero .hx-hero-lead{margin-top:10px;max-width:34em}
  .signature-hero.hx-hero .hx-hero-search{margin-top:22px}
  .signature-hero.hx-hero .hx-hero-meta{margin-top:16px}

@@ -8,7 +8,7 @@ test('hero introduces both audiences before search and the guided choices',()=>{
  for(const gone of ['hx-hero-eyebrow','Шийдэл хайх','Хэрэгцээгээ бичээд шийдлээ олоорой','hx-hero-sub"','Хийлгэх ажил байгаа ч','Кирилл, латин галиг','hx-hero-subline'])assert.ok(!heroBlock.includes(gone),gone);
  const order=['hx-hero-title','hx-hero-lead','hx-hero-search','<GuidedEntry'].map(x=>heroBlock.indexOf(x));
  assert.ok(order.every((index,i)=>index>0&&(i===0||order[i-1]<index)),'title → introduction → search → choices');
- assert.ok(heroBlock.includes('Төслөө гүйцэтгүүлэх найдвартай хүн хайж байна уу, эсвэл ур чадвараа орлого болгохыг хүсэж байна уу?'));
+ assert.ok(heroBlock.includes('Бизнес болон хувийн зорилгод тохирсон мэргэжилтэн, шийдлийг хурдан ол.'));
  assert.match(heroBlock,/action="\/solutions\/" method="get"/,'search still submits to the finder');
  assert.match(heroBlock,/suggestLiveServices/,'live suggestions kept');
  assert.doesNotMatch(heroBlock,/chip/i,'no suggestion chips under the search');
@@ -22,6 +22,6 @@ test('choices read Хувь хүн / Байгууллага, keep their behaviou
 });
 test('hero is shorter and centred on every width',()=>{
  assert.match(hero,/import '\.\.\/app\/v59-hero-cleanup\.css'/);
- assert.match(css,/\.hx-hero-frame\{min-height:clamp\(390px,49svh,470px\)\}/);
+ assert.match(css,/\.hx-hero-frame\{min-height:clamp\(360px,47svh,430px\)\}/);
  assert.match(css,/\.hx-hero-guided\{display:flex;justify-content:center\}/);
 });
