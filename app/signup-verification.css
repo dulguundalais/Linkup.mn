@@ -1,5 +1,5 @@
 /* Keep verification in the existing auth card, with one clear primary action. */
-.hustle-signup-verification{gap:22px;text-align:left;justify-items:stretch;padding:0}
+.v85-sent.hustle-signup-verification{gap:22px;text-align:left;justify-items:stretch;padding:0}
 .hustle-verification-steps{display:flex;align-items:center;justify-content:center;gap:20px;margin:0;padding:0;list-style:none;color:var(--auth-muted);font-size:12px}
 .hustle-verification-steps li{display:flex;align-items:center;gap:7px;line-height:1.4}
 .hustle-verification-steps li+li::before{content:"";width:22px;height:1px;background:var(--auth-line);margin-right:10px}

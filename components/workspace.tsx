@@ -91,7 +91,7 @@ function fail(e:unknown){const safety=chatSafetyMessage(e,en)||categoryErrorMess
 async function load(){
  const db=await marketplaceClient();const {data:{user},error:authError}=await db.auth.getUser();
  if(authError||!user){setUid('');setRole('');setMessages([]);setChatPeer('');entryApplied.current=false;return;}
- setUid(user.id);setEmail(user.email||'');
+ clearPendingSignup();setUid(user.id);setEmail(user.email||'');
  const beta=await db.from('beta_allowlist').select('role').eq('email',user.email?.toLowerCase()||'').eq('enabled',true).maybeSingle();
  if(beta.error)throw beta.error;if(!beta.data){setRole('');setMessages([]);setChatPeer('');return;}
  setRole(beta.data.role);
@@ -230,7 +230,7 @@ async function googleSignIn(){
  try{await startGoogleSignIn()}
  catch(error){setError(friendlyError(error,en));setBusy(false);setGoogleBusy(false)}
 }
-async function auth(e:FormEvent){e.preventDefault();if(busy||(register&&emailCooldown>0))return;setBusy(true);setError('');setNotice('');try{const db=await marketplaceClient();const response=register?await db.auth.signUp({email:email.trim().toLowerCase(),password,options:{emailRedirectTo:location.origin+(entry==='seller'||entryMode==='seller'?'/login/?mode=seller':'/login/')}}):await db.auth.signInWithPassword({email:email.trim().toLowerCase(),password});if(response.error){if(response.error.code==='email_not_confirmed'||/email not confirmed/i.test(response.error.message||'')){setSentTo(email.trim().toLowerCase());savePendingSignup(email,entry==='seller'||entryMode==='seller');setRegister(true);setPassword('');setNotice(t('Имэйлээ баталгаажуулаагүй байна. Ирсэн кодоо оруулах эсвэл код дахин илгээхийг сонгоно уу.','Your email is not confirmed. Enter your code or request a new one.'));return;}throw response.error;}if(register&&!response.data.session){setSentTo(email.trim().toLowerCase());savePendingSignup(email,entry==='seller'||entryMode==='seller');setPassword('');setEmailCooldown(60)}else{
+async function auth(e:FormEvent){e.preventDefault();if(busy||(register&&emailCooldown>0))return;setBusy(true);setError('');setNotice('');try{const db=await marketplaceClient();const response=register?await db.auth.signUp({email:email.trim().toLowerCase(),password,options:{emailRedirectTo:location.origin+(entry==='seller'||entryMode==='seller'?'/login/?mode=seller':'/login/')}}):await db.auth.signInWithPassword({email:email.trim().toLowerCase(),password});if(response.error){if(entry!=='admin'&&(response.error.code==='email_not_confirmed'||/email not confirmed/i.test(response.error.message||''))){setSentTo(email.trim().toLowerCase());savePendingSignup(email,entry==='seller'||entryMode==='seller');setRegister(true);setPassword('');setNotice(t('Имэйлээ баталгаажуулаагүй байна. Ирсэн кодоо оруулах эсвэл код дахин илгээхийг сонгоно уу.','Your email is not confirmed. Enter your code or request a new one.'));return;}throw response.error;}if(register&&!response.data.session){setSentTo(email.trim().toLowerCase());savePendingSignup(email,entry==='seller'||entryMode==='seller');setPassword('');setEmailCooldown(60)}else{
  // Do not expose navigation until both the workspace data and its initial route
  // are ready: late startup work must not overwrite a conversation just opened.
  setLoading(true);

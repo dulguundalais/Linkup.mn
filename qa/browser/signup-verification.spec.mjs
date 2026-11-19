@@ -22,7 +22,6 @@ function verifiedSession(){
 test('email code creates a session and resumes the original request with its draft',async({page})=>{
  await setup(page);
  const destination='/project-requests/?q=branding';let verification,created;
- await page.addInitScript(()=>sessionStorage.setItem('test-brief','Keep this project brief'));
  await page.route(host+'/auth/v1/verify',async r=>{verification=r.request().postDataJSON();await r.fulfill({json:verifiedSession()})});
  await page.route(host+'/rest/v1/profiles**',async r=>{
   if(r.request().method()==='POST'){created=r.request().postDataJSON();await r.fulfill({json:created})}
@@ -37,7 +36,7 @@ test('email code creates a session and resumes the original request with its dra
  await expect(page).toHaveURL(u=>u.pathname+u.search===destination);
  expect(verification).toMatchObject({email:'buyer@example.test',token:'123456',type:'email'});
  expect(created).toMatchObject({id:buyer,is_seller:false,public_profile:false});
- expect(await page.evaluate(()=>sessionStorage.getItem('test-brief'))).toBe('Keep this project brief');
+ await expect(page.getByLabel('Describe the challenge')).toHaveValue('branding');
  expect(await page.evaluate(()=>sessionStorage.getItem('hustle-signup-pending'))).toBeNull();
 });
 test('invalid input stays local; expired codes show an inline retryable error',async({page})=>{

@@ -73,6 +73,8 @@ export default function PremiumAuth({
  const t=(mn:string,english:string)=>en?english:mn;
  const feedbackRef=useRef<HTMLDivElement>(null);
  const verifying=Boolean(sentTo&&register&&entry!=='admin');
+ const previousSentTo=useRef(sentTo);
+ useEffect(()=>{if(previousSentTo.current&&!sentTo)document.getElementById('hustle-auth-email')?.focus();previousSentTo.current=sentTo},[sentTo]);
  const feedback=verifying?'':error||resetError||notice||resetMessage;
  // On small screens the result can land below the fold; bring it into view.
  useEffect(()=>{if(feedback)feedbackRef.current?.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})},[feedback]);
@@ -203,7 +205,7 @@ export default function PremiumAuth({
        <li className={pw.symbol?'is-met':''}><Check size={13} aria-hidden="true"/>{t('Тусгай тэмдэгт (!@#…)','A symbol (!@#…)')}</li>
       </ul>
      </div>}
-     <button className="hustle-auth-submit" disabled={busy||checking||(register&&emailCooldown>0)} type="submit">{busy||checking?t('Шалгаж байна…','Please wait…'):register?t('Бүртгэл үүсгэх','Create account'):t('Нэвтрэх','Sign in')}<ArrowRight size={18} aria-hidden="true"/></button>
+     <button className="hustle-auth-submit" disabled={busy||checking||(register&&emailCooldown>0)} type="submit">{busy||checking?t('Шалгаж байна…','Please wait…'):register&&emailCooldown>0?t('Дахин оролдох · '+cooldown,'Try again in '+cooldown):register?t('Бүртгэл үүсгэх','Create account'):t('Нэвтрэх','Sign in')}<ArrowRight size={18} aria-hidden="true"/></button>
    </form>}
    {feedback&&<div ref={feedbackRef} className={'hustle-auth-feedback '+(error||resetError?'is-error':'is-success')} role={error||resetError?'alert':'status'}>
      {error||resetError?<Info size={18} aria-hidden="true"/>:<CheckCircle2 size={18} aria-hidden="true"/>}
